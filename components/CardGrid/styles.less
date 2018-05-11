@@ -1,0 +1,51 @@
+@import './../globals.less';
+
+@width: 120px;
+.card-grid {
+  background: white;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0px;
+  grid-auto-rows: minmax(@width, auto);
+}
+
+.card-grid__card {
+  width: @width !important;
+  height: @width !important;
+  cursor: pointer;
+  border: 0;
+
+  .card-thumb {
+    width: @width;
+  }
+
+  a {
+    color: white !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 2px;
+    text-shadow: 1px 0px 1px @someday-blue;
+  }
+
+  h3,
+  a,
+  .card-detail {
+    position: absolute;
+    max-height: none !important;
+    height: @width;
+    display: block;
+    z-index: 6;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: @width;
+    transform: none;
+  }
+  &:nth-child(2n) h3 {
+    transform: rotate(90deg);
+  }
+  &:nth-child(3n) h3 {
+    transform: rotate(270deg);
+  }
+}

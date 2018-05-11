@@ -1,0 +1,35 @@
+@import './../globals.less';
+
+.grid-column {
+  margin: auto;
+  width: 100%;
+}
+
+.grid-column-1 {
+  grid-row: 2;
+}
+
+@media ( min-width: (@grid-column-size * 4) ) {
+  @secondary-column-offset: 76px;
+  .grid-column-1 {
+    grid-row: 1;
+    z-index: 2;
+    margin-top: @secondary-column-offset + 70px;
+    grid-column: 1;
+    width: @grid-column-size;
+  }
+  .grid-column-2 {
+    margin: 0;
+    grid-row: 1;
+    z-index: 1;
+    grid-column: 2;
+    width: (@grid-column-size*2);
+  }
+  .grid-column-3 {
+    grid-row: 1;
+    z-index: 2;
+    margin-top: @secondary-column-offset;
+    grid-column: 3;
+    width: @grid-column-size;
+  }
+}

@@ -1,0 +1,18 @@
+@import './../globals.less';
+
+.page {
+  background-color: @someday-blue;
+  min-height: 100%;
+}
+
+.page__contents {
+  display: grid;
+  margin: auto;
+  max-width: @grid-column-size * 4;
+}
+
+@media ( min-width: (@grid-column-size * 4) ) {
+  .page__contents {
+    grid-template-columns: @grid-column-size (@grid-column-size*2) @grid-column-size;
+  }
+}
