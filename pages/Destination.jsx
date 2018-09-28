@@ -102,6 +102,9 @@ export default class HomePage extends React.Component {
 						<Icon glyph="note"
 							label="make a note"
 							className="action--add-note" />
+						<Icon glyph="add-trip"
+							label="add to trip"
+							className="action--add-trip" />
 					</Nav>
 					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
 					<Note>
