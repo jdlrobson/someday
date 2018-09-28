@@ -9,7 +9,9 @@ export default () => {
 			<HorizontalList>
 				{
 					[
-						<a className="menu__link" href="/" key="menu-1">Home</a>
+						<a className="menu__link" href="/" key="menu-1">Home</a>,
+						<span>Hello stranger!</span>,
+						<a className="menu__trip" href="/trips/" key="menu-2">Our trips</a>
 					]
 				}
 			</HorizontalList>
