@@ -12,7 +12,7 @@ import { showNoteOverlay } from './notes.jsx';
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
-	icon.addEventListener( 'click', function () {
-		showNoteOverlay( title );
+	icon.addEventListener( 'click', function ( ev ) {
+		showNoteOverlay( ev, title );
 	} );
 } );

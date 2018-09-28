@@ -18,8 +18,8 @@ function getNote( title ) {
 	return localStorage.getItem( title ) || '';
 }
 
-export function showNoteOverlay( title ) {
-	showOverlay(
+export function showNoteOverlay( ev, title ) {
+	showOverlay( ev,
 		<Overlay>
 			<h1>Make a note</h1>
 			<p>Notes are private and notes will not leave your device.</p>
