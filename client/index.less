@@ -1,6 +1,14 @@
 body {
   padding: 0;
   margin: 0;
+  &.--overlay-enabled {
+    height: 100%;
+    overflow: hidden;
+
+    .page {
+      opacity: 0.2;
+    }
+  }
 }
 html,
 body {
@@ -12,4 +20,32 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+//overlays
+.drawer {
+  top: 10%;
+  bottom: 10%;
+  left: 2em;
+  right: 2em;
+  background: #fff;
+  text-align: left;
+  box-shadow: 0 8px 6px -6px #bbb;
+  padding-top: 8px;
+  max-width: 500px;
+  overflow: hidden;
+  height: auto;
+  width: auto;
+  position: fixed;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0;
+  .overlay-content {
+    overflow-y: auto;
+  }
+}
+
+// icons
+.mw-ui-icon-note:before {
+  background-image: url(/images/note.svg);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Column, Box, Climate,
+	Icon, Nav,
 	Card, Note, ImageSlideshow } from './../components';
 
 const toFixedKm = ( km ) => km > 9 ? Math.round( km ) : km.toFixed( 2 );
@@ -92,11 +93,16 @@ export default class HomePage extends React.Component {
 		const lead = this.props.lead;
 		const { paragraph } = lead;
 		return (
-			<Page>
+			<Page title={lead.normalizedtitle}>
 				<Column col={1}>{leftBoxes( lead )}</Column>
 				<Column>
 					<Menu />
 					<PageBanner title={lead.displaytitle} slogan="we will see" />
+					<Nav>
+						<Icon glyph="note"
+							label="make a note"
+							className="action--add-note" />
+					</Nav>
 					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
 					<Note>
 						<p>More information available on <a
