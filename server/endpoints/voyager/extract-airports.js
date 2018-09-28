@@ -9,7 +9,7 @@ function extractAirports( html ) {
 		if ( links.length === 1 ) {
 			if ( links[ 0 ].textContent.trim() === 'IATA' ) {
 				let prev = sup.previousSibling;
-        // ignore any text nodes.
+				// ignore any text nodes.
 				while ( prev && prev.nodeType === 3 ) {
 					prev = prev.previousSibling;
 				}

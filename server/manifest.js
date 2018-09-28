@@ -1,5 +1,5 @@
 import {
-  GCM_SENDER_ID, SITE_TITLE
+	GCM_SENDER_ID, SITE_TITLE
 } from './config';
 
 const manifest = {

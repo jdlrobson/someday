@@ -11,7 +11,7 @@ class Climate extends React.Component {
 		this.state = {
 			month: null
 		};
-  }
+	}
 	renderInfo() {
 		var options,
 			climate = this.props.climate,
@@ -22,32 +22,32 @@ class Climate extends React.Component {
 
 		options = climate.map( function ( data, i ) {
 			return (
-       <option value={i} key={'climate-option-' + i}>{data.heading}</option>
+				<option value={i} key={'climate-option-' + i}>{data.heading}</option>
 			);
 		} );
 
 		return (
-      <div className="component-climate">
-        <div>
-          <h3>
-            <select defaultValue={curMonthNum}
-              disabled={!this.state.month} onChange={this.onChange}>{options}</select>
-          </h3>
-          <h4>Average temperatures</h4>
-          <span className="high">{curMonth.high}<sup>{degSuffix}</sup></span>
-          <span className="low">{curMonth.low}</span>
-        </div>
-        <div>Precipitation: { curMonth.precipitation} {precSuffix}</div>
-      </div>
+			<div className="component-climate">
+				<div>
+					<h3>
+						<select defaultValue={curMonthNum}
+							disabled={!this.state.month} onChange={this.onChange}>{options}</select>
+					</h3>
+					<h4>Average temperatures</h4>
+					<span className="high">{curMonth.high}<sup>{degSuffix}</sup></span>
+					<span className="low">{curMonth.low}</span>
+				</div>
+				<div>Precipitation: { curMonth.precipitation} {precSuffix}</div>
+			</div>
 		);
-  }
-  render() {
-    if ( this.props.climate ) {
-      return this.renderInfo();
-    } else {
-      return (<p>No climate information is available for this destination.</p>);
-    }
-  }
+	}
+	render() {
+		if ( this.props.climate ) {
+			return this.renderInfo();
+		} else {
+			return ( <p>No climate information is available for this destination.</p> );
+		}
+	}
 }
 
 export default Climate;

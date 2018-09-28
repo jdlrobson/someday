@@ -41,8 +41,8 @@ function extractFromList( html ) {
 		if ( listItem.parentNode ) {
 			listItem.parentNode.removeChild( listItem );
 		}
-		console.log('go', title, listItem.textContent.trim(),
-			cleanDescription( listItem.textContent.trim() ));
+		console.log( 'go', title, listItem.textContent.trim(),
+			cleanDescription( listItem.textContent.trim() ) );
 		titles.push( { title: title,
 			description: cleanDescription( listItem.textContent.trim() ) } );
 	} );

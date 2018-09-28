@@ -30,7 +30,7 @@ function extractImages( section ) {
       captionLc.indexOf( 'map' ) > -1 ||
       captionLc.indexOf( 'worldwide' ) > -1 ||
       captionLc.indexOf( 'region' ) > -1
-    ) {
+		) {
 			maps.push( imgData );
 		} else {
 			images.push( imgData );

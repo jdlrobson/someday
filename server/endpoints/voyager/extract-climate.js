@@ -19,7 +19,7 @@ function climateExtraction( section ) {
 	if ( ext.extracted.length === 1 ) {
 		table = ext.extracted[ 0 ];
 		rows = table.querySelectorAll( 'tr' );
-    // get headings
+		// get headings
 		Array.prototype.forEach.call( table.querySelectorAll( 'th' ), function ( col, j ) {
 			if ( j > 0 ) {
 				climateData.push( { heading: col.textContent } );
@@ -27,20 +27,20 @@ function climateExtraction( section ) {
 		} );
 
 		Array.prototype.forEach.call( rows, function ( row, i ) {
-      // get data.
+			// get data.
 			var cols = row.querySelectorAll( 'td' );
 			if ( cols.length === 13 ) {
 				Array.prototype.forEach.call( cols, function ( col, j ) {
 					if ( j > 0 ) {
 						if ( i === highRowNum ) {
-              // highs
+							// highs
 							climateData[ j - 1 ].imperial = imperial;
 							climateData[ j - 1 ].high = extractFloat( col.textContent, imperial );
 						} else if ( i === highRowNum + 1 ) {
-              // lows
+							// lows
 							climateData[ j - 1 ].low = extractFloat( col.textContent );
 						} else if ( i === highRowNum + 2 ) {
-              // precipitation
+							// precipitation
 							climateData[ j - 1 ].precipitation = extractFloat( col.textContent );
 						}
 					} else {

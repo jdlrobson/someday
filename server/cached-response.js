@@ -1,3 +1,4 @@
+/* global __dirname */
 import NodeCache from 'node-cache';
 
 import respond from './respond.js';
@@ -33,7 +34,7 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 					return;
 				} catch ( e ) {
 					// continue..
-					console.log(e);
+					console.log( e );
 				}
 			}
 			if ( err || !responseText ) {
@@ -41,7 +42,7 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 				respond( res, method ).then( function ( newResponseText ) {
 					shortLifeCache.set( cacheKey, newResponseText );
 					if ( OFFLINE_MODE_SAVE_TO_FILE ) {
-						fs.writeFile( filepath, newResponseText, 'utf-8', function ( err ) {} );
+						fs.writeFile( filepath, newResponseText, 'utf-8', function () {} );
 					}
 				} );
 			} else {

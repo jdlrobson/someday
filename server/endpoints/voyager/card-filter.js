@@ -1,7 +1,7 @@
 function cardFilter( oldPages, mustHaveImage, mustHaveCoordinates ) {
 	var pages = [];
 	var sortNeeded = false;
-  // only what places
+	// only what places
 	var filters = [ 'country', 'county', 'state', 'region', 'city', 'lake',
 		'district', 'National Park', 'town', 'village', 'hamlet', 'metropolis',
 		'continental', 'continent', 'subregion', 'republic', 'commune', 'area',
@@ -32,7 +32,7 @@ function cardFilter( oldPages, mustHaveImage, mustHaveCoordinates ) {
 		if ( page.title.indexOf( '/' ) === -1 &&
       !page.missing &&
       ( !skip( desc ) || exceptions.indexOf( page.title ) > -1 )
-    ) {
+		) {
 			if ( page.coordinates && page.coordinates.dist ) {
 				sortNeeded = true;
 			} else if ( mustHaveCoordinates && !page.coordinates ) {

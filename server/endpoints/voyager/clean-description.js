@@ -1,3 +1,3 @@
-export default function (desc) {
-	return desc.replace(/^[—-]/g, '').trim();
-};
+export default function ( desc ) {
+	return desc.replace( /^[—-]/g, '' ).trim();
+}

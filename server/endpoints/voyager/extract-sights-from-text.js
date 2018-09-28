@@ -5,7 +5,7 @@ import getParentWithTag from './get-parent-with-tag';
 export default function ( doc ) {
 	let text = doc.body.innerHTML;
 	let sights = [];
-  // sister site links e.g. Panama City
+	// sister site links e.g. Panama City
 	const sisterSiteLink = doc.querySelectorAll( '.listing-sister a' );
 	if ( sisterSiteLink.length ) {
 		sisterSiteLink.forEach( ( sister ) => {
@@ -29,9 +29,9 @@ export default function ( doc ) {
 	};
 	text = doc.body.innerHTML;
 	sights = sights.concat(
-    extractBoldItems( text ).map( nameToObj )
-  ).concat(
-    extractElementsTextContent( extractElements( text, 'a', true ).extracted ).map( nameToObj )
-  );
+		extractBoldItems( text ).map( nameToObj )
+	).concat(
+		extractElementsTextContent( extractElements( text, 'a', true ).extracted ).map( nameToObj )
+	);
 	return sights;
 }

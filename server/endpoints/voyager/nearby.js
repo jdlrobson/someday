@@ -3,7 +3,7 @@ import nearby from './../nearby';
 import proximityFilter from './proximity-filter';
 
 // Nearby is restricted to 20km. This extends the search by an additional 20km.
-export default function ( latitude, longitude, lang, excludeTitle, project ) {
+export default function ( latitude, longitude, excludeTitle ) {
 	var delta = 20;
 	latitude = parseFloat( latitude, 10 );
 	longitude = parseFloat( longitude, 10 );
@@ -19,8 +19,8 @@ export default function ( latitude, longitude, lang, excludeTitle, project ) {
 	};
 
 	function getNearby( lat, lng ) {
-		return nearby( lat, lng, lang, 0, project, params ).then( function ( data ) {
-      // increment as necessary
+		return nearby( lat, lng, 0, params ).then( function ( data ) {
+			// increment as necessary
 			data.pages.forEach( function ( page ) {
 				if ( !lookup[ page.title ] ) {
 					pages.push( page );

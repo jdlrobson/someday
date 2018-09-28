@@ -74,7 +74,7 @@ function propEnricher( arr, props, lang, project, params ) {
 		} );
 		return arr;
 	} ).catch( function () {
-    // Looks like the endpoint is down or no internet connection - so return original array
+		// Looks like the endpoint is down or no internet connection - so return original array
 		return arr;
 	} );
 }

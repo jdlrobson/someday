@@ -8,7 +8,7 @@ function proximityFilter( oldPages, exclude ) {
 		if ( page.coordinates &&
          // below 120km please
          page.coordinates.dist > 140000
-     ) {
+		) {
 			return false;
 		} else if ( exclude && exclude.length && exclude.indexOf( page.title ) > -1 ) {
 			return false;

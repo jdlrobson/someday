@@ -44,10 +44,10 @@ function initRoutes( app ) {
 		} );
 	} );
 
-	app.get( '/api/voyager/nearby/:lang.:project/:latitude,:longitude/exclude/:title', ( req, res ) => {
+	app.get( '/api/voyager/nearby/:latitude,:longitude/exclude/:title', ( req, res ) => {
 		cachedResponse( res, req.url, function () {
 			var p = req.params;
-			return voyager.nearby( p.latitude, p.longitude, p.lang, p.title, p.project );
+			return voyager.nearby( p.latitude, p.longitude, p.title );
 		} );
 	} );
 }

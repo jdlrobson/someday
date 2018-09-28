@@ -9,8 +9,8 @@ export default function () {
 		var window = domino.createWindow( '<div>' + json.lead.sections[ 0 ].text + '</div>' );
 		var document = window.document;
 		window = domino.createWindow(
-      '<div>' + document.querySelector( '#mf-mapbanner ~ .mf-mobile-only' ).innerHTML + '</div>'
-    );
+			'<div>' + document.querySelector( '#mf-mapbanner ~ .mf-mobile-only' ).innerHTML + '</div>'
+		);
 		document = window.document;
 		pages.push( document.querySelector( 'a[title]' ).getAttribute( 'title' ) );
 		return addProps( pages, [ 'pageimages', 'pageterms' ], 'en', 'wikivoyage' );

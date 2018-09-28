@@ -16,7 +16,7 @@ export default function ( text ) {
 	} else if ( match && match[ 2 ] ) {
 		res = match[ 2 ];
 	} else {
-    // check for full stops
+		// check for full stops
 		match = text.match( /[^\.\,\:]*[\.\,\:] (.*)/ );
 		if ( match && match[ 1 ] ) {
 			res = match[ 1 ].trim();

@@ -24,14 +24,14 @@ function extractLeadParagraph( doc ) {
 	var node = doc.querySelector( 'p' );
 	if ( node ) {
 		p = node.innerHTML;
-    // delete it
+		// delete it
 		node.parentNode.removeChild( node );
 	}
 	return p;
 }
 function extractHatnote( doc ) {
-  // Workaround for https://phabricator.wikimedia.org/T143739
-  // Do not remove it from the DOM has a reminder this is not fixed.
+	// Workaround for https://phabricator.wikimedia.org/T143739
+	// Do not remove it from the DOM has a reminder this is not fixed.
 	var hatnoteNodes = doc.querySelectorAll( '.hatnote,.noexcerpt' );
 	var hatnote;
 	if ( hatnoteNodes.length ) {
@@ -48,7 +48,7 @@ function extractInfobox( doc ) {
 	var node = doc.querySelector( '.infobox' );
 	if ( node ) {
 		infobox = '<table class="' + node.getAttribute( 'class' ) + '">' + node.innerHTML + '</table>';
-    // delete it
+		// delete it
 		node.parentNode.removeChild( node );
 	}
 	return infobox;
@@ -59,7 +59,7 @@ function extractPageIssues( doc ) {
 	var nodesToDelete;
 	var issues = false;
 	var nodes = doc.querySelectorAll( '.ambox-multiple_issues table .mbox-text-span' );
-  // If no nodes found proceed to look for single page issues.
+	// If no nodes found proceed to look for single page issues.
 	nodes = nodes.length ? nodes : doc.querySelectorAll( '.ambox .mbox-text-span' );
 	if ( nodes.length ) {
 		issues = Array.prototype.map.call( nodes, function ( span ) {
@@ -68,7 +68,7 @@ function extractPageIssues( doc ) {
 			};
 		} );
 
-    // delete all the nodes we found.
+		// delete all the nodes we found.
 		nodesToDelete = doc.querySelectorAll( '.ambox-multiple_issues,.ambox' );
 		Array.prototype.forEach.call( nodesToDelete, function ( node ) {
 			node.parentNode.removeChild( node );
@@ -87,7 +87,7 @@ function undoLinkRewrite( doc ) {
 		var node = ps[ idx ];
 		value = node.getAttribute( 'href' );
 		if ( value ) {
-      // replace all subpages with encoded '/'
+			// replace all subpages with encoded '/'
 			value = value.replace( /^\/wiki\//, './' );
 			if ( value.substr( 0, 2 ) === './' ) {
 				sp = value.substr( 2 );
@@ -105,7 +105,7 @@ function markReferenceSections( sections, removeText ) {
 
 	function mark( from, to ) {
 		if ( isReferenceSection && from !== undefined ) {
-      // Mark all the sections between the last heading and this one as reference sections
+			// Mark all the sections between the last heading and this one as reference sections
 			sections.slice( from, to ).forEach( function ( section ) {
 				section.isReferenceSection = true;
 				if ( removeText ) {
@@ -119,7 +119,7 @@ function markReferenceSections( sections, removeText ) {
 		var text = section.text;
 		if ( section.toclevel === topHeadingLevel ) {
 			mark( lastTopLevelSection, i );
-      // reset the top level section and begin the hunt for references again.
+			// reset the top level section and begin the hunt for references again.
 			lastTopLevelSection = i;
 			isReferenceSection = false;
 		}
@@ -127,7 +127,7 @@ function markReferenceSections( sections, removeText ) {
 			isReferenceSection = true;
 		}
 	} );
-  // the last section may have been a reference section
+	// the last section may have been a reference section
 	mark( lastTopLevelSection, sections.length );
 }
 
@@ -146,73 +146,73 @@ export default function ( title, lang, project, includeReferences, revision ) {
 	if ( title.substr( 0, 6 ) === 'Media:' ) {
 		title = title.replace( 'Media:', 'File:' );
 	}
-  // FIXME: Handle this better please. Use better API.
+	// FIXME: Handle this better please. Use better API.
 	var url = 'https://' + host + path +
     encodeURIComponent( title ) + suffix;
 
 	return fetch( url, { redirect: 'manual' } )
-    .then( function ( resp ) {
-	if ( [ 301, 302 ].indexOf( resp.status ) > -1 ) {
-		var redirectUrl = resp.headers.get( 'Location' );
-		if ( redirectUrl.indexOf( host ) > -1 ) {
-			return {
-				code: 301,
-				title: redirectUrl.replace( host, '' )
-              .replace( 'commons.wikimedia.org', '' )
-              .replace( path, '' ).replace( /https?\:\/\//, '' )
-			};
-		} else if ( redirectUrl.indexOf( 'commons.wikimedia.org' ) > -1 ) {
-          // Workaround for https://github.com/jdlrobson/weekipedia/issues/139
-			return {
-				code: 301,
-				project: 'en.commons',
-				title: redirectUrl
-              .replace( 'commons.wikimedia.org', '' )
-              .replace( path, '' ).replace( /https?\:\/\//, '' )
-			};
-		}
-	} else if ( resp.status === 200 ) {
-		return resp.json();
-	}
-} ).then( function ( json ) {
-	if ( !json ) {
-		throw '404: Bad title given';
-	}
-	if ( json.code ) {
-		return json;
-	}
-      // mark references sections with a flag
-	if ( json.remaining.sections ) {
-		markReferenceSections( json.remaining.sections, !includeReferences );
-	}
+		.then( function ( resp ) {
+			if ( [ 301, 302 ].indexOf( resp.status ) > -1 ) {
+				var redirectUrl = resp.headers.get( 'Location' );
+				if ( redirectUrl.indexOf( host ) > -1 ) {
+					return {
+						code: 301,
+						title: redirectUrl.replace( host, '' )
+							.replace( 'commons.wikimedia.org', '' )
+							.replace( path, '' ).replace( /https?\:\/\//, '' )
+					};
+				} else if ( redirectUrl.indexOf( 'commons.wikimedia.org' ) > -1 ) {
+					// Workaround for https://github.com/jdlrobson/weekipedia/issues/139
+					return {
+						code: 301,
+						project: 'en.commons',
+						title: redirectUrl
+							.replace( 'commons.wikimedia.org', '' )
+							.replace( path, '' ).replace( /https?\:\/\//, '' )
+					};
+				}
+			} else if ( resp.status === 200 ) {
+				return resp.json();
+			}
+		} ).then( function ( json ) {
+			if ( !json ) {
+				throw '404: Bad title given';
+			}
+			if ( json.code ) {
+				return json;
+			}
+			// mark references sections with a flag
+			if ( json.remaining.sections ) {
+				markReferenceSections( json.remaining.sections, !includeReferences );
+			}
 
-	json.remaining.sections.forEach( function ( section ) {
-		if ( section.text ) {
-			var doc = domino.createDocument( section.text );
-			undoLinkRewrite( doc );
-			section.text = doc.body.innerHTML;
-		}
-	} );
+			json.remaining.sections.forEach( function ( section ) {
+				if ( section.text ) {
+					var doc = domino.createDocument( section.text );
+					undoLinkRewrite( doc );
+					section.text = doc.body.innerHTML;
+				}
+			} );
 
-      // Workaround for https://phabricator.wikimedia.org/T145034
-	var doc = domino.createDocument( json.lead.sections.length && json.lead.sections[ 0 ] && json.lead.sections[ 0 ].text );
-	json.lead.media = getMedia( json.lead.sections.concat( json.remaining.sections ) );
-	if ( doc ) {
-        // See https://github.com/jdlrobson/weekipedia/issues/99 - preserve links in main page
-		if ( SITE_HOME.replace( /_/g, ' ' ) !== title.replace( /_/g, ' ' ) ) {
-			undoLinkRewrite( doc );
-		}
-		var infobox = extractInfobox( doc );
-		if ( !json.lead.mainpage ) {
-			var leadParagraph = extractLeadParagraph( doc );
-			json.lead.paragraph = leadParagraph;
-		}
-		var issues = extractPageIssues( doc );
-		json.lead.issues = issues;
-		json.lead.infobox = infobox;
-		json.lead.hatnote = extractHatnote( doc );
-		json.lead.sections[ 0 ].text = doc.body.innerHTML;
-	}
-	return json;
-} );
+			// Workaround for https://phabricator.wikimedia.org/T145034
+			var doc = domino.createDocument( json.lead.sections.length && json.lead.sections[ 0 ] && json.lead.sections[ 0 ].text );
+			json.lead.media = getMedia( json.lead.sections.concat( json.remaining.sections ) );
+			if ( doc ) {
+				// See https://github.com/jdlrobson/weekipedia/issues/99 - preserve links in main page
+				if ( SITE_HOME.replace( /_/g, ' ' ) !== title.replace( /_/g, ' ' ) ) {
+					undoLinkRewrite( doc );
+				}
+				var infobox = extractInfobox( doc );
+				if ( !json.lead.mainpage ) {
+					var leadParagraph = extractLeadParagraph( doc );
+					json.lead.paragraph = leadParagraph;
+				}
+				var issues = extractPageIssues( doc );
+				json.lead.issues = issues;
+				json.lead.infobox = infobox;
+				json.lead.hatnote = extractHatnote( doc );
+				json.lead.sections[ 0 ].text = doc.body.innerHTML;
+			}
+			return json;
+		} );
 }
