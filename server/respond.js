@@ -2,6 +2,7 @@ function respond( res, method ) {
 	return method().then( function ( data ) {
 		var responseText = JSON.stringify( data );
 		res.status( 200 );
+		res.setHeader( 'Content-Type', 'application/json' );
 		res.send( responseText );
 		return responseText;
 	} ).catch( function ( error ) {
