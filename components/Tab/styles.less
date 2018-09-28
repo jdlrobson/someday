@@ -1,0 +1,33 @@
+@import './../globals.less';
+
+.hlist.tabs {
+    height: 42px;
+    background: @boquete-brown;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    padding: 0 !important;
+    text-align: center;
+    margin: auto;
+
+    li {
+        margin: 0 !important;
+
+        span > * {
+            width: 130px;
+            text-transform: uppercase;
+            font-size: .8em;
+            line-height: 1;
+            display: inline-block;
+            padding: 16px;
+            box-sizing: border-box;
+            text-align: center;
+            background: @someday-blue;
+            color: #fff;
+            &.active {
+                font-weight: bold;
+                background: @app-bg-color;
+            }
+        }
+    }
+}

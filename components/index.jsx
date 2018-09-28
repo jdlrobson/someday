@@ -7,6 +7,7 @@ import Box from './Box';
 import Note from './Note';
 import Climate from './Climate';
 import ImageSlideshow from './ImageSlideshow';
+import Tab from './Tab';
 import { Card } from 'wikipedia-react-components';
 
 export {
@@ -15,6 +16,7 @@ export {
 	Note,
 	Card,
 	Menu,
+	Tab,
 	Column,
 	ImageSlideshow,
 	Page,
