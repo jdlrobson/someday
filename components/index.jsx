@@ -4,19 +4,22 @@ import CardGrid from './CardGrid';
 import Page from './Page';
 import Column from './Column';
 import Box from './Box';
+import Nav from './Nav';
 import Note from './Note';
 import Climate from './Climate';
 import ImageSlideshow from './ImageSlideshow';
 import Tab from './Tab';
-import { Card } from 'wikipedia-react-components';
+import { Card, Icon } from 'wikipedia-react-components';
 
 export {
 	Box,
 	Climate,
 	Note,
 	Card,
+	Nav,
 	Menu,
 	Tab,
+	Icon,
 	Column,
 	ImageSlideshow,
 	Page,

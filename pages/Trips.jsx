@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Menu, PageBanner,
+import { Page, Menu, PageBanner, Nav,
 	Column, Note, Card, Tab } from './../components';
 
 export const getOwnerUrl = ( owner ) => {
@@ -37,7 +37,9 @@ export default class Trips extends React.Component {
 				<Column>
 					<Menu />
 					<PageBanner title="someday" slogan="we will go on a trip" />
-					<Tab>{links}</Tab>
+					<Nav>
+						<Tab>{links}</Tab>
+					</Nav>
 					<Note>
 						{props.collections.map( ( collection, i ) =>
 							collectionToCard( collection, `card-${i}` ) )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Menu, PageBanner,
+import { Page, Menu, PageBanner, Nav,
 	Column, Note, Tab } from './../components';
 import { placeToCard } from './Destination';
 import { getOwnerUrl, getTripUrl } from './Trips';
@@ -19,7 +19,9 @@ export default class Trip extends React.Component {
 				<Column>
 					<Menu />
 					<PageBanner title={title} slogan="we will travel" />
-					<Tab>{links}</Tab>
+					<Nav>
+						<Tab>{links}</Tab>
+					</Nav>
 					<Note>
 						{props.pages.map( ( collection, i ) =>
 							placeToCard( collection, `trip-card-${i}` ) )}
