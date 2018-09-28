@@ -12,8 +12,12 @@ const sightToCard = ( destTitle ) => {
 		url={encodeURIComponent( destTitle ) + '/sight/' + encodeURIComponent( title ) } extracts={[ description ]} />;
 };
 
-const placeToCard = ( { title, thumbnail, description, coordinates } ) => <Card title={title} thumbnail={thumbnail}
-	url={'/destination/' + encodeURIComponent( title ) } extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
+export const placeToCard = ( { title, thumbnail, description, coordinates }, key ) => {
+	return <Card title={title} thumbnail={thumbnail}
+		key={key}
+		url={'/destination/' + encodeURIComponent( title ) }
+		extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
+};
 
 const placeToCardWithoutDestination = ( data ) =>
 	placeToCard( Object.assign( {}, data, { coordinates: undefined } ) );
