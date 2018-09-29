@@ -88,6 +88,7 @@ export function showCollectionEditor( ev, title, description, id ) {
 	showOverlay( ev, <CollectionEditorOverlay
 		title={title}
 		description={description}
+		onExit={hideOverlay}
 		onSaveCollection={getSaveCollectionHandler( id )} /> );
 }
 
