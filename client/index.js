@@ -33,7 +33,11 @@ document.querySelectorAll( '.action--collection-edit' ).forEach( ( icon ) => {
 	icon.addEventListener( 'click', function ( ev ) {
 		const id = window.location.pathname.split( '/' ).slice( -2 );
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
-			showCollectionEditor( ev, data.title, data.description, data.id );
+			const coords = data.coordinates || {};
+			const thumbnail = data.thumbnail || {};
+			showCollectionEditor( ev, data.title, data.description, data.id,
+				thumbnail, coords.lat, coords.lon
+			);
 		} );
 	} );
 } );

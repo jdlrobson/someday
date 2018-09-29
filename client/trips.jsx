@@ -64,7 +64,7 @@ class CollectionItem extends React.Component {
 	}
 }
 
-function getSaveCollectionHandler( id ) {
+function getSaveCollectionHandler( id,  image, lat, lon ) {
 	const url = id ? `/api/private/collection/${id}/edit/` :
 		'/api/private/collection/_/create/';
 
@@ -75,7 +75,7 @@ function getSaveCollectionHandler( id ) {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify( { title, description } ),
+			body: JSON.stringify( { title, description, image, lat, lon } ),
 			credentials: 'include'
 		} ).then( ()=> {
 			hideOverlay();
@@ -84,12 +84,14 @@ function getSaveCollectionHandler( id ) {
 	};
 }
 
-export function showCollectionEditor( ev, title, description, id ) {
+export function showCollectionEditor( ev, title, description, id, thumb, lat, lon ) {
+	thumb = thumb || {};
 	showOverlay( ev, <CollectionEditorOverlay
 		title={title}
+		thumbnail={thumb}
 		description={description}
 		onExit={hideOverlay}
-		onSaveCollection={getSaveCollectionHandler( id )} /> );
+		onSaveCollection={getSaveCollectionHandler( id,  thumb.title, lat, lon )} /> );
 }
 
 export function showCollectionOverlay( ev, title, data ) {
