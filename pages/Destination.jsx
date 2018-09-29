@@ -96,7 +96,7 @@ export default class HomePage extends React.Component {
 			<Page title={lead.normalizedtitle}>
 				<Column col={1}>{leftBoxes( lead )}</Column>
 				<Column>
-					<Menu />
+					<Menu username={this.props.meta.username} />
 					<PageBanner title={lead.displaytitle} slogan="we will see" />
 					<Nav>
 						<Icon glyph="note"

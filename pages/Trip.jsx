@@ -17,7 +17,7 @@ export default class Trip extends React.Component {
 		return (
 			<Page>
 				<Column>
-					<Menu />
+					<Menu username={props.meta.username} />
 					<PageBanner title={title} slogan="we will travel" />
 					<Nav>
 						<Tab>{links}</Tab>

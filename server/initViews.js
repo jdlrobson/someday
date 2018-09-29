@@ -13,13 +13,17 @@ export default function ( app ) {
 			fetch( dataUrl ).then( ( res ) => res.json() )
 				.then(
 					( props ) => {
-						const element = React.createElement( View, props, [] );
-						const view = ReactDOMServer.renderToString( element );
 						let meta = {
+							username: req.user ? req.user.displayName : false,
 							image: `${host}/home-icon.png`,
 							description: 'the pocket travel guide that follows you wherever you are in the world',
 							page_title: 'Someday'
 						};
+						const element = React.createElement( View,
+							Object.assign( {}, props, { meta: meta } ),
+							[]
+						);
+						const view = ReactDOMServer.renderToString( element );
 						if ( extractMeta ) {
 							meta = extractMeta( meta );
 						}

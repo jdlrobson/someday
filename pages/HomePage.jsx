@@ -6,7 +6,7 @@ export default class HomePage extends React.Component {
 		return (
 			<Page>
 				<Column>
-					<Menu />
+					<Menu username={this.props.meta.username} />
 					<PageBanner title="Start somewhere" slogan="we will see the world" />
 					<CardGrid pages={this.props.pages} />
 				</Column>

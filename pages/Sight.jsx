@@ -8,7 +8,7 @@ export default class Sight extends React.Component {
 		return (
 			<Page>
 				<Column>
-					<Menu />
+					<Menu username={this.props.meta.username} />
 					<PageBanner title={lead.displaytitle} slogan="we will visit" />
 					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
 					<Note>
