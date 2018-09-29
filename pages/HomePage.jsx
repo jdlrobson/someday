@@ -7,7 +7,9 @@ export default class HomePage extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={this.props.meta.username} />
-					<PageBanner title="Start somewhere" slogan="we will see the world" />
+					<PageBanner title="Start somewhere" slogan="we will see the world"
+						api="/api/random/en"
+					/>
 					<CardGrid pages={this.props.pages} />
 				</Column>
 			</Page>

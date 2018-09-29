@@ -9,7 +9,10 @@ export default class Sight extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={this.props.meta.username} />
-					<PageBanner title={lead.displaytitle} slogan="we will visit" />
+					<PageBanner title={lead.displaytitle} slogan="we will visit"
+						lat={coordinates && coordinates.lat}
+						lon={coordinates && coordinates.lon}
+					/>
 					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
 					<Note>
 						<p>More information available on <a

@@ -18,7 +18,9 @@ export default class Trip extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={props.meta.username} />
-					<PageBanner title={title} slogan="we will travel" />
+					<PageBanner title={title} slogan="we will travel"
+						api={props.meta.dataUrl}
+					/>
 					<Nav>
 						<Tab>{links}</Tab>
 						{props.owner === props.meta.username && <Icon glyph="edit"

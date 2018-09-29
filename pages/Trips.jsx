@@ -18,8 +18,9 @@ const collectionToCard = ( { title, thumbnail, description, owner, id }, key ) =
 export default class Trips extends React.Component {
 	render() {
 		const props = this.props;
+		const owner = props.owner;
 		let links;
-		if ( props.owner ) {
+		if ( owner ) {
 			links = [
 				<a href="/trips/">All</a>,
 				<a href={getOwnerUrl( props.owner )}
@@ -36,7 +37,9 @@ export default class Trips extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={props.meta.username} />
-					<PageBanner title="someday" slogan="we will go on a trip" />
+					<PageBanner title="someday" slogan="we will go on a trip"
+						api={props.meta.dataUrl}
+					/>
 					<Nav>
 						<Tab>{links}</Tab>
 					</Nav>

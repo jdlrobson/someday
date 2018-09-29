@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Content } from 'wikipedia-react-components';
+const MARKER_ICON = '/images/marker-icon.png';
 
 import './styles.less';
 
@@ -29,9 +30,13 @@ export default class PageBanner extends React.Component {
 
 		const bannerClassName = props.inSearchMode ? ' banner-search-enabled' : '';
 		return (
-			<div className={'component-page-banner' + bannerClassName} onClick={this.navigateTo}>
+			<div id="map"
+				data-api={props.api}
+				data-lat={props.lat || 0}
+				data-lon={props.lon || 0}
+				className={'component-page-banner' + bannerClassName} onClick={this.navigateTo}>
 				<div style={leadBannerStyles}>
-					<img src="/marker-icon.png" className="map-marker" />
+					<img src={MARKER_ICON} className="map-marker" />
 					<Content>
 						<h1 className="component-page-banner__site-image">
 							<img src="/images/someday-map.png" alt='Someday' height="138" width="270" />

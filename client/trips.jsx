@@ -64,7 +64,7 @@ class CollectionItem extends React.Component {
 	}
 }
 
-function getSaveCollectionHandler( id,  image, lat, lon ) {
+function getSaveCollectionHandler( id, image, lat, lon ) {
 	const url = id ? `/api/private/collection/${id}/edit/` :
 		'/api/private/collection/_/create/';
 
@@ -91,7 +91,7 @@ export function showCollectionEditor( ev, title, description, id, thumb, lat, lo
 		thumbnail={thumb}
 		description={description}
 		onExit={hideOverlay}
-		onSaveCollection={getSaveCollectionHandler( id,  thumb.title, lat, lon )} /> );
+		onSaveCollection={getSaveCollectionHandler( id, thumb.title, lat, lon )} /> );
 }
 
 export function showCollectionOverlay( ev, title, data ) {

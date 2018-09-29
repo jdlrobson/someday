@@ -10,6 +10,7 @@ import './index.less';
 import { showNoteOverlay } from './notes.jsx';
 import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip } from './trips.jsx';
+import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 
@@ -26,6 +27,20 @@ Array.from( document.querySelectorAll( '.action--add-trip' ) ).forEach( ( icon )
 			showCollectionOverlay( ev, title, data );
 		} );
 	} );
+} );
+
+// banner
+const map = document.querySelector( '#map' );
+map.addEventListener( 'click', function ( ev ) {
+	const api = this.getAttribute( 'data-api' );
+	if ( api ) {
+		showMapOverlayWithPages( ev, api );
+	} else {
+		showMapOverlay( ev, this.getAttribute( 'data-lat' ),
+			this.getAttribute( 'data-lon' ),
+			title
+		);
+	}
 } );
 
 // allow editing of collections

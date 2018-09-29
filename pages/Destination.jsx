@@ -91,13 +91,16 @@ function rightBoxes( lead ) {
 export default class HomePage extends React.Component {
 	render() {
 		const lead = this.props.lead;
-		const { paragraph } = lead;
+		const { paragraph, coordinates } = lead;
 		return (
 			<Page title={lead.normalizedtitle}>
 				<Column col={1}>{leftBoxes( lead )}</Column>
 				<Column>
 					<Menu username={this.props.meta.username} />
-					<PageBanner title={lead.displaytitle} slogan="we will see" />
+					<PageBanner title={lead.displaytitle} slogan="we will see"
+						lat={coordinates && coordinates.lat}
+						lon={coordinates && coordinates.lon}
+					/>
 					<Nav>
 						<Icon glyph="note"
 							label="make a note"
