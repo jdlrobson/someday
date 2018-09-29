@@ -1,11 +1,17 @@
 import React from 'react';
-import { showOverlay } from './overlay';
-import { CollectionOverlay, Icon } from 'wikipedia-react-components';
+import { showOverlay, hideOverlay } from './overlay';
+import { CollectionOverlay, Icon,
+	Button, CollectionEditorOverlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 
 export function getTrips( title ) {
 	return fetch( `/api/private/collection/all/with/${title}` )
 		.then( ( data )=>data.json() );
+}
+
+export function getTrip( username, id ) {
+	return fetch( `/api/collection/by/${encodeURIComponent( username )}/${encodeURIComponent( id )}` )
+		.then( ( data )=> data.json() );
 }
 
 function addToCollection( id, title ) {
@@ -57,9 +63,39 @@ class CollectionItem extends React.Component {
 		);
 	}
 }
+
+function getSaveCollectionHandler( id ) {
+	const url = id ? `/api/private/collection/${id}/edit/` :
+		'/api/private/collection/_/create/';
+
+	return function ( title, description ) {
+		return fetch( url, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify( { title, description } ),
+			credentials: 'include'
+		} ).then( ()=> {
+			hideOverlay();
+			window.location.reload();
+		} );
+	};
+}
+
+export function showCollectionEditor( ev, title, description, id ) {
+	showOverlay( ev, <CollectionEditorOverlay
+		title={title}
+		description={description}
+		onSaveCollection={getSaveCollectionHandler( id )} /> );
+}
+
 export function showCollectionOverlay( ev, title, data ) {
 	showOverlay( ev,
-		<CollectionOverlay>
+		<CollectionOverlay actions={<Button onClick={showCollectionEditor}
+			label="Create new trip"></Button>
+		}>
 			<ul>{data.collections.map(
 				( collection, i ) => <CollectionItem key={i} {...collection} target={title} />
 			)}</ul>

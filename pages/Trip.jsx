@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Nav,
-	Column, Note, Tab } from './../components';
+	Column, Note, Tab, Icon } from './../components';
 import { placeToCard } from './Destination';
 import { getOwnerUrl, getTripUrl } from './Trips';
 
@@ -21,6 +21,8 @@ export default class Trip extends React.Component {
 					<PageBanner title={title} slogan="we will travel" />
 					<Nav>
 						<Tab>{links}</Tab>
+						{props.owner === props.meta.username && <Icon glyph="edit"
+							className="action--collection-edit" />}
 					</Nav>
 					<Note>
 						{props.pages.map( ( collection, i ) =>
