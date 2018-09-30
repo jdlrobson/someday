@@ -20,18 +20,24 @@ Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon )
 	} );
 } );
 
+function addEventListener( selector, event, handler ) {
+	Array.from( document.querySelectorAll( selector ) ).forEach( ( el ) => {
+		el.addEventListener( event, handler );
+	} );
+}
+
 // set up collections
-Array.from( document.querySelectorAll( '.action--add-trip' ) ).forEach( ( icon ) => {
-	icon.addEventListener( 'click', function ( ev ) {
+addEventListener( '.action--add-trip',
+	'click',
+	function ( ev ) {
 		getTrips( title ).then( function ( data ) {
 			showCollectionOverlay( ev, title, data );
 		} );
-	} );
-} );
+	}
+);
 
 // banner
-const map = document.querySelector( '#map' );
-map.addEventListener( 'click', function ( ev ) {
+addEventListener( '#map', 'click', function ( ev ) {
 	const api = this.getAttribute( 'data-api' );
 	if ( api ) {
 		showMapOverlayWithPages( ev, api );
@@ -44,8 +50,9 @@ map.addEventListener( 'click', function ( ev ) {
 } );
 
 // allow editing of collections
-document.querySelectorAll( '.action--collection-edit' ).forEach( ( icon ) => {
-	icon.addEventListener( 'click', function ( ev ) {
+addEventListener( '.action--collection-edit',
+	'click',
+	function ( ev ) {
 		const id = window.location.pathname.split( '/' ).slice( -2 );
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
 			const coords = data.coordinates || {};
@@ -54,5 +61,5 @@ document.querySelectorAll( '.action--collection-edit' ).forEach( ( icon ) => {
 				thumbnail, coords.lat, coords.lon
 			);
 		} );
-	} );
-} );
+	}
+);
