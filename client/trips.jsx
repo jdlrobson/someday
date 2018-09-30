@@ -4,6 +4,8 @@ import { CollectionOverlay, Icon,
 	Button, CollectionEditorOverlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 
+import './trips.less';
+
 export function getTrips( title ) {
 	return fetch( `/api/private/collection/all/with/${title}` )
 		.then( ( data )=>data.json() );
