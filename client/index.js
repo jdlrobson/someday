@@ -12,6 +12,7 @@ import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 
+document.documentElement.className += ' client-js';
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
@@ -25,6 +26,31 @@ function addEventListener( selector, event, handler ) {
 		el.addEventListener( event, handler );
 	} );
 }
+
+// image overlay
+addEventListener(
+	'.component-image-slideshow .arrow-left, .component-image-slideshow .arrow-right',
+	'click',
+	function () {
+		const active = this.closest( '.active' );
+		let newActive;
+		if ( this.className.indexOf( 'arrow-left' ) > -1 ) {
+			// going left
+			newActive = active.previousSibling;
+			if ( newActive === null ) {
+				newActive = active.parentNode.lastElementChild;
+			}
+		} else {
+			// going right
+			newActive = active.nextSibling;
+			if ( newActive === null ) {
+				newActive = active.parentNode.firstChild;
+			}
+		}
+		active.className = active.className.replace( 'active', '' );
+		newActive.className += 'active';
+	}
+);
 
 // set up collections
 addEventListener( '.action--add-trip',
