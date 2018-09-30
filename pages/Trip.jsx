@@ -10,8 +10,8 @@ export default class Trip extends React.Component {
 		const title = props.title;
 		const owner = props.owner;
 		const links = [
-			<a href={getOwnerUrl( owner )}>{owner}</a>,
-			<a href={getTripUrl( owner )}
+			<a href={getOwnerUrl( owner )} key="tab-owner">{owner}</a>,
+			<a href={getTripUrl( owner )} key="tab-trip"
 				className="active">{title}</a>
 		];
 		return (

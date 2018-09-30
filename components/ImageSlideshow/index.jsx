@@ -14,44 +14,46 @@ class ImageSlideshow extends React.Component {
 		} ) : 0;
 		return (
 			<div className="component-image-slideshow">
-				<ul>{props.images.map( function ( img, i ) {
-					var src = img.src;
-					var className = i === 0 ? 'active' : '';
-					return (
-						<li className={className} key={'image-slide-' + i}
-							style={
-								{
-									height: maxHeight,
-									width: img.width
+				<ul key="component-image-slideshow-list">
+					{props.images.map( function ( img, i ) {
+						var src = img.src;
+						const key = `image-slide-${i}`;
+						var className = i === 0 ? 'active' : '';
+						return (
+							<li className={className} key={key}
+								style={
+									{
+										height: maxHeight,
+										width: img.width
+									}
 								}
-							}
-						>
-							{hasMultipleImages &&
-								<Icon className="arrow-left" glyph="arrow-invert" />
-							}
-							<div
-								style={{
-									backgroundRepeat: 'no-repeat',
-									backgroundSize: 'contain',
-									height: '100%',
-									backgroundPosition: 'center',
-									width: '100%',
-									margin: 'auto',
-									backgroundImage: `url("${src}")`
-								}}
 							>
-								<a className="caption"
-									href={`https://wikivoyage.org/wiki/${img.href}`}>
-									<TruncatedText>{img.caption || 'View original image'}</TruncatedText>
-								</a>
-							</div>
-							{hasMultipleImages &&
+								{hasMultipleImages &&
+								<Icon className="arrow-left" glyph="arrow-invert" />
+								}
+								<div
+									style={{
+										backgroundRepeat: 'no-repeat',
+										backgroundSize: 'contain',
+										height: '100%',
+										backgroundPosition: 'center',
+										width: '100%',
+										margin: 'auto',
+										backgroundImage: `url("${src}")`
+									}}
+								>
+									<a className="caption"
+										href={`https://wikivoyage.org/wiki/${img.href}`}>
+										<TruncatedText>{img.caption || 'View original image'}</TruncatedText>
+									</a>
+								</div>
+								{hasMultipleImages &&
 								<Icon className="arrow-right" glyph="arrow-invert" />
-							}
-						</li>
-					);
-				} )
-				}</ul>
+								}
+							</li>
+						);
+					} )
+					}</ul>
 			</div>
 		);
 	}

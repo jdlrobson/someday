@@ -6,11 +6,12 @@ export default class HomePage extends React.Component {
 		return (
 			<Page>
 				<Column>
-					<Menu username={this.props.meta.username} />
+					<Menu username={this.props.meta.username} key="menu" />
 					<PageBanner title="Start somewhere" slogan="we will see the world"
+						key="banner"
 						api="/api/random/en"
 					/>
-					<CardGrid pages={this.props.pages} />
+					<CardGrid pages={this.props.pages} key="grid" />
 				</Column>
 			</Page>
 		);

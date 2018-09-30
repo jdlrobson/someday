@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles.less';
 
-export default ( { title, children, scrollable } ) => {
+export default function Box( { title, children, scrollable } ) {
 	const modifierClass = scrollable ? 'box__content--scrollable' : '';
 	return (
 		<div className="box">
@@ -9,4 +9,4 @@ export default ( { title, children, scrollable } ) => {
 			<div className={'box__content ' + modifierClass}>{children}</div>
 		</div>
 	);
-};
+}

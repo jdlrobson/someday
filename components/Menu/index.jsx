@@ -3,7 +3,7 @@ import { HorizontalList } from 'wikipedia-react-components';
 
 import './styles.less';
 
-export default ( { username } ) => {
+export default function Menu( { username } ) {
 	const tripUrl = username ?
 		`/trips/${encodeURIComponent( username )}` :
 		'/trips/';
@@ -11,11 +11,11 @@ export default ( { username } ) => {
 	const trips = <a className="menu__trip"
 		href={tripUrl} key="menu-2">{tripLabel}</a>;
 	const hello = username ?
-		<span>Welcome back {username}!</span> :
-		<span>Hello stranger!</span>;
+		<span key="menu-hello">Welcome back {username}!</span> :
+		<span key="menu-hello">Hello stranger!</span>;
 	const goodbye = username ?
-		<a href="/auth/logout">Sign out</a> :
-		<a href="/auth/mediawiki">Sign in</a>;
+		<a href="/auth/logout" key="menu-auth">Sign out</a> :
+		<a href="/auth/mediawiki" key="menu-auth">Sign in</a>;
 	return (
 		<div className="menu">
 			<HorizontalList>
@@ -30,4 +30,4 @@ export default ( { username } ) => {
 			</HorizontalList>
 		</div>
 	);
-};
+}

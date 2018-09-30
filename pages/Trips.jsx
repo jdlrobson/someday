@@ -22,14 +22,15 @@ export default class Trips extends React.Component {
 		let links;
 		if ( owner ) {
 			links = [
-				<a href="/trips/">All</a>,
+				<a href="/trips/" key="tab-all">All</a>,
 				<a href={getOwnerUrl( props.owner )}
+					key="tab-owner"
 					className="active">{props.owner}</a>
 			];
 		} else {
 			links = [
-				<a href="/trips/" className="active">All</a>,
-				<span>&nbsp;</span>
+				<a href="/trips/" className="active" key="tab-all">All</a>,
+				<span key="tab-owner">&nbsp;</span>
 			];
 		}
 

@@ -8,27 +8,28 @@ const toFixedKm = ( km ) => km > 9 ? Math.round( km ) : km.toFixed( 2 );
 const coordinatesToLabel = ( coordinates ) => coordinates && coordinates.dist !== undefined ?
 	toFixedKm( coordinates.dist / 1000 ) + 'km' : null;
 
-const sightToCard = ( destTitle ) => {
+const sightToCard = ( destTitle, i ) => {
 	return ( { title, thumbnail, description } ) => <Card title={title} thumbnail={thumbnail}
+		key={`sight-${i}`}
 		url={encodeURIComponent( destTitle ) + '/sight/' + encodeURIComponent( title ) } extracts={[ description ]} />;
 };
 
 export const placeToCard = ( { title, thumbnail, description, coordinates }, key ) => {
 	return <Card title={title} thumbnail={thumbnail}
-		key={key}
+		key={`place-${key}`}
 		url={'/destination/' + encodeURIComponent( title ) }
 		extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
 };
 
-const placeToCardWithoutDestination = ( data ) =>
-	placeToCard( Object.assign( {}, data, { coordinates: undefined } ) );
+const placeToCardWithoutDestination = ( data, i ) =>
+	placeToCard( Object.assign( {}, data, { coordinates: undefined } ), i );
 
 const sectionToBoxData = ( { line, destinations } ) => [
 	line, destinations.map( placeToCard )
 ];
 
-const sectionToBoxDataNoDistance = ( { line, destinations } ) => [
-	line, destinations.map( placeToCardWithoutDestination )
+const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [
+	line, destinations.map( placeToCardWithoutDestination, i )
 ];
 
 function leftBoxes( lead ) {
@@ -40,7 +41,7 @@ function leftBoxes( lead ) {
 		);
 	} else {
 		if ( sights && sights.length ) {
-			boxes.push( [ 'Sights', sights.map( sightToCard( lead.normalizedtitle ) ) ] );
+			boxes.push( [ 'Sights', sights.map( sightToCard( lead.normalizedtitle		 ) ) ] );
 		}
 		if ( destinations ) {
 			boxes = boxes.concat(
@@ -48,8 +49,8 @@ function leftBoxes( lead ) {
 			);
 		}
 	}
-	return boxes.map( ( [ title, children ] ) => {
-		return <Box title={title} scrollable={true}>{children}</Box>;
+	return boxes.map( ( [ title, children ], i ) => {
+		return <Box key={`box-${i}`} title={title} scrollable={true}>{children}</Box>;
 	} );
 }
 
@@ -59,16 +60,16 @@ function rightBoxes( lead ) {
 
 	if ( !isCountry && !isRegion ) {
 		boxes = boxes.concat(
-			<Box title="Climate">
-				<Climate climate={lead.climate} />
+			<Box title="Climate" key="climate-box">
+				<Climate key="climate-child" climate={lead.climate} />
 			</Box>
 		);
 	}
 	if ( airports.length ) {
 		boxes = boxes.concat(
-			<Box title="Airports" scrollable={true}><ul>{
-				airports.map( ( code ) =>
-					<li><a target="_blank"
+			<Box title="Airports" scrollable={true} key="airport-box"><ul>{
+				airports.map( ( code, i ) =>
+					<li key={`airport-${i}`}><a target="_blank"
 						href={`https://www.rome2rio.com/map/${code}`}>{code}</a></li>
 				)
 			}</ul></Box>
@@ -77,45 +78,50 @@ function rightBoxes( lead ) {
 	}
 	if ( transitLinks.length ) {
 		boxes = boxes.concat(
-			<Box title="Get around" scrollable={true}><ul>{
-				transitLinks.map( ( { href, text } ) =>
-					<li><a href={href}>{text}</a></li>
+			<Box title="Get around" scrollable={true} key="get-around-box"><ul>{
+				transitLinks.map( ( { href, text }, i ) =>
+					<li key={`transit-link-${i}`}><a href={href}>{text}</a></li>
 				)
 			}</ul></Box>
 		);
 	}
 	return [
-		<ImageSlideshow images={lead.images} />
+		<ImageSlideshow images={lead.images} key="img-slideshow" />
 	].concat( boxes );
 }
-export default class HomePage extends React.Component {
+export default class DestinationPage extends React.Component {
 	render() {
 		const lead = this.props.lead;
 		const { paragraph, coordinates } = lead;
 		return (
 			<Page title={lead.normalizedtitle}>
-				<Column col={1}>{leftBoxes( lead )}</Column>
-				<Column>
-					<Menu username={this.props.meta.username} />
+				<Column key="col-1" col={1}>{leftBoxes( lead )}</Column>
+				<Column key="col-2">
+					<Menu username={this.props.meta.username} key="menu" />
 					<PageBanner title={lead.displaytitle} slogan="we will see"
+						key="banner"
 						lat={coordinates && coordinates.lat}
 						lon={coordinates && coordinates.lon}
 					/>
-					<Nav>
+					<Nav key="nav">
 						<Icon glyph="note"
+							key="action-1"
 							label="make a note"
 							className="action--add-note" />
 						<Icon glyph="add-trip"
 							label="add to trip"
+							key="action-2"
 							className="action--add-trip" />
 					</Nav>
-					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
-					<Note>
-						<p>More information available on <a
+					<Note key="note-2">
+						<p key="note-2-1" dangerouslySetInnerHTML={{ __html: paragraph }}></p>
+					</Note>
+					<Note key="note-3">
+						<p key="note-3-1">More information available on <a
 							href={'https://wikivoyage.org/wiki/' + lead.normalizedtitle}>Wikivoyage</a></p>
 					</Note>
 				</Column>
-				<Column col={3}>{rightBoxes( lead )}</Column>
+				<Column col={3} key="col-3">{rightBoxes( lead )}</Column>
 			</Page>
 		);
 	}
