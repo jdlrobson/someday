@@ -15,13 +15,17 @@ export default class Trip extends React.Component {
 				className="active">{title}</a>
 		];
 		return (
-			<Page>
+			<Page data-title={`Trip:${owner}/${props.id}`}>
 				<Column>
 					<Menu username={props.meta.username} />
 					<PageBanner title={title} slogan="we will travel"
 						api={props.meta.dataUrl}
 					/>
 					<Nav>
+						<Icon glyph="note"
+							key="action-1"
+							label="make a note"
+							className="action--add-note" />
 						<Tab>{links}</Tab>
 						{props.owner === props.meta.username && <Icon glyph="edit"
 							className="action--collection-edit" />}
