@@ -10,31 +10,37 @@ export default function ( app ) {
 			const host = req.protocol + '://' + req.get( 'host' );
 			const api = compile( apiTemplate )( req.params );
 			const dataUrl = `${host}${api}`;
-			fetch( dataUrl ).then( ( res ) => res.json() )
-				.then(
-					( props ) => {
-						let meta = {
-							dataUrl,
-							username: req.user ? req.user.displayName : false,
-							image: `${host}/home-icon.png`,
-							description: 'the pocket travel guide that follows you wherever you are in the world',
-							page_title: 'Someday'
-						};
-						const element = React.createElement( View,
-							Object.assign( {}, props, { meta: meta } ),
-							[]
-						);
-						const view = ReactDOMServer.renderToString( element );
-						if ( extractMeta ) {
-							meta = extractMeta( meta );
-						}
-						res.status( 200 ).render( 'index.html', Object.assign( {}, meta, { view,
-							params: req.params } ) );
+			fetch( dataUrl ).then( ( resp ) => {
+				if ( resp.status === 404 ) {
+					res.status( 404 )
+						.render( '404.html' );
+					return;
+				}
+				return resp.json().then( ( props ) => {
+					let meta = {
+						dataUrl,
+						username: req.user ? req.user.displayName : false,
+						image: `${host}/home-icon.png`,
+						description: 'the pocket travel guide that follows you wherever you are in the world',
+						page_title: 'Someday'
+					};
+					const element = React.createElement( View,
+						Object.assign( {}, props, { meta: meta } ),
+						[]
+					);
+					const view = ReactDOMServer.renderToString( element );
+					if ( extractMeta ) {
+						meta = extractMeta( meta );
 					}
+					res.status( 200 ).render( 'index.html', Object.assign( {}, meta, { view,
+						params: req.params } ) );
+				}
 				)
-				.catch( ( err ) => {
-					res.status( 500 ).render( '500.html', { view: err } );
-				} );
+					.catch( ( err ) => {
+						console.log( err, err.stack );
+						res.status( 500 ).render( '500.html', { view: err } );
+					} );
+			} );
 		} );
 	} );
 
