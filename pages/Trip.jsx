@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Nav,
 	Column, Note, Tab, Icon } from './../components';
-import { placeToCard } from './Destination';
+import { placeToCard } from './../components/helpers';
 import { getOwnerUrl, getTripUrl } from './Trips';
 
 export default class Trip extends React.Component {

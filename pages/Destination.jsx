@@ -2,23 +2,12 @@ import React from 'react';
 import { Page, Menu, PageBanner, Column, Box, Climate,
 	Icon, Nav,
 	Card, Note, ImageSlideshow } from './../components';
-
-const toFixedKm = ( km ) => km > 9 ? Math.round( km ) : km.toFixed( 2 );
-
-const coordinatesToLabel = ( coordinates ) => coordinates && coordinates.dist !== undefined ?
-	toFixedKm( coordinates.dist / 1000 ) + 'km' : null;
+import { placeToCard } from './../components/helpers';
 
 const sightToCard = ( destTitle, i ) => {
 	return ( { title, thumbnail, description } ) => <Card title={title} thumbnail={thumbnail}
 		key={`sight-${i}`}
 		url={encodeURIComponent( destTitle ) + '/sight/' + encodeURIComponent( title ) } extracts={[ description ]} />;
-};
-
-export const placeToCard = ( { title, thumbnail, description, coordinates }, key ) => {
-	return <Card title={title} thumbnail={thumbnail}
-		key={`place-${key}`}
-		url={'/destination/' + encodeURIComponent( title ) }
-		extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
 };
 
 const placeToCardWithoutDestination = ( data, i ) =>

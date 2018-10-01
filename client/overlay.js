@@ -27,6 +27,10 @@ body.addEventListener( 'click', function ( ev ) {
 	}
 } );
 
+export function refreshOverlay( overlay ) {
+	render( overlay, overlayArea );
+}
+
 export function showOverlay( ev, overlay ) {
 	// Otherwise all clicks to open an overlay will trigger the hideOverlay listener above
 	ev.stopPropagation();

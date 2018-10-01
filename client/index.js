@@ -8,6 +8,7 @@ import './index.less';
 
 // Import helpers
 import { showNoteOverlay } from './notes.jsx';
+import { showSearchOverlay } from './search.jsx';
 import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
@@ -61,6 +62,10 @@ addEventListener( '.action--add-trip',
 		} );
 	}
 );
+
+document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
+	showSearchOverlay( ev );
+} );
 
 // banner
 addEventListener( '#map', 'click', function ( ev ) {

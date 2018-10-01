@@ -45,7 +45,7 @@ export default class PageBanner extends React.Component {
 						<div>
 							<h2 key="article-title" className={'component-page-banner__title ' + bannerClassName}
 								id="section_0"><a href="#/search/">{title}</a></h2>
-							<Icon glyph="search" href="#/search/" className="g" label="search" />
+							<Icon glyph="search" id="search" />
 						</div>
 					</Content>
 				</div>
