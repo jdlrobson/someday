@@ -13,8 +13,11 @@ const sightToCard = ( destTitle, i ) => {
 const placeToCardWithoutDestination = ( data, i ) =>
 	placeToCard( Object.assign( {}, data, { coordinates: undefined } ), i );
 
-const sectionToBoxData = ( { line, destinations } ) => [
-	line, destinations.map( placeToCard )
+const sectionToBoxData = ( { line, destinations, id } ) => [
+	line,
+	destinations.map( placeToCard ).concat(
+		<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>
+	)
 ];
 
 const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [

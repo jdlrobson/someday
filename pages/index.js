@@ -10,5 +10,6 @@ export default [
 	[ '/trips/:owner', Trips, '/api/collection/by/:owner' ],
 	[ '/trips/:owner/:id', Trip, '/api/collection/by/:owner/:id' ],
 	[ '/destination/:dest/sight/:title', Sight, '/api/voyager/page/en.wikivoyage/:title' ],
+	[ '/destination/:title/rev/:revision', Destination, '/api/voyager/page/en.wikivoyage/:title/:revision' ],
 	[ '/destination/:title', Destination, '/api/voyager/page/en.wikivoyage/:title' ]
 ];

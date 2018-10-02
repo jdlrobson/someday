@@ -7,14 +7,17 @@ import components from './../components';
 import './index.less';
 
 // Import helpers
+import { showEditOverlay } from './edit.jsx';
 import { showNoteOverlay } from './notes.jsx';
 import { showSearchOverlay } from './search.jsx';
 import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 
-document.documentElement.className += ' client-js';
+const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
+const bodyClasses = user ? ' client-js client-auth' : ' client-js';
+document.documentElement.className += bodyClasses;
 
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
 	icon.addEventListener( 'click', function ( ev ) {
@@ -27,6 +30,21 @@ function addEventListener( selector, event, handler ) {
 		el.addEventListener( event, handler );
 	} );
 }
+
+// edit icons
+addEventListener(
+	'.edit-link',
+	'click',
+	function ( ev ) {
+		const target = ev.currentTarget;
+		const id = target.getAttribute( 'data-id' );
+		if ( id ) {
+			showEditOverlay( ev, title, id );
+		} else {
+			target.setAttribute( 'disabled' );
+		}
+	}
+);
 
 // image overlay
 addEventListener(
