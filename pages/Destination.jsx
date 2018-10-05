@@ -55,13 +55,13 @@ function leftBoxes( lead ) {
 }
 
 function rightBoxes( lead ) {
-	const { transitLinks, airports, isRegion, isCountry } = lead;
+	const { transitLinks, airports, isRegion, isCountry, climate } = lead;
 	let boxes = [];
 
 	if ( !isCountry && !isRegion ) {
 		boxes = boxes.concat(
 			<Box title="Climate" key="climate-box">
-				<Climate key="climate-child" climate={lead.climate} />
+				<Climate key="climate-child" climate={climate}/>
 			</Box>
 		);
 	}

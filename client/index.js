@@ -3,10 +3,12 @@
 import 'wikipedia-react-components/dist/styles.css';
 // Needed for stylesheet
 // eslint-disable-next-line no-unused-vars
-import components from './../components';
+import components, { Climate } from './../components';
 import './index.less';
 
 // Import helpers
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { showEditOverlay } from './edit.jsx';
 import { showNoteOverlay } from './notes.jsx';
 import { showSearchOverlay } from './search.jsx';
@@ -18,6 +20,10 @@ const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 const bodyClasses = user ? ' client-js client-auth' : ' client-js';
 document.documentElement.className += bodyClasses;
+
+function getNodes( selector ) {
+	return Array.from( document.querySelectorAll( selector ) );
+}
 
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
 	icon.addEventListener( 'click', function ( ev ) {
@@ -112,3 +118,27 @@ addEventListener( '.action--collection-edit',
 		} );
 	}
 );
+
+// hydrate certain components
+// Crazy right?! Why do I need to progressively enhance all the others.
+getNodes( '.hydratable' ).forEach( ( node ) => {
+	const newChild = document.createElement( 'div' );
+	const componentName = node.getAttribute( 'data-component' );
+	const dataStr = node.getAttribute( 'data-props' );
+	const props = dataStr ? JSON.parse( dataStr ) : {};
+	let component;
+	switch ( componentName ) {
+		case 'climate':
+			component = Climate;
+			break;
+		default:
+			break;
+	}
+	if ( component ) {
+		ReactDOM.render(
+			React.createElement( Climate, props ),
+			newChild
+		);
+		node.parentNode.replaceChild( newChild, node );
+	}
+} );

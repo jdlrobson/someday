@@ -6,16 +6,22 @@ class Climate extends React.Component {
 	onChange( ev ) {
 		this.setState( { month: ev.currentTarget.value } );
 	}
-	constructor() {
-		super();
+	constructor( props ) {
+		super( props );
 		this.state = {
-			month: null
+			month: props.month
 		};
+	}
+	componentDidMount() {
+		this.setState( { month: this.getCurrentMonth() } );
+	}
+	getCurrentMonth() {
+		return ( new Date() ).getMonth();
 	}
 	renderInfo() {
 		var options,
 			climate = this.props.climate,
-			curMonthNum = this.state.month || ( new Date() ).getMonth(),
+			curMonthNum = this.state.month || this.getCurrentMonth(),
 			curMonth = climate[ curMonthNum ],
 			degSuffix = curMonth.imperial ? '°F' : '°C',
 			precSuffix = curMonth.imperial ? 'inches' : 'mm';
@@ -27,11 +33,14 @@ class Climate extends React.Component {
 		} );
 
 		return (
-			<div className="component-climate">
+			<div className="component-climate hydratable"
+				data-component="climate"
+				data-props={JSON.stringify( { climate } )}>
 				<div>
 					<h3>
 						<select defaultValue={curMonthNum}
-							disabled={!this.state.month} onChange={this.onChange}>{options}</select>
+							disabled={!this.state.month}
+							onChange={this.onChange.bind( this )}>{options}</select>
 					</h3>
 					<h4>Average temperatures</h4>
 					<span className="high">{curMonth.high}<sup>{degSuffix}</sup></span>
