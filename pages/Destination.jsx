@@ -13,12 +13,20 @@ const sightToCard = ( destTitle, i ) => {
 const placeToCardWithoutDestination = ( data, i ) =>
 	placeToCard( Object.assign( {}, data, { coordinates: undefined } ), i );
 
-const sectionToBoxData = ( { line, destinations, id } ) => [
-	line,
-	destinations.map( placeToCard ).concat(
-		<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>
-	)
-];
+const sectionToBoxData = ( { line, destinations, id } ) => {
+	let links;
+	if ( destinations.length ) {
+		links = destinations.map( placeToCard );
+	} else {
+		links = [ <div key={'tumbleweed-' + id}>Tumbleweed</div> ];
+	}
+	return [
+		line,
+		links.concat(
+			<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>
+		)
+	];
+};
 
 const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [
 	line, destinations.map( placeToCardWithoutDestination, i )
