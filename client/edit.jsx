@@ -63,7 +63,7 @@ function getSaveHandler( title, section ) {
 			summary: 'Edit via the someday app',
 			section,
 			text
-		}, 'csrf' ).then( (resp) => {
+		}, 'csrf' ).then( ( resp ) => {
 			const rev = resp.edit.newrevid;
 			hideOverlay();
 			location.href = location.origin + '/destination/' + title + '/rev/' + rev;
