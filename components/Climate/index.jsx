@@ -20,7 +20,8 @@ class Climate extends React.Component {
 	}
 	renderInfo() {
 		var options,
-			climate = this.props.climate,
+			props = this.props,
+			climate = props.data,
 			curMonthNum = this.state.month || this.getCurrentMonth(),
 			curMonth = climate[ curMonthNum ],
 			degSuffix = curMonth.imperial ? '°F' : '°C',
@@ -35,7 +36,7 @@ class Climate extends React.Component {
 		return (
 			<div className="component-climate hydratable"
 				data-component="climate"
-				data-props={JSON.stringify( { climate } )}>
+				data-props={JSON.stringify( props )}>
 				<div>
 					<h3>
 						<select defaultValue={curMonthNum}
@@ -51,10 +52,11 @@ class Climate extends React.Component {
 		);
 	}
 	render() {
-		if ( this.props.climate ) {
+		const { data } = this.props;
+		if ( data ) {
 			return this.renderInfo();
 		} else {
-			return ( <p>No climate information is available for this destination.</p> );
+			return ( <p>{'No climate information is available for this destination.'}</p> );
 		}
 	}
 }

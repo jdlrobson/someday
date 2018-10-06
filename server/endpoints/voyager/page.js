@@ -28,7 +28,7 @@ const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
 const ISLAND_SECTION_HEADINGS = [
 	'nearby islands', 'the islands', 'islands'
 ];
-const REGION_SECTION_HEADINGS = ISLAND_SECTION_HEADINGS.concat([
+const REGION_SECTION_HEADINGS = ISLAND_SECTION_HEADINGS.concat( [
 	'cities', 'other destinations', 'cities and towns',
 	'towns & villages', 'towns &amp; villages',
 	'cities / villages',
@@ -109,7 +109,7 @@ function addNearbyPlacesIfMissing( data ) {
 	if ( coords && dest.length === 0 ) {
 		return nearby( coords.lat, coords.lon, title ).then( ( nearbyPages ) => {
 			lead.destinations = [ {
-				id: data.lead.destinations_id,
+				id: data.lead.section_ids.destination,
 				line: 'Nearby',
 				destinations: nearbyPages.pages
 			} ];
@@ -248,13 +248,13 @@ function cleanup( section ) {
  */
 function matchesOne( str, tests ) {
 	const lcStr = str.toLowerCase();
-	return tests.filter((test) => lcStr.indexOf(test.toLowerCase()) > -1 ).length > 0;
+	return tests.filter( ( test ) => lcStr.indexOf( test.toLowerCase() ) > -1 ).length > 0;
 }
 
 function voyager( title, lang, project, data ) {
 	const warnings = [];
 	return addBannerAndCoords( title, lang, project, data ).then( function ( data ) {
-		var newSection, climate;
+		var newSection;
 		var isRegion = false;
 		var isCountry = false;
 		var isIsland = matchesOne( data.lead.description, [
@@ -276,6 +276,7 @@ function voyager( title, lang, project, data ) {
 		var itineraries = [];
 		const transitLinks = [];
 		const seen = {};
+		const climate = {};
 		let airports = [];
 
 		var p = { text: data.lead.paragraph };
@@ -366,7 +367,7 @@ function voyager( title, lang, project, data ) {
 				( isRegion || lcLine === 'go next' ) &&
 				( section.toclevel === 1 || section.toclevel === 2 )
 			) {
-				data.lead.destinations_id = section.id;
+				data.lead.section_ids.destinations = section.id;
 				cardSectionTocLevel = section.toclevel;
 			}
 
@@ -389,8 +390,14 @@ function voyager( title, lang, project, data ) {
 
 				section = climateExtraction( section );
 				if ( section.climate ) {
-					climate = section.climate;
+					climate.data = section.climate;
 					delete section.climate;
+				}
+				if ( lcLine === 'climate' ) {
+					climate.id = section.id;
+					if ( !climate.data ) {
+						climate.text = extractText( section.text );
+					}
 				}
 
 				if ( cardSectionTocLevel !== undefined && !isSubPage ) {

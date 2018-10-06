@@ -13,6 +13,9 @@ const sightToCard = ( destTitle, i ) => {
 const placeToCardWithoutDestination = ( data, i ) =>
 	placeToCard( Object.assign( {}, data, { coordinates: undefined } ), i );
 
+const editButton = ( id ) =>
+	<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>;
+
 const sectionToBoxData = ( { line, destinations, id } ) => {
 	let links;
 	if ( destinations.length ) {
@@ -22,9 +25,7 @@ const sectionToBoxData = ( { line, destinations, id } ) => {
 	}
 	return [
 		line,
-		links.concat(
-			<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>
-		)
+		links.concat( editButton( id ) )
 	];
 };
 
@@ -33,21 +34,27 @@ const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [
 ];
 
 function leftBoxes( lead ) {
-	const { isCountry, destinations, sights } = lead;
+	const { isCountry, destinations, sights, section_ids } = lead;
 	let boxes = [];
+
 	if ( isCountry ) {
 		boxes = boxes.concat(
 			destinations.map( sectionToBoxDataNoDistance )
 		);
 	} else {
-		if ( sights && sights.length ) {
-			boxes.push( [ 'Sights', sights.map( sightToCard( lead.normalizedtitle		 ) ) ] );
-		}
-		if ( destinations ) {
-			boxes = boxes.concat(
-				destinations.map( sectionToBoxData )
-			);
-		}
+		boxes = boxes.concat(
+			destinations.map( sectionToBoxData )
+		);
+	}
+	if ( sights ) {
+		boxes.push( [
+			'Sights',
+			sights.map(
+				sightToCard( lead.normalizedtitle )
+			).concat(
+				editButton( section_ids.sights )
+			)
+		] );
 	}
 	return boxes.map( ( [ title, children ], i ) => {
 		return <Box key={`box-${i}`} title={title} scrollable={true}>{children}</Box>;
@@ -55,13 +62,14 @@ function leftBoxes( lead ) {
 }
 
 function rightBoxes( lead ) {
-	const { transitLinks, airports, isRegion, isCountry, climate } = lead;
+	const { transitLinks, airports, climate } = lead;
 	let boxes = [];
 
-	if ( !isCountry && !isRegion ) {
+	if ( climate && climate.id ) {
 		boxes = boxes.concat(
 			<Box title="Climate" key="climate-box">
-				<Climate key="climate-child" climate={climate}/>
+				<Climate key="climate-child" {...climate}/>
+				{editButton( climate.id )}
 			</Box>
 		);
 	}
