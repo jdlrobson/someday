@@ -17,6 +17,24 @@ import undoLinkFlatten from './undo-link-flatten';
 import extractAirports from './extract-airports';
 import nearby from './nearby';
 
+const SIGHT_HEADINGS = [ 'See', 'See & Do', 'Do' ];
+const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
+const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
+	'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
+	'Buy', 'Eat', 'Drink', 'Do', 'Smoke' ];
+
+const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
+const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
+const ISLAND_SECTION_HEADINGS = [
+	'nearby islands', 'the islands', 'islands'
+];
+const REGION_SECTION_HEADINGS = ISLAND_SECTION_HEADINGS.concat([
+	'cities', 'other destinations', 'cities and towns',
+	'towns & villages', 'towns &amp; villages',
+	'cities / villages',
+	'destinations', 'towns', 'countries and territories'
+] );
+
 const ITEMS_TO_DELETE = [
 	// should be handled upstream (https://gerrit.wikimedia.org/r/370371)
 	'.dablink',
@@ -70,6 +88,7 @@ function cleanupUnwantedData( data ) {
 	);
 	return Object.assign( {}, data, {
 		lead: Object.assign( {}, data.lead, {
+			geo: undefined,
 			image: undefined,
 			media: undefined,
 			lastmodifier: undefined,
@@ -221,12 +240,26 @@ function cleanup( section ) {
 	return section;
 }
 
+/**
+ * Does str match one of the strings in test?
+ * @param {string} str
+ * @param {array} tests
+ * @return {boolean}
+ */
+function matchesOne( str, tests ) {
+	const lcStr = str.toLowerCase();
+	return tests.filter((test) => lcStr.indexOf(test.toLowerCase()) > -1 ).length > 0;
+}
+
 function voyager( title, lang, project, data ) {
 	const warnings = [];
 	return addBannerAndCoords( title, lang, project, data ).then( function ( data ) {
 		var newSection, climate;
 		var isRegion = false;
 		var isCountry = false;
+		var isIsland = matchesOne( data.lead.description, [
+			'island country'
+		] );
 		var sections = [];
 		var isSubPage = data.lead.displaytitle.indexOf( '/' ) > -1;
 		var cardSectionTocLevel;
@@ -245,23 +278,13 @@ function voyager( title, lang, project, data ) {
 		const seen = {};
 		let airports = [];
 
-		const SIGHT_HEADINGS = [ 'See', 'See & Do', 'Do' ];
-		const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
-		const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
-			'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
-			'Buy', 'Eat', 'Drink', 'Do', 'Smoke' ];
-
-		const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
-		const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
-		const REGION_SECTION_HEADINGS = [ 'cities', 'other destinations', 'cities and towns',
-			'towns & villages', 'towns &amp; villages', 'the islands', 'islands',
-			'cities / villages', 'nearby islands',
-			'destinations', 'towns', 'countries and territories' ];
-
 		var p = { text: data.lead.paragraph };
 		cleanup( p );
-		data.lead.paragraph = p.text;
-		data.lead.paragraph_text = extractText( p.text );
+		data.lead = Object.assign( {}, data.lead, {
+			section_ids: {},
+			paragraph: p.text,
+			paragraph_text: extractText( p.text )
+		} );
 		newSection = cleanup( data.lead.sections[ 0 ] );
 		newSection = extractImages( newSection );
 		newSection = extractMaps( newSection );
@@ -311,6 +334,9 @@ function voyager( title, lang, project, data ) {
 					// Maybe the heading itself is a place. e.g. Dali
 					sights.push( { name: section.line } );
 				}
+				if ( !data.lead.section_ids.sights ) {
+					data.lead.section_ids.sights = section.id;
+				}
 			}
 
 			if ( TRANSIT_LINK_HEADINGS.indexOf( lcLine ) > -1 ) {
@@ -327,6 +353,9 @@ function voyager( title, lang, project, data ) {
 				} );
 			}
 
+			if ( ISLAND_SECTION_HEADINGS.indexOf( lcLine ) > -1 ) {
+				isIsland = true;
+			}
 			if ( REGION_SECTION_HEADINGS.indexOf( lcLine ) > -1 ) {
 				isRegion = true;
 			}
@@ -415,32 +444,28 @@ function voyager( title, lang, project, data ) {
 			isRegion = false;
 		}
 		data.remaining.sections = sections;
-		data.lead.images = data.lead.images.concat( allImages );
-		data.lead.maps = allMaps;
-		data.lead.climate = climate;
-		data.lead.isRegion = isRegion;
-		data.lead.isCountry = isCountry;
-		data.lead.airports = airports;
-		data.lead.transitLinks = transitLinks;
-		data.itineraries = itineraries;
+		data.lead = Object.assign( {}, data.lead, {
+			images: data.lead.images.concat( allImages ),
+			maps: allMaps,
+			climate,
+			isRegion,
+			isIsland,
+			isCountry,
+			airports,
+			transitLinks,
+			itineraries,
+			isSubPage,
+			warnings
+		} );
 		if ( !isRegion ) {
 			data.lead.sights = sights;
 		}
-		data.lead.isSubPage = isSubPage;
-
 		if ( !isEmptySectionArray( logistics ) ) {
 			data.logistics = logistics;
 		}
-
-		// this is inferior and provided by mcs
-		delete data.lead.geo;
-
 		if ( !isEmptySectionArray( orientation ) ) {
 			data.orientation = orientation;
 		}
-
-		// add warnings
-		data.warnings = warnings;
 
 		if ( allDestinations.length || sights.length ) {
 			return addNextCards( data, lang, project, allDestinations, isRegion )
