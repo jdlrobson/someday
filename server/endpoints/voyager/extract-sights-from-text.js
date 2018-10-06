@@ -27,6 +27,12 @@ export default function ( doc ) {
 			name
 		};
 	};
+	const nameToObjTrusted = ( name ) => {
+		return {
+			name,
+			trusted: true
+		};
+	};
 	const excludeWikipediaLinks = ( link ) => {
 		const title = link.getAttribute( 'title' );
 		return title && title.indexOf( 'w:' ) === 0;
@@ -41,7 +47,7 @@ export default function ( doc ) {
 	text = doc.body.innerHTML;
 	sights = sights.concat(
 		extractBoldItems( text ).map( nameToObj )
-	).concat( wikipediaTitles.map( nameToObj ) ).concat(
+	).concat( wikipediaTitles.map( nameToObjTrusted ) ).concat(
 		extractElementsTextContent(
 			links.filter( ( link )=> !excludeWikipediaLinks( link ) )
 		).map( nameToObj )

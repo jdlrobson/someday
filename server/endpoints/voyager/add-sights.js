@@ -86,9 +86,13 @@ function addSights( data, distance ) {
 							warnings = false;
 						}
 						sightWarnings[ originalSight ] = warnings;
-						return !page.missing && !isDisambiguation && page.coordinates &&
+						return !page.missing && !isDisambiguation && (
+							( page.coordinates &&
 							// possibily too generous.. but check how many km away the sight is
-							distFromLandmark < distance;
+							distFromLandmark < distance ) ||
+							// except wikipedia links. we can trust those.
+							lookup[ page.title ] && lookup[ page.title ].trusted
+						);
 					}
 				).map( ( page ) => {
 					const item = lookup[ page.title ];
