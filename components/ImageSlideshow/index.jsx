@@ -8,10 +8,11 @@ class ImageSlideshow extends React.Component {
 		var props = this.props;
 		var hasMultipleImages = props.images.length > 1;
 
-		const maxHeight = props.images.length ? props.images.map( image=>image.height ).reduce( ( prev, currentValue ) => {
-			return !prev || prev < currentValue ?
-				currentValue : prev;
-		} ) : 0;
+		const maxHeight = props.images.length ? props.images.map( image => parseInt( image.height, 10 ) )
+			.reduce( ( prev, currentValue ) => {
+				return !prev || prev < currentValue ?
+					currentValue : prev;
+			} ) : 0;
 		return (
 			<div className="component-image-slideshow">
 				<ul key="component-image-slideshow-list">
@@ -23,8 +24,8 @@ class ImageSlideshow extends React.Component {
 							<li className={className} key={key}
 								style={
 									{
-										height: maxHeight,
-										width: img.width
+										height: maxHeight + 'px',
+										width: img.width + 'px'
 									}
 								}
 							>
