@@ -3,7 +3,9 @@ import { Page, Menu, PageBanner, Column, Note, ImageSlideshow } from './../compo
 
 export default class Sight extends React.Component {
 	render() {
-		const { extract, titles, displaytitle, coordinates, thumbnail } = this.props;
+		const { extract, meta, titles, displaytitle, coordinates, thumbnail } = this.props;
+		const { params } = meta;
+		const dest = params.dest;
 		const lat = coordinates && coordinates.lat;
 		const lon = coordinates && coordinates.lon;
 		return (
@@ -14,7 +16,11 @@ export default class Sight extends React.Component {
 						lat={lat}
 						lon={lon}
 					/>
-					<Note><p>{extract}</p></Note>
+					<Note>
+						<h2>{displaytitle}</h2>
+						<strong><a href={'/destination/' + dest}>{dest}</a></strong>
+						<p>{extract}</p>
+					</Note>
 					<Note>
 						<p>More information available on <a
 							href={`https://en.wikipedia.org/wiki/${titles.canonical}`}>Wikipedia</a></p>

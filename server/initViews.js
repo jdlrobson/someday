@@ -19,6 +19,7 @@ export default function ( app ) {
 				return resp.json().then( ( props ) => {
 					let meta = {
 						dataUrl,
+						params: req.params,
 						username: req.user ? req.user.displayName : '',
 						image: `${host}/home-icon.png`,
 						description: 'the pocket travel guide that follows you wherever you are in the world',
