@@ -41,7 +41,6 @@ a {
   text-align: left;
   box-shadow: 0 8px 6px -6px #bbb;
   padding-top: 8px;
-  max-width: 1000px;
   overflow: hidden;
   height: auto;
   width: auto;
@@ -49,8 +48,12 @@ a {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 0;
+  max-width: 500px;
   .overlay-content {
     overflow-y: auto;
+  }
+  &.editor-drawer {
+   max-width: 1000px;
   }
 }
 

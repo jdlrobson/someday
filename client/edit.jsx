@@ -93,7 +93,7 @@ export function showEditOverlay( ev, title, section ) {
 	getWikitext( title, section ).then( ( wikitext ) => {
 		currentEdit = wikitext;
 		showOverlay( ev,
-			<Overlay>
+			<Overlay className="editor-drawer">
 				<h1 key="edit-heading">Edit this content</h1>
 				<p key="edit-desc">Edits are public and update the original content on wikivoyage.org</p>
 				<Input textarea="true" key="edit-text"
