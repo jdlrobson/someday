@@ -9,6 +9,28 @@ function fix( num ) {
 	return parseFloat( num.toFixed( 1 ), 10 );
 }
 
+const MONTHS = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+function climateExtractionNew( text ) {
+	const ext = extractElements( text, '.climate-table table.infobox table.infobox' );
+	if ( ext.extracted.length > 0 ) {
+		const firstTable = ext.extracted[ 0 ];
+		const secondRow = firstTable.querySelectorAll( 'tr' )[ 1 ];
+		const data = Array.from( secondRow.querySelectorAll( 'td' ) ).map( ( col, i ) => {
+			const spans = col.querySelectorAll( 'span' );
+			const values = Array.from( spans ).map( ( span ) => span.textContent )
+				.filter( ( val ) => val.trim() !== '' );
+			return {
+				heading: MONTHS[ i ],
+				precipitation: values[ 0 ],
+				high: values[ 1 ],
+				low: values[ 2 ]
+			};
+		} );
+		return data;
+	}
+	return;
+}
+
 function climateExtraction( section ) {
 	var rows, table,
 		imperial = false,
@@ -63,8 +85,10 @@ function climateExtraction( section ) {
 		} );
 		section.climate = climateData;
 		section.text = ext.html;
+	} else {
+		section.climate = climateExtractionNew( section.text );
 	}
-	return section;
+	return Object.assign( {}, section );
 }
 
 export default climateExtraction;
