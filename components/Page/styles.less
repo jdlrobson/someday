@@ -8,11 +8,12 @@
 .page__contents {
   display: grid;
   margin: auto;
-  max-width: @grid-column-size * 4;
+  grid-template-columns: 100%;
 }
 
 @media ( min-width: (@grid-column-size * 4) ) {
   .page__contents {
+    max-width: @grid-column-size * 4;
     grid-template-columns: @grid-column-size (@grid-column-size*2) @grid-column-size;
   }
 }

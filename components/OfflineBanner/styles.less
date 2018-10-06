@@ -1,7 +1,7 @@
 @import './../globals.less';
 
 .offline-banner {
-    padding: 8px 0 8px 30px;
+    padding: 8px;
     background: #eee;
 }
 .offline-banner__msg {
@@ -13,5 +13,11 @@
 .client-offline {
     .offline-banner__msg {
         visibility: visible;
+    }
+}
+
+@media ( min-width: (@grid-column-size * 4) ) {
+    .offline-banner {
+        padding: 8px 0 8px 30px;
     }
 }
