@@ -1,10 +1,10 @@
 @import './../globals.less';
 
-@width: 120px;
+@width: @grid-column-size / 2;
 .card-grid {
   background: white;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 0px;
   grid-auto-rows: minmax(@width, auto);
 }
@@ -24,11 +24,17 @@
     text-decoration: none;
     text-transform: uppercase;
     padding: 2px;
-    text-shadow: 1px 0px 1px @someday-blue;
+    span {
+      content: '';
+      background: @someday-blue;
+      font-size: 0.7em;
+      display: block;
+      opacity: 0.8;
+    }
   }
 
-  h3,
   a,
+  h3,
   .card-detail {
     position: absolute;
     max-height: none !important;
@@ -42,10 +48,10 @@
     width: @width;
     transform: none;
   }
-  &:nth-child(2n) h3 {
-    transform: rotate(90deg);
-  }
-  &:nth-child(3n) h3 {
-    transform: rotate(270deg);
+}
+
+@media ( min-width: @breakpoint ) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
