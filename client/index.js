@@ -19,7 +19,10 @@ import offline from './offline';
 
 const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
-const bodyClasses = user ? ' client-js client-auth' : ' client-js';
+let bodyClasses = user ? ' client-js client-auth' : ' client-js';
+if ( !navigator.onLine ) {
+	bodyClasses += ' client-no-connection';
+}
 document.documentElement.className += bodyClasses;
 
 function getNodes( selector ) {

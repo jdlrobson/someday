@@ -6,6 +6,8 @@ import {
 // Keep in sync with asset names needed for offline
 var staticAssets = [
 	'/style.css',
+	// so notes work
+	'/images/note.svg',
 	'/images/marker-icon.png',
 	'/images/someday-map.png',
 	'/main-bundle.js'
