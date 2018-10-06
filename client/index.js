@@ -15,6 +15,7 @@ import { showSearchOverlay } from './search.jsx';
 import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
+import offline from './offline';
 
 const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
@@ -141,4 +142,9 @@ getNodes( '.hydratable' ).forEach( ( node ) => {
 		);
 		node.parentNode.replaceChild( newChild, node );
 	}
+} );
+
+// register sw
+offline( '/sw-bundle.js', function () {
+	document.documentElement.className += ' client-offline';
 } );

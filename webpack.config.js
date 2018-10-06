@@ -10,6 +10,7 @@ var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 
 module.exports = {
 	entry: {
+		sw: './client/worker.js',
 		main: './client/index.js'
 	},
 	output: {

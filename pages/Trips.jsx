@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Nav,
+	OfflineBanner,
 	Column, Note, Card, Tab } from './../components';
 
 export const getOwnerUrl = ( owner ) => {
@@ -48,6 +49,7 @@ export default class Trips extends React.Component {
 						{props.collections.map( ( collection, i ) =>
 							collectionToCard( collection, `card-${i}` ) )}
 					</Note>
+					{owner && <OfflineBanner />}
 				</Column>
 			</Page>
 		);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Nav,
+	OfflineBanner,
 	Column, Note, Tab, Icon } from './../components';
 import { placeToCard } from './../components/helpers';
 import { getOwnerUrl, getTripUrl } from './Trips';
@@ -34,6 +35,7 @@ export default class Trip extends React.Component {
 						{props.pages.map( ( collection, i ) =>
 							placeToCard( collection, `trip-card-${i}` ) )}
 					</Note>
+					{owner && <OfflineBanner />}
 				</Column>
 			</Page>
 		);

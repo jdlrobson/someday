@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Column, Box, Climate,
-	Icon, Nav,
+	Icon, Nav, OfflineBanner,
 	Card, Note, ImageSlideshow } from './../components';
 import { placeToCard } from './../components/helpers';
 
@@ -120,6 +120,7 @@ export default class DestinationPage extends React.Component {
 						<p key="note-3-1">More information available on <a
 							href={'https://wikivoyage.org/wiki/' + lead.normalizedtitle}>Wikivoyage</a></p>
 					</Note>
+					<OfflineBanner />
 				</Column>
 				<Column col={3} key="col-3">{rightBoxes( lead )}</Column>
 			</Page>

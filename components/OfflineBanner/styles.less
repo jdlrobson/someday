@@ -1,0 +1,17 @@
+@import './../globals.less';
+
+.offline-banner {
+    padding: 8px 0 8px 30px;
+    background: #eee;
+}
+.offline-banner__msg {
+    visibility: hidden;
+}
+.offline-banner__msg--small {
+    font-size: 0.8em;
+}
+.client-offline {
+    .offline-banner__msg {
+        visibility: visible;
+    }
+}

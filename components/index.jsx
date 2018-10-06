@@ -7,6 +7,7 @@ import Box from './Box';
 import Nav from './Nav';
 import Note from './Note';
 import Climate from './Climate';
+import OfflineBanner from './OfflineBanner';
 import ImageSlideshow from './ImageSlideshow';
 import Tab from './Tab';
 import { Card, Icon } from 'wikipedia-react-components';
@@ -15,6 +16,7 @@ export {
 	Box,
 	Climate,
 	Note,
+	OfflineBanner,
 	Card,
 	Nav,
 	Menu,
