@@ -1,27 +1,31 @@
 import React from 'react';
-import { Page, Menu, PageBanner, Column, Note } from './../components';
+import { Page, Menu, PageBanner, Column, Note, ImageSlideshow } from './../components';
 
 export default class Sight extends React.Component {
 	render() {
-		const lead = this.props.lead;
-		const { paragraph, coordinates } = lead;
+		const { extract, titles, displaytitle, coordinates, thumbnail } = this.props;
+		const lat = coordinates && coordinates.lat;
+		const lon = coordinates && coordinates.lon;
 		return (
 			<Page>
 				<Column>
 					<Menu username={this.props.meta.username} />
-					<PageBanner title={lead.displaytitle} slogan="we will visit"
-						lat={coordinates && coordinates.lat}
-						lon={coordinates && coordinates.lon}
+					<PageBanner title={displaytitle} slogan="we will visit"
+						lat={lat}
+						lon={lon}
 					/>
-					<Note><p dangerouslySetInnerHTML={{ __html: paragraph }}></p></Note>
+					<Note><p>{extract}</p></Note>
 					<Note>
 						<p>More information available on <a
-							href={'https://wikipedia.org/wiki/' + lead.normalizedtitle}>Wikipedia</a></p>
+							href={`https://en.wikipedia.org/wiki/${titles.canonical}`}>Wikipedia</a></p>
 						{
-							coordinates.lat &&
-                ( <p><a href={`geo:${coordinates.lat},${coordinates.lon}`}>Load in maps</a></p> )
+							lat &&
+								( <p><a href={`geo:${lat},${lon}`}>Load in maps</a></p> )
 						}
 					</Note>
+				</Column>
+				<Column col={3}>
+					<ImageSlideshow images={[ thumbnail ]} key="img-slideshow" />
 				</Column>
 			</Page>
 		);

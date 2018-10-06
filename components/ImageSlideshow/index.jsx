@@ -16,7 +16,7 @@ class ImageSlideshow extends React.Component {
 			<div className="component-image-slideshow">
 				<ul key="component-image-slideshow-list">
 					{props.images.map( function ( img, i ) {
-						var src = img.src;
+						var src = img.src || img.source;
 						const key = `image-slide-${i}`;
 						var className = i === 0 ? 'active' : '';
 						return (

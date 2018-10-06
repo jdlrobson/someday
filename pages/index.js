@@ -9,7 +9,7 @@ export default [
 	[ '/trips/', Trips, '/api/collection' ],
 	[ '/trips/:owner', Trips, '/api/collection/by/:owner' ],
 	[ '/trips/:owner/:id', Trip, '/api/collection/by/:owner/:id' ],
-	[ '/destination/:dest/sight/:title', Sight, '/api/voyager/page/en.wikivoyage/:title' ],
+	[ '/destination/:dest/sight/:title', Sight, '/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/:title' ],
 	[ '/destination/:title/rev/:revision', Destination, '/api/voyager/page/en.wikivoyage/:title/:revision' ],
 	[ '/destination/:title', Destination, '/api/voyager/page/en.wikivoyage/:title' ]
 ];
