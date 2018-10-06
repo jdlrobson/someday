@@ -27,11 +27,24 @@ export default function ( doc ) {
 			name
 		};
 	};
+	const excludeWikipediaLinks = ( link ) => {
+		const title = link.getAttribute( 'title' );
+		return title && title.indexOf( 'w:' ) === 0;
+	};
+	const links = extractElements( text, 'a', true ).extracted;
+	const wikipediaTitles = Array.from( links )
+		.filter( excludeWikipediaLinks )
+		.map( ( link ) => {
+			const title = link.getAttribute( 'title' );
+			return title && title.split( ':' )[ 1 ];
+		} );
 	text = doc.body.innerHTML;
 	sights = sights.concat(
 		extractBoldItems( text ).map( nameToObj )
-	).concat(
-		extractElementsTextContent( extractElements( text, 'a', true ).extracted ).map( nameToObj )
+	).concat( wikipediaTitles.map( nameToObj ) ).concat(
+		extractElementsTextContent(
+			links.filter( ( link )=> !excludeWikipediaLinks( link ) )
+		).map( nameToObj )
 	);
 	return sights;
 }
