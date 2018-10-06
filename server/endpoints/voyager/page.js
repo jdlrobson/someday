@@ -83,8 +83,10 @@ function removeNodes( html, selector ) {
 }
 
 function cleanupUnwantedData( data ) {
-	const moreWarnings = data.remaining.sections.map(
-		( section ) => `Omitted section ${section.line}`
+	const warnings = ( data.warnings || [] ).concat(
+		data.remaining.sections.map(
+			( section ) => `Omitted section ${section.line}`
+		)
 	);
 	return Object.assign( {}, data, {
 		lead: Object.assign( {}, data.lead, {
@@ -97,7 +99,7 @@ function cleanupUnwantedData( data ) {
 			issues: undefined
 		} ),
 		remaining: undefined,
-		warnings: data.warnings.concat( moreWarnings )
+		warnings
 	} );
 }
 
@@ -575,6 +577,7 @@ export default function ( title, lang, project, revision ) {
 			return page;
 		} )
 		.catch( function ( err ) {
+			console.log( `Error thrown on ${title}: ${err}, ${err.stack}` );
 			var msg = err && err.msg && err.msg;
 			if ( !msg ) {
 				msg = err.toString();
