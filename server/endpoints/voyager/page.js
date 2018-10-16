@@ -6,16 +6,14 @@ import addProps from './../prop-enricher';
 
 import cleanVcards from './clean-vcards';
 import extractSightsFromText from './extract-sights-from-text';
-import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText, cleanupEmptyNodes } from './domino-utils';
+import { extractElements, isNodeEmpty, extractText, cleanupEmptyNodes } from './domino-utils';
 import extractDestinations from './extract-destinations';
 import extractImages from './extract-images';
 import climateExtraction from './extract-climate';
-import flattenElements from './flatten-elements';
 import addSights from './add-sights';
 import thumbnailFromTitle from './../thumbnail-from-title';
 import undoLinkFlatten from './undo-link-flatten';
 import extractAirports from './extract-airports';
-import nearby from './nearby';
 
 import {
 	SIGHT_HEADINGS, DESTINATION_BLACKLIST,
@@ -29,58 +27,10 @@ import {
 	TITLE_BLACKLIST
 } from './constants';
 
+import flattenLinksInHtml from './flattenLinksInHtml';
+import removeNodes from './removeNodes';
+import addNearbyPlacesIfMissing from './addNearbyPlacesIfMissing';
 
-function flattenLinksInHtml( html ) {
-	const window = domino.createWindow( html );
-	flattenElements( window.document, 'a' );
-	return window.document.body.innerHTML;
-}
-
-function removeNodes( html, selector ) {
-	html = cleanupEmptyNodes( html );
-	var ext = extractElements( html, selector );
-	return cleanupScrubbedLists( ext.html );
-}
-
-function cleanupUnwantedData( data ) {
-	const warnings = ( data.warnings || [] ).concat(
-		data.remaining.sections.map(
-			( section ) => `Omitted section ${section.line}`
-		)
-	);
-	return Object.assign( {}, data, {
-		lead: Object.assign( {}, data.lead, {
-			geo: undefined,
-			image: undefined,
-			media: undefined,
-			lastmodifier: undefined,
-			sections: undefined,
-			languagecount: undefined,
-			issues: undefined
-		} ),
-		remaining: undefined,
-		warnings
-	} );
-}
-
-function addNearbyPlacesIfMissing( data ) {
-	const lead = data.lead;
-	const coords = lead.coordinates;
-	const title = lead.normalizedtitle;
-	const dest = lead.destinations || [];
-	if ( coords && dest.length === 0 ) {
-		return nearby( coords.lat, coords.lon, title ).then( ( nearbyPages ) => {
-			lead.destinations = [ {
-				id: data.lead.section_ids.destinations,
-				line: 'Nearby',
-				destinations: nearbyPages.pages
-			} ];
-			return cleanupUnwantedData( data );
-		} );
-	} else {
-		return cleanupUnwantedData( data );
-	}
-}
 // FIXME: This can be done in mobile content service
 function addBannerAndCoords( title, lang, project, data ) {
 	var width;
