@@ -111,7 +111,7 @@ function addNearbyPlacesIfMissing( data ) {
 	if ( coords && dest.length === 0 ) {
 		return nearby( coords.lat, coords.lon, title ).then( ( nearbyPages ) => {
 			lead.destinations = [ {
-				id: data.lead.section_ids.destination,
+				id: data.lead.section_ids.destinations,
 				line: 'Nearby',
 				destinations: nearbyPages.pages
 			} ];

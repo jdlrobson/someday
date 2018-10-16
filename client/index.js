@@ -46,7 +46,7 @@ addEventListener(
 	'.edit-link',
 	'click',
 	function ( ev ) {
-		const target = ev.currentTarget;
+		const target = ev.target;
 		const id = target.getAttribute( 'data-id' );
 		if ( id ) {
 			showEditOverlay( ev, title, id );
