@@ -2,14 +2,18 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import fetch from 'isomorphic-fetch';
 import { compile } from 'path-to-regexp';
+import cached from './cached-response';
 import pages from './../pages';
 
-export default function ( app ) {
-	pages.forEach( ( [ route, View, apiTemplate, extractMeta ] ) => {
-		app.get( route, ( req, res ) => {
-			const host = req.protocol + '://' + req.get( 'host' );
-			const api = compile( apiTemplate )( req.params );
-			const dataUrl = `${host}${api}`;
+function addRoute( app, route, View, apiTemplate, extractMeta ) {
+	app.get( route, ( req, res ) => {
+		const host = req.protocol + '://' + req.get( 'host' );
+		const api = compile( apiTemplate )( req.params );
+		const dataUrl = `${host}${api}`;
+		const cacheKey = req.url;
+		cached.fetchText( cacheKey ).then( function ( html ) {
+			res.status( 200 ).send( html ).end();
+		}, function () {
 			fetch( dataUrl ).then( ( resp ) => {
 				if ( resp.status === 404 ) {
 					res.status( 404 )
@@ -33,10 +37,16 @@ export default function ( app ) {
 					if ( extractMeta ) {
 						meta = extractMeta( meta );
 					}
-					res.status( 200 ).render( 'index.html', Object.assign( {}, meta, { view,
-						params: req.params } ) );
-				}
-				)
+					app.render(
+						'index.html',
+						Object.assign( {}, meta, { view, params: req.params } ),
+						function ( err, html ) {
+							// store it in cache for quick lookup next time
+							cached.putText( cacheKey, html );
+							res.status( 200 ).send( html ).end();
+						}
+					);
+				} )
 					.catch( ( err ) => {
 						console.log( err, err.stack );
 						res.status( 500 ).render( '500.html', { view: err } );
@@ -44,5 +54,10 @@ export default function ( app ) {
 			} );
 		} );
 	} );
+}
 
+export default function ( app ) {
+	pages.forEach( ( [ route, View, apiTemplate, extractMeta ] ) => {
+		addRoute( app, route, View, apiTemplate, extractMeta );
+	} );
 }

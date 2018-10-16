@@ -14,6 +14,22 @@ let blacklist = [];
 const OFFLINE_MODE = false;
 const OFFLINE_MODE_SAVE_TO_FILE = true;
 
+function fetchText( cacheKey ) {
+	return new Promise( ( resolve, reject ) => {
+		shortLifeCache.get( cacheKey, function ( err, responseText ) {
+			if ( err || !responseText ) {
+				reject();
+			} else {
+				resolve( responseText );
+			}
+		} );
+	} );
+}
+
+function putText( cacheKey, text ) {
+	shortLifeCache.set( cacheKey, text );
+}
+
 function cachedResponse( res, cacheKey, method, contentType = 'application/json' ) {
 	if ( cacheKey && cacheKey.substr( -1 ) === '?' ) {
 		cacheKey = cacheKey.substr( 0, cacheKey.length - 1 );
@@ -23,8 +39,8 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 		// no caching requested
 		respond( res, method );
 	} else {
-		shortLifeCache.get( cacheKey, function ( err, responseText ) {
-			const filepath = `${__dirname}/__cache${cacheKey}.txt`;
+		const filepath = `${__dirname}/__cache${cacheKey}.txt`;
+		fetchText( cacheKey ).then( function ( responseText ) {
 			if ( OFFLINE_MODE ) {
 				try {
 					const filecontents = fs.readFileSync( filepath, 'utf-8' ).toString();
@@ -37,18 +53,15 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 					console.log( e );
 				}
 			}
-			if ( err || !responseText ) {
-				// const html = fs.readFileSync(`${__dirname}/__cache${cacheKey}.txt`);
-				respond( res, method ).then( function ( newResponseText ) {
-					shortLifeCache.set( cacheKey, newResponseText );
-					if ( OFFLINE_MODE_SAVE_TO_FILE ) {
-						fs.writeFile( filepath, newResponseText, 'utf-8', function () {} );
-					}
-				} );
-			} else {
-				res.status( 200 );
-				res.send( responseText );
-			}
+			res.status( 200 );
+			res.send( responseText );
+		}, function () {
+			respond( res, method ).then( function ( newResponseText ) {
+				putText( cacheKey, newResponseText );
+				if ( OFFLINE_MODE_SAVE_TO_FILE ) {
+					fs.writeFile( filepath, newResponseText, 'utf-8', function () {} );
+				}
+			} );
 		} );
 	}
 }
@@ -71,6 +84,8 @@ function invalidate( url ) {
 	} );
 }
 export default {
+	putText,
+	fetchText,
 	cachedResponse: cachedResponse,
 	invalidate: invalidate
 };
