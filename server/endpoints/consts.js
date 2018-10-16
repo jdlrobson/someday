@@ -1,6 +1,6 @@
 const PAGEIMAGES_API_PROPS = {
 	pilicense: 'any',
-	pithumbsize: 120,
+	pithumbsize: 360,
 	pilimit: 50
 };
 

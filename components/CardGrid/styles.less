@@ -1,22 +1,22 @@
 @import './../globals.less';
 
-@width: @grid-column-size / 2;
+@width: 360px;
 .card-grid {
+  overflow: hidden;
   background: white;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 0px;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 2px;
   grid-auto-rows: minmax(@width, auto);
 }
 
 .card-grid__card {
-  width: @width !important;
-  height: @width !important;
   cursor: pointer;
   border: 0;
-
+  width: @width !important;
   .card-thumb {
-    width: @width;
+    width: @width !important;
+    height: @width !important;
   }
 
   a {
@@ -33,9 +33,8 @@
     }
   }
 
-  a,
-  h3,
   .card-detail {
+    padding: 4px;
     position: absolute;
     max-height: none !important;
     height: @width;
@@ -45,13 +44,29 @@
     right: 0;
     bottom: 0;
     left: 0;
-    width: @width;
+    background: black;
+    height: 50px;
+    opacity: 0.7;
     transform: none;
+  }
+  .card-extract {
+    color: #ddd;
   }
 }
 
 @media ( min-width: @breakpoint ) {
+  @card-width-desktop: @grid-column-size;
   .card-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(@card-width-desktop, auto);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-grid__card {
+    width: @card-width-desktop !important;
+    height: @card-width-desktop !important;
+
+    .card-thumb {
+      width: @card-width-desktop !important;
+      height: 100% !important;
+    }
   }
 }

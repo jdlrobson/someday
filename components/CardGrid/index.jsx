@@ -8,6 +8,7 @@ export default function CardGrid( { pages } ) {
 			{
 				pages.map( ( page, i ) => <Card title={page.title} thumbnail={page.thumbnail}
 					className="card-grid__card"
+					extracts={[ page.description ]}
 					key={`card-grid-${i}`}
 					url={'/destination/' + encodeURIComponent( page.title ) } /> )
 			}
