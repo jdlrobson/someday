@@ -98,8 +98,9 @@ document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
 // banner
 addEventListener( '#map', 'click', function ( ev ) {
 	const api = this.getAttribute( 'data-api' );
+	const withPath = this.getAttribute( 'data-with-path' );
 	if ( api ) {
-		showMapOverlayWithPages( ev, api );
+		showMapOverlayWithPages( ev, api, withPath );
 	} else {
 		showMapOverlay( ev, this.getAttribute( 'data-lat' ),
 			this.getAttribute( 'data-lon' ),

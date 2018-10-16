@@ -20,6 +20,7 @@ export default class Trip extends React.Component {
 				<Column>
 					<Menu username={props.meta.username} />
 					<PageBanner title={title} slogan="we will travel"
+						withPath={true}
 						api={props.meta.dataUrl}
 					/>
 					<Nav>

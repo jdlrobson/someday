@@ -27,7 +27,7 @@ function onExplore( lat, lon, addMarkers ) {
 		} );
 }
 
-export function showMapOverlayWithPages( ev, api ) {
+export function showMapOverlayWithPages( ev, api, withPath ) {
 	fetch( api ).then( ( resp )=>resp.json() )
 		.then( ( data ) => {
 			const pages = data.pages ? pagesWithLinks( data.pages ) :
@@ -37,6 +37,7 @@ export function showMapOverlayWithPages( ev, api ) {
 				<Overlay className="overlay--map">
 					<WorldMap
 						pages={pages}
+						explorable={!withPath}
 						markerUrl='/images/marker-icon.png'
 						onExplore={onExplore}
 					/>

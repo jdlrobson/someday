@@ -153,8 +153,9 @@ class WorldMap extends React.Component {
 					const cur = [ marker.lat, marker.lon || marker.lng ];
 					if ( last ) {
 						polyLines.push(
-							<Polyline positions={[ last, cur ]} color='#00ab9f' weight={( i * 0.2 ) + 1}>
-								<Popup>
+							<Polyline positions={[ last, cur ]} color='#00ab9f' weight={( i * 0.2 ) + 1}
+								key={'polyline-' + i}>
+								<Popup key={'polyline-popup-' + i}>
 									<Card title={`${lastPage.title} to ${marker.page.title}`}
 										extracts={[ Math.floor( calculateDistance( last, cur ) ) + 'km' ]} url={'#'} />
 								</Popup>

@@ -34,6 +34,7 @@ export default class PageBanner extends React.Component {
 				data-api={props.api}
 				data-lat={props.lat || 0}
 				data-lon={props.lon || 0}
+				data-with-path={props.withPath}
 				className={'component-page-banner' + bannerClassName} onClick={this.navigateTo}>
 				<div style={leadBannerStyles}>
 					<img src={MARKER_ICON} className="map-marker" />
