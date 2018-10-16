@@ -259,7 +259,8 @@ function voyager( title, lang, project, data ) {
 		var newSection;
 		var isRegion = false;
 		var isCountry = false;
-		var isIsland = matchesOne( data.lead.description, [
+		var description = data.lead.description || '';
+		var isIsland = matchesOne( description, [
 			'island country'
 		] );
 		var sections = [];
