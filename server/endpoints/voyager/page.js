@@ -2,16 +2,14 @@ import domino from 'domino';
 
 import page from './../page';
 import mwApi from './../mwApi';
-import addProps from './../prop-enricher';
 
 import cleanVcards from './clean-vcards';
 import extractSightsFromText from './extract-sights-from-text';
-import { extractElements, isNodeEmpty, extractText, cleanupEmptyNodes } from './domino-utils';
+import { extractElements, extractText, cleanupEmptyNodes } from './domino-utils';
 import extractDestinations from './extract-destinations';
 import extractImages from './extract-images';
 import climateExtraction from './extract-climate';
 import addSights from './add-sights';
-import thumbnailFromTitle from './../thumbnail-from-title';
 import undoLinkFlatten from './undo-link-flatten';
 import extractAirports from './extract-airports';
 
@@ -23,129 +21,24 @@ import {
 	ISLAND_SECTION_HEADINGS,
 	REGION_SECTION_HEADINGS,
 	ITEMS_TO_DELETE,
-	SECTION_BLACKLIST,
-	TITLE_BLACKLIST
+	SECTION_BLACKLIST
 } from './constants';
 
 import flattenLinksInHtml from './flattenLinksInHtml';
 import removeNodes from './removeNodes';
 import addNearbyPlacesIfMissing from './addNearbyPlacesIfMissing';
 
-// FIXME: This can be done in mobile content service
-function addBannerAndCoords( title, lang, project, data ) {
-	var width;
-	var params = {
-		redirects: '',
-		prop: 'coordinates|pageprops|pageassessments',
-		pageprops: 'wpb_banner',
-		titles: title
-	};
-	return mwApi( lang, params, data.lead.project_source || project ).then( function ( propData ) {
-		var page = propData.pages[ 0 ];
-		var title;
+import addBannerAndCoords from './add-banner-and-coords';
 
-		if ( page && page.coordinates ) {
-			data.lead.coordinates = page.coordinates.length ? page.coordinates[ 0 ] : page.coordinates;
-		} else if ( page && page.pageassessments && ( page.pageassessments.topic || page.pageassessments.phrasebook ) ) {
-			throw new Error( '404EXCLUDE: This is a topic/phrasebook and not supported by the app.' );
-		} else if ( TITLE_BLACKLIST.indexOf( page.title ) > -1 ) {
-			throw new Error( '404EXCLUDE: Blacklisted page' );
-		}
+import addNextCards from './add-next-cards';
 
-		data.lead.images = [];
-		if ( page && page.pageprops ) {
-			title = page.pageprops.wpb_banner;
-			const lcBannerTitle = title && title.toLowerCase();
-			width = 800;
-			if ( title && lcBannerTitle.indexOf( ' default banner' ) === -1 &&
-				lcBannerTitle.indexOf( 'pagebanner default.jpg' ) === -1
-			) {
-				data.lead.images.push( {
-					caption: '',
-					isBanner: true,
-					href: './File:' + title,
-					width: width.toString(),
-					height: ( width / 7 ).toString(),
-					src: thumbnailFromTitle( title, width )
-				} );
-			}
-		}
-		return data;
-	} );
-}
+import extractWarningsAndInfobox, { extractWarnings } from './extract-warnings-and-infoboxes';
 
-function addNextCards( data, lang, project, pages, isRegion ) {
-	var props = [ 'pageimages', 'pageterms' ];
-	if ( !isRegion ) {
-		props.push( 'coordinates' );
-	}
-	return addProps( pages.slice( 0, 50 ), props,
-		lang, project,
-		{ codistancefrompage: data.lead.normalizedtitle || data.lead.displaytitle }
-	).then( function () {
-		var destinations = [];
-		data.remaining.sections.forEach( function ( section ) {
-			if ( section.destinations && section.destinations.length ) {
-				destinations.push( Object.assign( {}, section ) );
-			}
-			delete section.destinations;
-		} );
-		data.lead.destinations = destinations;
-		return data;
-	} );
-}
+import isSectionEmpty from './isSectionEmpty';
 
-function extractWarnings( section ) {
-	var ext = extractElements( section.text, '.pp_warningbox' );
-	if ( ext.extracted.length ) {
-		section.warnings = '<table> ' + ext.extracted[ 0 ].innerHTML + '</table>';
-	}
-	section.text = ext.html;
-	return section;
-}
+import extractMaps from './extract-maps';
 
-function extractWarningsAndInfobox( section ) {
-	extractWarnings( section );
-	var ext = extractElements( section.text, 'table' );
-	if ( ext.extracted.length ) {
-		section.infobox = flattenLinksInHtml( `<table>${ext.extracted[ 0 ].innerHTML}</table>` );
-	}
-	section.text = ext.html;
-	return section;
-}
-
-function isSectionEmpty( section ) {
-	var window = domino.createWindow( '<div>' + section.text + '</div>' ),
-		document = window.document;
-
-	return isNodeEmpty( document.body );
-}
-
-function extractMaps( section ) {
-	var map;
-	var ext = extractElements( section.text, '.mw-kartographer-map' );
-	if ( ext.extracted[ 0 ] ) {
-		map = ext.extracted[ 0 ];
-		section.text = ext.html;
-		section.map = {
-			lat: map.getAttribute( 'data-lat' ),
-			lon: map.getAttribute( 'data-lon' ),
-			overlays: map.getAttribute( 'data-overlays' )
-		};
-	}
-
-	return section;
-}
-
-function isEmptySectionArray( sections ) {
-	var isEmpty = true;
-	sections.forEach( function ( section ) {
-		if ( !section.isEmpty ) {
-			isEmpty = false;
-		}
-	} );
-	return isEmpty;
-}
+import isEmptySectionArray from './isEmptySectionArray';
 
 function cleanup( section ) {
 	section.text = cleanVcards( removeNodes( section.text, ITEMS_TO_DELETE.join( ',' ) ) );
