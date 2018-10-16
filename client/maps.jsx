@@ -20,7 +20,7 @@ function collectionsWithLinks( collections ) {
 }
 
 function onExplore( lat, lon, addMarkers ) {
-	fetch( `/api/voyager/nearby/en.wikivoyage/${lat},${lon}/exclude/_` )
+	fetch( `/api/voyager/nearby/${lat},${lon}/exclude/_` )
 		.then( ( resp )=>resp.json() )
 		.then( ( data ) => {
 			addMarkers( pagesWithLinks( data.pages ) );
