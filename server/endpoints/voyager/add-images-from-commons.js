@@ -18,8 +18,9 @@ export default function addImagesFromCommons( page ) {
 		ggscoord: `${coords.lat}|${coords.lon}`
 	};
 	return mwApi( 'en', params, 'commons' ).then( ( query ) => {
+		const imagePages = query.pages || [];
 		page.lead.images = images.concat(
-			query.pages.map( ( page ) => {
+			imagePages.map( ( page ) => {
 				const thumb = page.thumbnail;
 				return {
 					caption: '',
