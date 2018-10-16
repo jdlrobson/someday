@@ -17,58 +17,18 @@ import undoLinkFlatten from './undo-link-flatten';
 import extractAirports from './extract-airports';
 import nearby from './nearby';
 
-const SIGHT_HEADINGS = [ 'See', 'See & Do', 'Do' ];
-const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
-const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
-	'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
-	'Buy', 'Eat', 'Drink', 'Do', 'Smoke' ];
+import {
+	SIGHT_HEADINGS, DESTINATION_BLACKLIST,
+	EXPLORE_HEADINGS,
+	TRANSIT_LINK_HEADINGS,
+	COUNTRY_SECTION_HEADINGS,
+	ISLAND_SECTION_HEADINGS,
+	REGION_SECTION_HEADINGS,
+	ITEMS_TO_DELETE,
+	SECTION_BLACKLIST,
+	TITLE_BLACKLIST
+} from './constants';
 
-const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
-const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
-const ISLAND_SECTION_HEADINGS = [
-	'nearby islands', 'the islands', 'islands'
-];
-const REGION_SECTION_HEADINGS = ISLAND_SECTION_HEADINGS.concat( [
-	'cities', 'other destinations', 'cities and towns',
-	'towns & villages', 'towns &amp; villages',
-	'cities / villages',
-	'destinations', 'towns', 'countries and territories'
-] );
-
-const ITEMS_TO_DELETE = [
-	// should be handled upstream (https://gerrit.wikimedia.org/r/370371)
-	'.dablink',
-	'.mw-kartographer-maplink',
-	'.pp_infobox',
-	'.listing-metadata',
-	// otherwise you'll have destination links from the outline box.
-	// e.g. https://en.wikivoyage.org/wiki/Dudinka
-	'.article-status',
-	'.noprint',
-	'.ambox',
-	'.mbox-image',
-	// Hatnotes - haven't worked a better way to deal with them yet.
-	'dl',
-	'.mbox-text',
-	'.scribunto-error',
-	'.mw-kartographer-container'
-];
-
-// Haven't worked out what to do with these yet.
-const sectionBlacklist = [ 'Learn', 'Work', 'Stay safe', 'Stay healthy',
-	'Cope', 'Respect', 'Connect',
-	// Relying on our climate widget. For countries e.g. New Zealand
-	// let's try and pull out key words.
-	'Climate',
-	// TODO: Extract dates and show per month e.g. New Zealand
-	'Holidays',
-	// TMI. e.g. New Zealand
-	'People',
-	'Time zones',
-	'Politics',
-	'History' ];
-
-const TITLE_BLACKLIST = [ 'Travel topics' ];
 
 function flattenLinksInHtml( html ) {
 	const window = domino.createWindow( html );
@@ -436,8 +396,8 @@ function voyager( title, lang, project, data ) {
 					'Get in', 'Sleep', 'Talk' ].indexOf( curSectionLine ) > -1
 				) {
 					logistics.push( section );
-				} else if ( sectionBlacklist.indexOf( curSectionLine ) === -1 &&
-					sectionBlacklist.indexOf( curSectionSubheadingLine ) === -1
+				} else if ( SECTION_BLACKLIST.indexOf( curSectionLine ) === -1 &&
+					SECTION_BLACKLIST.indexOf( curSectionSubheadingLine ) === -1
 				) {
 					sections.push( section );
 				}
