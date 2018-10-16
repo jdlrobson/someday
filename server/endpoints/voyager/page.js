@@ -1,7 +1,6 @@
 import domino from 'domino';
 
 import page from './../page';
-import mwApi from './../mwApi';
 
 import cleanVcards from './clean-vcards';
 import extractSightsFromText from './extract-sights-from-text';
@@ -12,7 +11,7 @@ import climateExtraction from './extract-climate';
 import addSights from './add-sights';
 import undoLinkFlatten from './undo-link-flatten';
 import extractAirports from './extract-airports';
-
+import addImagesFromCommons from './add-images-from-commons';
 import {
 	SIGHT_HEADINGS, DESTINATION_BLACKLIST,
 	EXPLORE_HEADINGS,
@@ -304,44 +303,6 @@ function transform( title, lang, project, json ) {
 	} else {
 		return voyager( title, lang, project, json );
 	}
-}
-
-/**
- * Adds to the exiting lead.images property of a page with images
- * from commons
- * @param {Object} page
- * @return {Promise}
- */
-function addImagesFromCommons( page ) {
-	const coords = page.lead.coordinates || {};
-	const images = page.lead.images || [];
-	var params = {
-		prop: 'pageimages',
-		generator: 'geosearch',
-		ggsradius: '10000',
-		ggsnamespace: 6,
-		pithumbsize: 400,
-		ggslimit: 50,
-		ggscoord: `${coords.lat}|${coords.lon}`
-	};
-	return mwApi( 'en', params, 'commons' ).then( ( query ) => {
-		page.lead.images = images.concat(
-			query.pages.map( ( page ) => {
-				const thumb = page.thumbnail;
-				return {
-					caption: '',
-					href: `./${page.title.replace( / /g, '_' )}`,
-					src: thumb.source,
-					width: thumb.width,
-					height: thumb.height
-				};
-			} )
-		);
-		return page;
-	} ).catch( ( e )=> {
-		console.log( e );
-		return page;
-	} );
 }
 
 function markAsFromWikipedia( title, lang, project, json ) {
