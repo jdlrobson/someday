@@ -10,6 +10,30 @@ function fix( num ) {
 }
 
 const MONTHS = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+
+function fromFahrenheitToCelcius( val ) {
+	return fix( ( val - 32 ) * 5 / 9 );
+}
+
+function fromInchesToMm( val ) {
+	return fix( val / 0.0393700787402 );
+}
+
+function checkImperial( data ) {
+	// assuming that over 60C is pretty hot, so it will be F.
+	const imperial = data.filter( ( row ) => row.high > 60 ).length > 0;
+	if ( imperial ) {
+		return data.map( ( row ) => {
+			return Object.assign( {}, row, {
+				high: fromFahrenheitToCelcius( row.high ),
+				low: fromFahrenheitToCelcius( row.low ),
+				precipitation: fromInchesToMm( row.precipitation )
+			} );
+		} );
+	} else {
+		return data;
+	}
+}
 function climateExtractionNew( text ) {
 	const ext = extractElements( text, '.climate-table table.infobox table.infobox' );
 	if ( ext.extracted.length > 0 ) {
@@ -19,14 +43,15 @@ function climateExtractionNew( text ) {
 			const spans = col.querySelectorAll( 'span' );
 			const values = Array.from( spans ).map( ( span ) => span.textContent )
 				.filter( ( val ) => val.trim() !== '' );
+
 			return {
 				heading: MONTHS[ i ],
-				precipitation: values[ 0 ],
-				high: values[ 1 ],
-				low: values[ 2 ]
+				precipitation: parseFloat( values[ 0 ] ),
+				high: parseInt( values[ 1 ], 10 ),
+				low: parseInt( values[ 2 ], 10 )
 			};
 		} );
-		return data;
+		return checkImperial( data );
 	}
 	return;
 }
@@ -78,12 +103,12 @@ function climateExtraction( section ) {
 		climateData.forEach( function ( mo ) {
 			if ( mo.imperial ) {
 				delete mo.imperial;
-				mo.high = fix( ( mo.high - 32 ) * 5 / 9 );
-				mo.low = fix( ( mo.low - 32 ) * 5 / 9 );
-				mo.precipitation = fix( mo.precipitation / 0.0393700787402 );
+				mo.high = fromFahrenheitToCelcius( mo.high );
+				mo.low = fromFahrenheitToCelcius( mo.low );
+				mo.precipitation = fromInchesToMm( mo.precipitation );
 			}
 		} );
-		section.climate = climateData;
+		section.climate = checkImperial( climateData );
 		section.text = ext.html;
 	} else {
 		section.climate = climateExtractionNew( section.text );
