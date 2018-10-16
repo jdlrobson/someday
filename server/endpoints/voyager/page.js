@@ -109,7 +109,7 @@ function addNearbyPlacesIfMissing( data ) {
 	const title = lead.normalizedtitle;
 	const dest = lead.destinations || [];
 	if ( coords && dest.length === 0 ) {
-		return nearby( coords.lat, coords.lon, title ).tleahen( ( nearbyPages ) => {
+		return nearby( coords.lat, coords.lon, title ).then( ( nearbyPages ) => {
 			lead.destinations = [ {
 				id: data.lead.section_ids.destinations,
 				line: 'Nearby',
