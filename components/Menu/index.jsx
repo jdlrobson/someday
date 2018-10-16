@@ -11,7 +11,7 @@ export default function Menu( { username } ) {
 	const trips = <a className="menu__trip"
 		href={tripUrl} key="menu-2">{tripLabel}</a>;
 	const hello = username ?
-		<span key="menu-hello">Welcome back {username}!</span> :
+		<span key="menu-hello">Welcome back <strong>{username}</strong>!</span> :
 		<span key="menu-hello">Hello stranger!</span>;
 	const goodbye = username ?
 		<a href="/auth/logout" key="menu-auth">Sign out</a> :
