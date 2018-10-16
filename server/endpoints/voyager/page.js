@@ -256,6 +256,7 @@ function voyager( title, lang, project, data ) {
 			isRegion = false;
 		}
 		data.remaining.sections = sections;
+		airports = airports.filter( ( code, i, self ) => self.indexOf( code ) === i );
 		data.lead = Object.assign( {}, data.lead, {
 			images: data.lead.images.concat( allImages ),
 			maps: allMaps,
