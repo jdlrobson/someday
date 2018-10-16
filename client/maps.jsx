@@ -3,6 +3,7 @@ import { showOverlay } from './overlay';
 import { Overlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 import WorldMap from './WorldMap';
+import './maps.less';
 
 function pagesWithLinks( pages ) {
 	return pages.map( ( page ) =>
@@ -33,7 +34,7 @@ export function showMapOverlayWithPages( ev, api ) {
 				collectionsWithLinks( data.collections );
 
 			showOverlay( ev, (
-				<Overlay>
+				<Overlay className="overlay--map">
 					<WorldMap
 						pages={pages}
 						markerUrl='/images/marker-icon.png'
@@ -45,7 +46,7 @@ export function showMapOverlayWithPages( ev, api ) {
 }
 export function showMapOverlay( ev, lat, lon, title ) {
 	showOverlay( ev, (
-		<Overlay>
+		<Overlay className="overlay--map">
 			<WorldMap lat={lat} lon={lon} zoom={10} title={title}
 				markerUrl='/images/marker-icon.png'
 				onExplore={onExplore}
