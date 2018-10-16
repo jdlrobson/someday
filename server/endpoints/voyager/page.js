@@ -109,7 +109,7 @@ function addNearbyPlacesIfMissing( data ) {
 	const title = lead.normalizedtitle;
 	const dest = lead.destinations || [];
 	if ( coords && dest.length === 0 ) {
-		return nearby( coords.lat, coords.lon, title ).then( ( nearbyPages ) => {
+		return nearby( coords.lat, coords.lon, title ).tleahen( ( nearbyPages ) => {
 			lead.destinations = [ {
 				id: data.lead.section_ids.destinations,
 				line: 'Nearby',
@@ -564,7 +564,7 @@ function markAsFromWikipedia( title, lang, project, json ) {
 export default function ( title, lang, project, revision ) {
 	project = 'wikivoyage';
 
-	return page( title, lang, project, false, revision )
+	return page( title, lang, project, revision )
 		.then( ( data ) => {
 			return transform( title, lang, project, data );
 		} )
