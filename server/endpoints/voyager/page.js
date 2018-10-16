@@ -290,6 +290,8 @@ function voyager( title, lang, project, data ) {
 					return addSights( data, isCountry ? 8000 : 140 );
 				} );
 		} else {
+			// Make sure destinations gets set
+			data.lead.destinations = [];
 			return data;
 		}
 	} ).then( addNearbyPlacesIfMissing );
