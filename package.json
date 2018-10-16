@@ -9,7 +9,7 @@
     "compile:watch": "webpack --output-path public/ --watch",
     "lint:fix": "eslint . --ext .jsx --ext .js  --fix",
     "lint": "eslint . --ext .jsx --ext .js",
-    "test": "mocha --compilers js:babel-core/register tests/*/*/**"
+    "test": "mocha --compilers js:babel-core/register tests/**/*"
   },
   "babel": {
     "presets": [
