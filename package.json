@@ -2,9 +2,9 @@
   "name": "someday",
   "version": "0.5.0",
   "description": "for travellers",
-  "main": "index.js",
+  "main": "someday.js",
   "scripts": {
-    "start": "npm run compile && node index.js",
+    "start": "npm run compile && node someday.js",
     "compile": "webpack --output-path public/",
     "compile:watch": "webpack --output-path public/ --watch",
     "lint:fix": "eslint . --ext .jsx --ext .js  --fix",
