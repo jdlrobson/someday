@@ -5,12 +5,13 @@ import passport from 'passport';
 import respond from './respond';
 
 import {
+	CONSUMER_HOST,
 	CONSUMER_KEY,
 	CONSUMER_SECRET
 } from './config';
 
 export default function ( app ) {
-	console.log( `Registering oauth with ${CONSUMER_KEY}, ${CONSUMER_SECRET}` );
+	console.log( `Registering oauth with ${CONSUMER_KEY}, ${CONSUMER_SECRET}, ${CONSUMER_HOST}` );
 	const MemcachedStore = connect( session );
 
 	passport.serializeUser( function ( user, done ) {
@@ -37,7 +38,7 @@ export default function ( app ) {
 	app.use( passport.session() );
 	passport.use(
 		new OAuthStrategy( {
-			baseURL: 'https://en.wikipedia.org/',
+			baseURL: CONSUMER_HOST,
 			consumerKey: CONSUMER_KEY,
 			consumerSecret: CONSUMER_SECRET
 		},
