@@ -8,7 +8,8 @@ const coordinatesToLabel = ( coordinates ) => coordinates && coordinates.dist !=
 
 export const placeToCard = ( { title, thumbnail, description, missing, coordinates }, key ) => {
 	return <Card title={title} thumbnail={thumbnail}
+		className={missing ? ' card-place--missing' : 'card-place' }
 		key={`place-${key}`}
-		url={missing ? false : '/destination/' + encodeURIComponent( title ) }
+		url={'/destination/' + encodeURIComponent( title )}
 		extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
 };
