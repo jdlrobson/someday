@@ -39,6 +39,8 @@ import extractMaps from './extract-maps';
 
 import isEmptySectionArray from './isEmptySectionArray';
 
+import findSectionId from './find-section-id';
+
 function cleanup( section ) {
 	section.text = cleanVcards( removeNodes( section.text, ITEMS_TO_DELETE.join( ',' ) ) );
 	return section;
@@ -197,7 +199,10 @@ function voyager( title, lang, project, data ) {
 				if ( section.climate ) {
 					climate.data = section.climate;
 					delete section.climate;
+					// Climate table may be buried in another section
+					climate.id = section.id;
 				}
+				// What if there is a climate section but no table?
 				if ( lcLine === 'climate' ) {
 					climate.id = section.id;
 					if ( !climate.data ) {
@@ -257,6 +262,9 @@ function voyager( title, lang, project, data ) {
 		}
 		data.remaining.sections = sections;
 		airports = airports.filter( ( code, i, self ) => self.indexOf( code ) === i );
+		if ( !climate.id ) {
+			climate.id = findSectionId( sections, 'understand' );
+		}
 		data.lead = Object.assign( {}, data.lead, {
 			images: data.lead.images.concat( allImages ),
 			maps: allMaps,
