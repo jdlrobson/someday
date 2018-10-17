@@ -10,7 +10,8 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 		const host = req.protocol + '://' + req.get( 'host' );
 		const api = compile( apiTemplate )( req.params );
 		const dataUrl = `${host}${api}`;
-		const cacheKey = req.url;
+		const username = req.user ? req.user.displayName : '';
+		const cacheKey = req.url + ':' + username;
 		cached.fetchText( cacheKey ).then( function ( html ) {
 			res.status( 200 ).send( html ).end();
 		}, function () {
