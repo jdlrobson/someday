@@ -57,7 +57,7 @@ class WorldMap extends React.Component {
 					lat: c.lat,
 					lng: c.lng || c.lon,
 					label: <Card title={page.title} extracts={[ page.description ]}
-						url={page.url}
+						url={`/destination/${page.title}`}
 					/>
 				};
 				if ( page.category ) {
@@ -170,7 +170,7 @@ class WorldMap extends React.Component {
 			return (
 				<Map {...mapOptions}>
 					<TileLayer
-						url='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png'
+						url='https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=en'
 						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 					/>
 					{
