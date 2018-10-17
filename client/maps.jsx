@@ -1,5 +1,5 @@
 import React from 'react';
-import { showOverlay } from './overlay';
+import { showOverlay, hideOverlay } from './overlay';
 import { Overlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 import WorldMap from './WorldMap';
@@ -41,6 +41,7 @@ export function showMapOverlayWithPages( ev, api, withPath ) {
 						markerUrl='/images/marker-icon.png'
 						onExplore={onExplore}
 					/>
+					<a className='hide' onClick={hideOverlay}>hide map</a>
 				</Overlay>
 			) );
 		} );
@@ -52,6 +53,7 @@ export function showMapOverlay( ev, lat, lon, title ) {
 				markerUrl='/images/marker-icon.png'
 				onExplore={onExplore}
 			/>
+			<a className='hide' onClick={hideOverlay}>hide map</a>
 		</Overlay>
 	) );
 }
