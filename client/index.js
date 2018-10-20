@@ -13,7 +13,7 @@ import { showEditOverlay } from './edit.jsx';
 import { showNoteOverlay } from './notes.jsx';
 import { showSearchOverlay } from './search.jsx';
 import { showCollectionOverlay, showCollectionEditor,
-	getTrips, getTrip } from './trips.jsx';
+	getTrips, getTrip, getCoordsFromPages } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 import offline from './offline';
 
@@ -115,7 +115,7 @@ addEventListener( '.action--collection-edit',
 	function ( ev ) {
 		const id = window.location.pathname.split( '/' ).slice( -2 );
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
-			const coords = data.coordinates || {};
+			let coords = getCoordsFromPages( data.pages );
 			const thumbnail = data.thumbnail || {};
 			showCollectionEditor( ev, data.title, data.description, data.id,
 				thumbnail, coords.lat, coords.lon

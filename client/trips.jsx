@@ -3,8 +3,16 @@ import { showOverlay, hideOverlay } from './overlay';
 import { CollectionOverlay, Icon,
 	Button, CollectionEditorOverlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
-
+import calc from './WorldMap/calculate-bounds-from-pages';
 import './trips.less';
+
+export function getCoordsFromPages( pages ) {
+	const data = calc( pages );
+	return {
+		lat: data.lat,
+		lon: data.lon
+	};
+}
 
 export function getTrips( title ) {
 	return fetch( `/api/private/collection/all/with/${title}` )
@@ -69,6 +77,7 @@ class CollectionItem extends React.Component {
 function getSaveCollectionHandler( id, image, lat, lon ) {
 	const url = id ? `/api/private/collection/${id}/edit/` :
 		'/api/private/collection/_/create/';
+	const coordinates = { lat, lon };
 
 	return function ( title, description ) {
 		return fetch( url, {
@@ -77,7 +86,7 @@ function getSaveCollectionHandler( id, image, lat, lon ) {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify( { title, description, image, lat, lon } ),
+			body: JSON.stringify( { title, description, image, coordinates } ),
 			credentials: 'include'
 		} ).then( ()=> {
 			hideOverlay();
