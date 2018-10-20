@@ -16,6 +16,7 @@ export default class PageBanner extends React.Component {
 	render() {
 		var url = 'https://maps.wikimedia.org/img/osm-intl,1,0,0,1000x500.png';
 		var props = this.props;
+		var description = props.description;
 		var title = props.title && props.title.replace( /_/g, ' ' );
 		if ( props.coordinates ) {
 			const coords = props.coordinates;
@@ -45,6 +46,7 @@ export default class PageBanner extends React.Component {
 						<div>
 							<h2 key="article-title" className={'component-page-banner__title ' + bannerClassName}
 								id="section_0">{title}</h2>
+							<p>{description}</p>
 						</div>
 					</Content>
 				</div>

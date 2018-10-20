@@ -108,6 +108,7 @@ export default class DestinationPage extends React.Component {
 					<Menu username={this.props.meta.username} key="menu" />
 					<PageBanner title={lead.displaytitle} slogan="we will see"
 						key="banner"
+						description={lead.description}
 						lat={coordinates && coordinates.lat}
 						lon={coordinates && coordinates.lon}
 					/>

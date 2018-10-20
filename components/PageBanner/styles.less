@@ -46,19 +46,6 @@
     font-weight: bold;
     font-size: 0.8em;
   }
-
-  h1 {
-    font-weight: bold;
-    font-size: 1.7em;
-    font-family: sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &.title-long {
-      font-size: 1em;
-    }
-  }
 }
 
 .component-page-banner__banner {
@@ -71,6 +58,15 @@
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: center center;
+
+  p {
+    color: @pinot-noir;
+    font-style: italic;
+    font-size: 0.7em;
+    margin: 0;
+    text-transform: initial;
+    padding-top: 2px;
+  }
 }
 
 .component-page-banner__subtitle {
@@ -120,7 +116,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0;
+  margin: 2px 0 0;
+  padding-top: 1px;
   color: #5c4b40;
 
   a:visited,
