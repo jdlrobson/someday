@@ -4,6 +4,7 @@ import { Input, Overlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 import { placeToCard } from './../components/helpers';
+import './search.less';
 
 let timeout;
 
@@ -63,10 +64,10 @@ function doSearch( ev ) {
 
 function getSearchOverlay( children, onChange ) {
 	return (
-		<Overlay>
+		<Overlay className="search-overlay">
 			<Input autoFocus onChange={onChange}
 				key="search" />
-			{children}
+			<div className="search-overlay__results">{children}</div>
 		</Overlay>
 	);
 }
