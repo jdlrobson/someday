@@ -66,9 +66,9 @@ export default class PageBanner extends React.Component {
 						</div>
 					</Content>
 				</div>
-				<div className="component-page-banner__search">
+				<div className="component-page-banner__search" id="search">
 					Somewhere else
-					<Icon glyph="search" id="search" />
+					<Icon glyph="search" />
 				</div>
 			</div>
 		);
