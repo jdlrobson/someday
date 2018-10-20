@@ -10,6 +10,10 @@ function extractImages( section ) {
 	var images = [];
 	Array.prototype.forEach.call( ext.extracted, function ( node ) {
 		var img = node.querySelector( 'img' );
+		if ( !img ) {
+			// Certain thumbs may be empty e.g. Algeria
+			return;
+		}
 		var caption = node.querySelector( 'figcaption' );
 		var link = node.querySelector( 'a.image' );
 		var src = img.getAttribute( 'src' );
