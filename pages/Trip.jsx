@@ -10,6 +10,7 @@ export default class Trip extends React.Component {
 		const props = this.props;
 		const title = props.title;
 		const owner = props.owner;
+		const coords = props.coordinates;
 		const links = [
 			<a href={getOwnerUrl( owner )} key="tab-owner">{owner}</a>,
 			<a href={getTripUrl( owner )} key="tab-trip"
@@ -21,6 +22,10 @@ export default class Trip extends React.Component {
 					<Menu username={props.meta.username} />
 					<PageBanner title={title} slogan="we will travel"
 						withPath={true}
+						lat={coords.lat}
+						lon={coords.lon}
+						description={props.description}
+						isCountry={coords.lat && coords.lon}
 						api={props.meta.dataUrl}
 					/>
 					<Nav>

@@ -106,9 +106,10 @@ export default class DestinationPage extends React.Component {
 				<Column key="col-1" col={1}>{leftBoxes( lead )}</Column>
 				<Column key="col-2">
 					<Menu username={this.props.meta.username} key="menu" />
-					<PageBanner title={lead.displaytitle} slogan="we will see"
+					<PageBanner title={lead.displaytitle} slogan="guide to"
 						key="banner"
 						description={lead.description}
+						isCountry={lead.isCountry}
 						lat={coordinates && coordinates.lat}
 						lon={coordinates && coordinates.lon}
 					/>

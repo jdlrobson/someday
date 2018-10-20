@@ -44,7 +44,7 @@
 
   .subtitle {
     font-weight: bold;
-    font-size: 0.8em;
+    font-size: 1em;
   }
 }
 
@@ -69,10 +69,14 @@
   }
 }
 
+@logo-offset: 11px;
+@subtitle-offset: -20px;
+
 .component-page-banner__subtitle {
   font-weight: bold;
   font-size: 0.8em;
   color: #5c4b40;
+  margin-top: @subtitle-offset;
 }
 
 .component-page-banner__search {
@@ -97,21 +101,23 @@
 .component-page-banner__site-image {
   padding-top: 8px;
   border: 0;
-  margin: 0;
+  margin: @logo-offset 0 0;
 
+  img {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+  }
   a {
     display: block;
     width: 270px;
     margin: 20px auto 0 auto;
   }
-  img {
-    margin-top: 8px;
-  }
 }
 
 .component-page-banner__title {
   font-weight: bold;
-  font-size: 1.7em;
+  font-size: 1.9em;
   font-family: sans-serif;
   white-space: nowrap;
   overflow: hidden;
@@ -132,6 +138,12 @@
   .component-page-banner {
     margin-left: auto;
     margin-right: auto;
+
+    img {
+      height: 146px;
+      margin-top: 0;
+      width: auto;
+    }
 
     h1 {
       font-size: 2.2em;
