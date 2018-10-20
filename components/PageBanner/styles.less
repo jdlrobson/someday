@@ -23,15 +23,9 @@
   position: relative;
   z-index: 2;
   max-height: none;
-  height: @map-height;
+  height: @map-height + @search-height;
   background-color: #b9d4ee;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
-  .mw-ui-icon {
-    position: absolute;
-    right: -8px;
-    bottom: 8px;
-  }
 
   .content-container {
     background: none;
@@ -65,24 +59,43 @@
       font-size: 1em;
     }
   }
+}
 
-  > div {
-    left: -1px;
-    overflow: hidden;
-    position: relative;
-    display: block;
-    height: 100%;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-    background-position: center center;
-  }
+.component-page-banner__banner {
+  left: -1px;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  height: @map-height;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center center;
 }
 
 .component-page-banner__subtitle {
   font-weight: bold;
   font-size: 0.8em;
   color: #5c4b40;
+}
+
+.component-page-banner__search {
+  height: @search-height;
+  color: @someday-blue;
+  font-family: sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  text-align: center;
+  line-height: @search-height;
+  text-transform: uppercase;
+  background: white;
+  padding-left: 30px;
+
+  .mw-ui-icon {
+    display: inline-block;
+    margin-top: 4px;
+    margin-bottom: -6px;
+  }
 }
 
 .component-page-banner__site-image {

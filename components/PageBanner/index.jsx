@@ -36,8 +36,7 @@ export default class PageBanner extends React.Component {
 				data-lon={props.lon || 0}
 				data-with-path={props.withPath}
 				className={'component-page-banner' + bannerClassName} onClick={this.navigateTo}>
-				<div style={leadBannerStyles}>
-					<img src={MARKER_ICON} className="map-marker" />
+				<div style={leadBannerStyles} className="component-page-banner__banner">
 					<Content>
 						<h1 className="component-page-banner__site-image">
 							<img src="/images/someday-map.png" alt='Someday' height="138" width="270" />
@@ -45,10 +44,14 @@ export default class PageBanner extends React.Component {
 						<div className="component-page-banner__subtitle">{props.slogan}</div>
 						<div>
 							<h2 key="article-title" className={'component-page-banner__title ' + bannerClassName}
-								id="section_0"><a href="#/search/">{title}</a></h2>
-							<Icon glyph="search" id="search" />
+								id="section_0">{title}</h2>
 						</div>
 					</Content>
+				</div>
+				<div className="component-page-banner__search">
+					Somewhere else
+					<Icon glyph="search" id="search" />
+					<img src={MARKER_ICON} className="map-marker" />
 				</div>
 			</div>
 		);
