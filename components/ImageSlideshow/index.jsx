@@ -24,8 +24,7 @@ class ImageSlideshow extends React.Component {
 							<li className={className} key={key}
 								style={
 									{
-										height: maxHeight + 'px',
-										width: img.width + 'px'
+										height: maxHeight + 'px'
 									}
 								}
 							>
