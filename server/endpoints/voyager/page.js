@@ -47,6 +47,15 @@ function cleanup( section ) {
 }
 
 /**
+ * Strips any text in brackets
+ * @param {string} str
+ * @return {string}
+ */
+function stripParentheticals( str ) {
+	return str.replace( /\([^\)]*\)/g, '' ).trim();
+}
+
+/**
  * Does str match one of the strings in test?
  * @param {string} str
  * @param {array} tests
@@ -266,6 +275,8 @@ function voyager( title, lang, project, data ) {
 			climate.id = findSectionId( sections, 'understand' );
 		}
 		data.lead = Object.assign( {}, data.lead, {
+			// Scarborough_(Trinidad_and_Tobago) becomes Scarborough
+			displaytitle: stripParentheticals( data.lead.displaytitle ),
 			images: data.lead.images.concat( allImages ),
 			maps: allMaps,
 			climate,
