@@ -7,7 +7,7 @@ export default class HomePage extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={this.props.meta.username} key="menu" />
-					<PageBanner title="Start somewhere" slogan="we will see the world"
+					<PageBanner title="the world" slogan="guide to"
 						key="banner"
 						api="/api/random/en"
 					/>
