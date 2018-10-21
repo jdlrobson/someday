@@ -30,15 +30,15 @@ function zoomo( lat, lon, isCountry ) {
 	}
 	return zoom;
 }
-function mapo( lat, lon, isCountry ) {
-	const zoom = zoomo( lat, lon, isCountry );
+function mapo( lat, lon, zoom, isCountry ) {
+	zoom = zoom || zoomo( lat, lon, isCountry );
 	return `https://maps.wikimedia.org/img/osm-intl,${zoom},${lat},${lon},1000x500.png?lang=en`;
 }
 
 export default class PageBanner extends React.Component {
 	render() {
 		var props = this.props;
-		var url = mapo( props.lat || 0, props.lon || 0, props.isCountry );
+		var url = mapo( props.lat || 0, props.lon || 0, props.zoom, props.isCountry );
 		var description = props.description;
 		var title = props.title && props.title.replace( /_/g, ' ' );
 		var leadBannerStyles = {

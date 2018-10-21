@@ -25,7 +25,7 @@ export default class Trip extends React.Component {
 						lat={coords.lat}
 						lon={coords.lon}
 						description={props.description}
-						isCountry={coords.lat && coords.lon}
+						zoom={3}
 						api={props.meta.dataUrl}
 					/>
 					<Nav>
