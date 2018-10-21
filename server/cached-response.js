@@ -67,20 +67,23 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 }
 
 function invalidate( url ) {
-	shortLifeCache.get( url, function ( err, responseText ) {
-		if ( responseText ) {
-			blacklist.push( url );
-			shortLifeCache.del( url );
-			// give 1s for cache to warm up
-			setTimeout( function () {
-				var i = blacklist.indexOf( url );
-				if ( i > -1 ) {
-					blacklist.splice( i, 1 );
-				}
-			}, 1000 );
-		} else {
-			console.log( 'failed to invalidate', url );
-		}
+	return new Promise( ( resolve, reject ) => {
+		shortLifeCache.get( url, function ( err, responseText ) {
+			if ( responseText ) {
+				blacklist.push( url );
+				shortLifeCache.del( url );
+				// give 1s for cache to warm up
+				setTimeout( function () {
+					var i = blacklist.indexOf( url );
+					if ( i > -1 ) {
+						blacklist.splice( i, 1 );
+					}
+					resolve();
+				}, 1000 );
+			} else {
+				reject( `failed to invalidate ${url}` );
+			}
+		} );
 	} );
 }
 export default {

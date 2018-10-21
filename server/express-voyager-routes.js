@@ -4,6 +4,7 @@ import random from './endpoints/random';
 import cachedResponses from './cached-response.js';
 import manifest from './manifest';
 const cachedResponse = cachedResponses.cachedResponse;
+import cached from './cached-response';
 
 function initRoutes( app ) {
 	app.get( '/manifest.json', ( req, res ) => {
@@ -22,6 +23,16 @@ function initRoutes( app ) {
 			}
 
 			return random( req.params.lang, 0, DEFAULT_PROJECT, params );
+		} );
+	} );
+
+	app.post( '/api/voyager/invalidate/:url', ( req, res ) => {
+		const username = req.user ? req.user.displayName : '';
+		const cacheKey = decodeURI( req.params.url ) + ':' + username;
+		cached.invalidate( cacheKey ).then( () => {
+			res.status( 204 ).send();
+		}, ( err ) => {
+			res.status( 200 ).send( err );
 		} );
 	} );
 
