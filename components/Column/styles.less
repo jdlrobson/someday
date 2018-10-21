@@ -11,10 +11,17 @@
 
 @media ( min-width: @breakpoint ) {
   @secondary-column-offset: 76px;
+  .grid-row--1 {
+    .grid-column-1 {
+      margin-top: @secondary-column-offset + 70px;
+    }
+    .grid-column-3 {
+      margin-top: @secondary-column-offset;
+    }
+  }
   .grid-column-1 {
     grid-row: 1;
     z-index: 2;
-    margin-top: @secondary-column-offset + 70px;
     grid-column: 1;
     width: @grid-column-size;
   }
@@ -28,7 +35,6 @@
   .grid-column-3 {
     grid-row: 1;
     z-index: 2;
-    margin-top: @secondary-column-offset;
     grid-column: 3;
     width: @grid-column-size;
   }
