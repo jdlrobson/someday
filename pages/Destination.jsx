@@ -7,7 +7,8 @@ import { placeToCard } from './../components/helpers';
 const sightToCard = ( destTitle, i ) => {
 	return ( { title, thumbnail, description } ) => <Card title={title} thumbnail={thumbnail}
 		key={`sight-${i}`}
-		url={encodeURIComponent( destTitle ) + '/sight/' + encodeURIComponent( title ) } extracts={[ description ]} />;
+		url={`/destination/${encodeURIComponent( destTitle )}/sight/${encodeURIComponent( title )}` }
+		extracts={[ description ]} />;
 };
 
 const placeToCardWithoutDestination = ( data, i ) =>
