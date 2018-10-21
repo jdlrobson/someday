@@ -4,7 +4,7 @@ export const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get arou
 	'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
 	'Buy', 'Eat', 'Drink', 'Do', 'Smoke' ];
 
-export const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
+export const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat', 'get in' ];
 export const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
 export const ISLAND_SECTION_HEADINGS = [
 	'nearby islands', 'the islands', 'islands'
