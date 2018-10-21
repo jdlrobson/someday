@@ -21,6 +21,7 @@
 
 .component-page-banner {
   position: relative;
+  color: @lounge-gray;
   z-index: 2;
   max-height: none;
   height: @map-height + @search-height;
@@ -30,7 +31,6 @@
   .content-container {
     background: none;
     text-align: center;
-    color: @app-bg-color;
     text-transform: uppercase;
   }
 
@@ -74,10 +74,19 @@
 
 .component-page-banner__subtitle {
   font-weight: bold;
-  color: #5c4b40;
+  height: 20px;
   margin-top: @subtitle-offset;
 }
 
+.component-page-banner__site-image--faded {
+  opacity: 0.2;
+}
+.component-page-banner--faded {
+  color: @pinot-noir;
+  p {
+    color: @lounge-gray;
+  }
+}
 .component-page-banner__search {
   height: @search-height;
   color: @someday-blue;
@@ -123,7 +132,6 @@
   text-overflow: ellipsis;
   margin: 2px 0 0;
   padding-top: 1px;
-  color: #5c4b40;
 
   a:visited,
   a:hover,

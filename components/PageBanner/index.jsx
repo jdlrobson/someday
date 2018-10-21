@@ -35,6 +35,10 @@ function mapo( lat, lon, zoom, isCountry ) {
 	return `https://maps.wikimedia.org/img/osm-intl,${zoom},${lat},${lon},1000x500.png?lang=en`;
 }
 
+function className( name, modifier ) {
+	return modifier ? `${name} ${name}--${modifier}` : name;
+}
+
 export default class PageBanner extends React.Component {
 	render() {
 		var props = this.props;
@@ -44,23 +48,23 @@ export default class PageBanner extends React.Component {
 		var leadBannerStyles = {
 			backgroundImage: url ? 'url("' + url + '")' : 'none'
 		};
+		const modifier = props.modifier;
 
-		const bannerClassName = props.inSearchMode ? ' banner-search-enabled' : '';
 		return (
 			<div id="map"
 				data-api={props.api}
 				data-lat={props.lat || 0}
 				data-lon={props.lon || 0}
 				data-with-path={props.withPath}
-				className={'component-page-banner' + bannerClassName} onClick={this.navigateTo}>
+				className={ className( 'component-page-banner', modifier )} onClick={this.navigateTo}>
 				<div style={leadBannerStyles} className="component-page-banner__banner">
 					<Content>
-						<h1 className="component-page-banner__site-image">
+						<h1 className={ className( 'component-page-banner__site-image', modifier )}>
 							<img src="/images/someday-map.png" alt='Someday' height="146" width="400" />
 						</h1>
-						<div className="component-page-banner__subtitle">{props.slogan}</div>
+						<div className={className( 'component-page-banner__subtitle', modifier )}>{props.slogan}</div>
 						<div>
-							<h2 key="article-title" className={'component-page-banner__title ' + bannerClassName}
+							<h2 key="article-title" className="component-page-banner__title"
 								id="section_0">{title}</h2>
 							<p>{description}</p>
 						</div>

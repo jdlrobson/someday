@@ -20,7 +20,8 @@ export default class Trip extends React.Component {
 			<Page data-title={`Trip:${owner}/${props.id}`}>
 				<Column>
 					<Menu username={props.meta.username} />
-					<PageBanner title={title} slogan="we will travel"
+					<PageBanner title={title} slogan=""
+						modifier="faded"
 						withPath={true}
 						lat={coords.lat}
 						lon={coords.lon}

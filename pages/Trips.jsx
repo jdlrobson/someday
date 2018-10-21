@@ -39,7 +39,8 @@ export default class Trips extends React.Component {
 			<Page>
 				<Column>
 					<Menu username={props.meta.username} />
-					<PageBanner title="someday" slogan="we will go on a trip"
+					<PageBanner title={owner || 'everyone'} slogan="trips from"
+						modifier={'faded'}
 						api={props.meta.dataUrl}
 					/>
 					<Nav>
