@@ -37,7 +37,7 @@ export default function ( doc ) {
 		const title = link.getAttribute( 'title' );
 		return title && title.indexOf( 'w:' ) === 0;
 	};
-	const links = extractElements( text, 'a', true ).extracted;
+	const links = extractElements( text, 'a, b', true ).extracted;
 	const wikipediaTitles = Array.from( links )
 		.filter( excludeWikipediaLinks )
 		.map( ( link ) => {
