@@ -5,7 +5,7 @@ export default function addNextCards( data, lang, project, pages, isRegion ) {
 	if ( !isRegion ) {
 		props.push( 'coordinates' );
 	}
-	return addProps( pages.slice( 0, 50 ), props,
+	return addProps( pages, props,
 		lang, project,
 		{ codistancefrompage: data.lead.normalizedtitle || data.lead.displaytitle }
 	).then( function () {
