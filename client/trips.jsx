@@ -4,6 +4,7 @@ import { CollectionOverlay, Icon,
 	Button, CollectionEditorOverlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 import calc from './WorldMap/calculate-bounds-from-pages';
+import { invalidate } from './edit.jsx';
 import './trips.less';
 
 export function getCoordsFromPages( pages ) {
@@ -24,18 +25,26 @@ export function getTrip( username, id ) {
 		.then( ( data )=> data.json() );
 }
 
-function addToCollection( id, title ) {
+function addToCollection( id, username, title ) {
 	return fetch( `/api/private/collection/${id}/add/${title}`, {
 		method: 'POST',
 		credentials: 'include'
-	} ).then( ( data )=>data.json() );
+	} ).then( ( data ) => {
+		return invalidate( `/trips/${username}/${id}` ).then( () => {
+			return data.json();
+		} );
+	} );
 }
 
-function removeFromCollection( id, title ) {
+function removeFromCollection( id, username, title ) {
 	return fetch( `/api/private/collection/${id}/remove/${title}`, {
 		method: 'POST',
 		credentials: 'include'
-	} ).then( ( data )=>data.json() );
+	} ).then( ( data ) => {
+		return invalidate( `/trips/${username}/${id}` ).then( () => {
+			return data.json();
+		} );
+	} );
 }
 
 class CollectionItem extends React.Component {
@@ -49,12 +58,13 @@ class CollectionItem extends React.Component {
 		const member = this.state.member;
 		const id = this.props.id;
 		const title = this.props.target;
+		const owner = this.props.owner;
 		if ( member ) {
-			removeFromCollection( id, title ).then( () => {
+			removeFromCollection( id, owner, title ).then( () => {
 				this.setState( { member: false } );
 			} );
 		} else {
-			addToCollection( id, title ).then( () => {
+			addToCollection( id, owner, title ).then( () => {
 				this.setState( { member: true } );
 			} );
 		}
@@ -74,7 +84,7 @@ class CollectionItem extends React.Component {
 	}
 }
 
-function getSaveCollectionHandler( id, image, lat, lon ) {
+function getSaveCollectionHandler( owner, id, image, lat, lon ) {
 	const url = id ? `/api/private/collection/${id}/edit/` :
 		'/api/private/collection/_/create/';
 	const coordinates = { lat, lon };
@@ -89,20 +99,22 @@ function getSaveCollectionHandler( id, image, lat, lon ) {
 			body: JSON.stringify( { title, description, image, coordinates } ),
 			credentials: 'include'
 		} ).then( ()=> {
-			hideOverlay();
-			window.location.reload();
+			invalidate( `/trips/${owner}/${id}` ).then( () => {
+				hideOverlay();
+				window.location.reload();
+			} );
 		} );
 	};
 }
 
-export function showCollectionEditor( ev, title, description, id, thumb, lat, lon ) {
+export function showCollectionEditor( ev, owner, title, description, id, thumb, lat, lon ) {
 	thumb = thumb || {};
 	showOverlay( ev, <CollectionEditorOverlay
 		title={title}
 		thumbnail={thumb}
 		description={description}
 		onExit={hideOverlay}
-		onSaveCollection={getSaveCollectionHandler( id, thumb.title, lat, lon )} /> );
+		onSaveCollection={getSaveCollectionHandler( owner, id, thumb.title, lat, lon )} /> );
 }
 
 export function showCollectionOverlay( ev, title, data ) {

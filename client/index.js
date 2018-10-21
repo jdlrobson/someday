@@ -117,7 +117,7 @@ addEventListener( '.action--collection-edit',
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
 			let coords = getCoordsFromPages( data.pages );
 			const thumbnail = data.thumbnail || {};
-			showCollectionEditor( ev, data.title, data.description, data.id,
+			showCollectionEditor( ev, data.owner, data.title, data.description, data.id,
 				thumbnail, coords.lat, coords.lon
 			);
 		} );
