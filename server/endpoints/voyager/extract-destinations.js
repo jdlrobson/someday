@@ -41,10 +41,12 @@ function extractFromList( html ) {
 		if ( listItem.parentNode ) {
 			listItem.parentNode.removeChild( listItem );
 		}
-		console.log( 'go', title, listItem.textContent.trim(),
-			cleanDescription( listItem.textContent.trim() ) );
-		titles.push( { title: title,
-			description: cleanDescription( listItem.textContent.trim() ) } );
+		if ( listItem && listItem.textContent ) {
+			const text = listItem.textContent.trim();
+			const description = cleanDescription( text );
+			console.log( 'go', title, text, description );
+			titles.push( { title, description } );
+		}
 	} );
 	html = ext.document.body.innerHTML.trim();
 
