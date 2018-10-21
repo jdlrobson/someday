@@ -51,6 +51,13 @@ function mwApiWithToken( params, token ) {
 		.then( ( resp ) => resp.json() );
 }
 
+export function invalidate( path ) {
+	return fetch( `/api/voyager/invalidate/${encodeURIComponent( path )}`, {
+		method: 'POST',
+		credentials: 'include'
+	} );
+}
+
 function getSaveHandler( title, section ) {
 	return function ( ev ) {
 		showSpinnerOverlay( ev );
@@ -65,8 +72,11 @@ function getSaveHandler( title, section ) {
 			text
 		}, 'csrf' ).then( ( resp ) => {
 			const rev = resp.edit.newrevid;
-			hideOverlay();
-			location.href = location.origin + '/destination/' + title + '/rev/' + rev;
+			const path = '/destination/' + title + '/rev/' + rev;
+			return invalidate( path ).then( () => {
+				hideOverlay();
+				location.href = location.origin + path;
+			} );
 		} );
 	};
 }
