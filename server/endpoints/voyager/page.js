@@ -83,6 +83,7 @@ function voyager( title, lang, project, data ) {
 		var allImages = [];
 		var logistics = [];
 		var sights = [];
+		var sightsBackup = [];
 		var allDestinations = [];
 		var allMaps = [];
 		var curSectionLine;
@@ -149,7 +150,7 @@ function voyager( title, lang, project, data ) {
 				section.text = doc.body.innerHTML;
 				if ( SIGHT_HEADINGS.indexOf( section.line ) === -1 ) {
 					// Maybe the heading itself is a place. e.g. Dali
-					sights.push( { name: section.line } );
+					sightsBackup.push( { name: section.line } );
 				}
 				if ( !data.lead.section_ids.sights ) {
 					data.lead.section_ids.sights = section.id;
@@ -290,6 +291,9 @@ function voyager( title, lang, project, data ) {
 			warnings
 		} );
 		if ( !isRegion ) {
+			if ( sights.length < 10 ) {
+				sights = sights.concat( sightsBackup );
+			}
 			data.lead.sights = sights;
 		}
 		if ( !isEmptySectionArray( logistics ) ) {

@@ -4,24 +4,16 @@ import calculateDistance from './calculate-distance';
 const aliases = {};
 
 export function addAliases( sights, country ) {
-	const numPossibleSights = sights.length;
-
 	sights = sights.map( ( sightObj ) => {
 		return sightObj.name.replace( /_/g, ' ' );
 	} );
-	sights.forEach( ( sight, i ) => {
-		const words = sight.split( ' ' );
+	sights.forEach( ( sight ) => {
 		const segments = sight.split( / - / );
 		const theLessSight = sight.replace( /[Tt]he /, '' );
 
-		if ( i < numPossibleSights && words.length === 2 ) {
-			// if 2 words we also switch them
-			// e.g. Castle Coole may be Coole Castle.
-			aliases[ words[ 1 ] + ' ' + words[ 0 ] ] = sight;
-		}
 		// e.g. The Eastern States Exposition - "The Big E"
 		// on Springfield%20(Massachusetts)
-		if ( segments.length === 2 ) {
+		if ( segments.length === 2 && sights < 50 ) {
 			aliases[ segments[ 0 ] ] = sight;
 			aliases[ segments[ 1 ] ] = sight;
 		}
