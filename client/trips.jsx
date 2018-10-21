@@ -7,6 +7,10 @@ import calc from './WorldMap/calculate-bounds-from-pages';
 import { invalidate } from './edit.jsx';
 import './trips.less';
 
+export function getThumbFromPages( pages ) {
+	return pages.filter( page => page.thumbnail )[ 0 ].thumbnail;
+}
+
 export function getCoordsFromPages( pages ) {
 	const data = calc( pages );
 	return {

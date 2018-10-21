@@ -13,6 +13,7 @@ import { showEditOverlay } from './edit.jsx';
 import { showNoteOverlay } from './notes.jsx';
 import { showSearchOverlay } from './search.jsx';
 import { showCollectionOverlay, showCollectionEditor,
+	getThumbFromPages,
 	getTrips, getTrip, getCoordsFromPages } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 import offline from './offline';
@@ -116,7 +117,7 @@ addEventListener( '.action--collection-edit',
 		const id = window.location.pathname.split( '/' ).slice( -2 );
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
 			let coords = getCoordsFromPages( data.pages );
-			const thumbnail = data.thumbnail || {};
+			const thumbnail = data.thumbnail || getThumbFromPages( data.pages );
 			showCollectionEditor( ev, data.owner, data.title, data.description, data.id,
 				thumbnail, coords.lat, coords.lon
 			);
