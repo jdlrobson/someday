@@ -10,9 +10,9 @@ describe( 'add-sights', function () {
 					'Sri_Mariamman_Hindu_Temple'
 				],
 				[
-					'Sri_Mariamman_Hindu_Temple',
-					'Sri_Mariamman_Hindu_Temple,_Singapore',
-					'Sri_Mariamman_Hindu_Temple,_(Singapore)'
+					'Sri Mariamman Hindu Temple',
+					'Sri Mariamman Hindu Temple, Singapore',
+					'Sri Mariamman Hindu Temple (Singapore)'
 				]
 			]
 		];

@@ -45,12 +45,11 @@ export default function ( doc ) {
 			return title && title.split( ':' )[ 1 ];
 		} );
 	text = doc.body.innerHTML;
-	sights = sights.concat(
+	return sights.concat(
 		extractBoldItems( text ).map( nameToObj )
 	).concat( wikipediaTitles.map( nameToObjTrusted ) ).concat(
 		extractElementsTextContent(
 			links.filter( ( link )=> !excludeWikipediaLinks( link ) )
 		).map( nameToObj )
 	);
-	return sights;
 }

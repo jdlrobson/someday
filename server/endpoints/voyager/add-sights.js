@@ -6,8 +6,10 @@ const aliases = {};
 export function addAliases( sights, country ) {
 	const numPossibleSights = sights.length;
 
-	sights.forEach( ( sightObj, i ) => {
-		const sight = sightObj.name;
+	sights = sights.map( ( sightObj ) => {
+		return sightObj.name.replace( /_/g, ' ' );
+	} );
+	sights.forEach( ( sight, i ) => {
 		const words = sight.split( ' ' );
 		const segments = sight.split( / - / );
 		const theLessSight = sight.replace( /[Tt]he /, '' );
@@ -23,8 +25,8 @@ export function addAliases( sights, country ) {
 			aliases[ segments[ 0 ] ] = sight;
 			aliases[ segments[ 1 ] ] = sight;
 		}
-		aliases[ `${sight},_${country}` ] = sight;
-		aliases[ `${sight}_(${country})` ] = sight;
+		aliases[ `${sight}, ${country}` ] = sight;
+		aliases[ `${sight} (${country})` ] = sight;
 		if ( sight.indexOf( '(' ) > -1 ) {
 			aliases[ sight.replace( /\(.*\)/, '' ).trim() ] = sight;
 		}
@@ -33,9 +35,7 @@ export function addAliases( sights, country ) {
 		}
 	} );
 
-	return sights.map( ( sight ) => {
-		return sight.name;
-	} ).concat( Object.keys( aliases ) );
+	return sights.concat( Object.keys( aliases ) );
 }
 /**
  * @param {Object} data
