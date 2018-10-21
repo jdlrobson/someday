@@ -29,12 +29,17 @@ export function getTrip( username, id ) {
 		.then( ( data )=> data.json() );
 }
 
+export function invalidateTrip( username, id ) {
+	return invalidate( `/trips/${username}/${id}` ).then( () => {
+		return invalidate( `/trips/${username}` );
+	} );
+}
 function addToCollection( id, username, title ) {
 	return fetch( `/api/private/collection/${id}/add/${title}`, {
 		method: 'POST',
 		credentials: 'include'
 	} ).then( ( data ) => {
-		return invalidate( `/trips/${username}/${id}` ).then( () => {
+		return invalidateTrip( username, id ).then( () => {
 			return data.json();
 		} );
 	} );
@@ -45,7 +50,7 @@ function removeFromCollection( id, username, title ) {
 		method: 'POST',
 		credentials: 'include'
 	} ).then( ( data ) => {
-		return invalidate( `/trips/${username}/${id}` ).then( () => {
+		return invalidateTrip( username, id ).then( () => {
 			return data.json();
 		} );
 	} );
@@ -103,7 +108,7 @@ function getSaveCollectionHandler( owner, id, image, lat, lon ) {
 			body: JSON.stringify( { title, description, image, coordinates } ),
 			credentials: 'include'
 		} ).then( ()=> {
-			invalidate( `/trips/${owner}/${id}` ).then( () => {
+			invalidateTrip( owner, id ).then( () => {
 				hideOverlay();
 				window.location.reload();
 			} );
