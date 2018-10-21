@@ -60,7 +60,7 @@ function addSights( data, distance ) {
 			return !matched;
 		} );
 
-		return addProps( sights.slice( 0, 50 ), props, 'en', 'wikipedia', {
+		return addProps( sights, props, 'en', 'wikipedia', {
 			ppprop: 'disambiguation'
 		} )
 			.then( ( sightPages ) => {

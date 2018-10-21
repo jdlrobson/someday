@@ -1,12 +1,29 @@
 import mwApi from './mwApi';
 
+function unique( pages ) {
+	return pages.filter( ( page, i ) => {
+		return pages.findIndex( ( anotherPage ) => {
+			return anotherPage.title === page.title
+		} ) === i;
+	} );
+}
 function propEnricher( arr, props, lang, project, params ) {
 	lang = lang || 'en';
 	project = project || 'wikipedia';
 	params = params || {};
 
 	if ( arr.length > 50 ) {
-		throw 'Too many items passed. Max limit is 50.';
+		const promises = [];
+		for ( let i = 0; i < 200; i = i + 50 ) {
+			promises.push(
+				propEnricher( arr.slice( i, i + 50 ), props, lang, project, params )
+			);
+		}
+		return Promise.all( promises ).then( ( pagesArr ) => {
+			const emptyArr = [];
+			const combinedPages = emptyArr.concat.apply( emptyArr, pagesArr );
+			return unique( combinedPages );
+		} );
 	}
 
 	var titles = [];
