@@ -1,0 +1,14 @@
+@import './../globals.less';
+
+.grid-row {
+  display: grid;
+  margin: auto;
+  grid-template-columns: 100%;
+}
+
+@media ( min-width: @breakpoint ) {
+  .grid-row {
+    max-width: @breakpoint;
+    grid-template-columns: @grid-column-size (@grid-column-size*2) @grid-column-size;
+  }
+}

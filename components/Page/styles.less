@@ -4,16 +4,3 @@
   background-color: @someday-blue;
   min-height: 100%;
 }
-
-.page__contents {
-  display: grid;
-  margin: auto;
-  grid-template-columns: 100%;
-}
-
-@media ( min-width: @breakpoint ) {
-  .page__contents {
-    max-width: @breakpoint;
-    grid-template-columns: @grid-column-size (@grid-column-size*2) @grid-column-size;
-  }
-}
