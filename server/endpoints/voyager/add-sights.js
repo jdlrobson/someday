@@ -3,7 +3,7 @@ import calculateDistance from './calculate-distance';
 
 const aliases = {};
 
-function addAliases( sights ) {
+export function addAliases( sights, country ) {
 	const numPossibleSights = sights.length;
 
 	sights.forEach( ( sightObj, i ) => {
@@ -23,6 +23,8 @@ function addAliases( sights ) {
 			aliases[ segments[ 0 ] ] = sight;
 			aliases[ segments[ 1 ] ] = sight;
 		}
+		aliases[ `${sight},_${country}` ] = sight;
+		aliases[ `${sight}_(${country})` ] = sight;
 		if ( sight.indexOf( '(' ) > -1 ) {
 			aliases[ sight.replace( /\(.*\)/, '' ).trim() ] = sight;
 		}
@@ -48,7 +50,7 @@ function addSights( data, distance ) {
 		data.lead.sights.forEach( ( sight ) => {
 			lookup[ sight.name ] = sight;
 		} );
-		var sights = addAliases( data.lead.sights );
+		var sights = addAliases( data.lead.sights, data.lead.displaytitle );
 		// dedupe
 		const matches = {};
 		sights = sights.filter( function ( item ) {
