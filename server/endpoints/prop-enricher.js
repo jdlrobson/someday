@@ -3,7 +3,7 @@ import mwApi from './mwApi';
 function unique( pages ) {
 	return pages.filter( ( page, i ) => {
 		return pages.findIndex( ( anotherPage ) => {
-			return anotherPage.title === page.title
+			return anotherPage.title === page.title;
 		} ) === i;
 	} );
 }
