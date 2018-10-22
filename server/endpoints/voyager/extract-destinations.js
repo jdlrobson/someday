@@ -38,14 +38,18 @@ function extractFromList( html ) {
 		const title = node.getAttribute( 'title' );
 		const listItem = getParentWithTag( node, 'LI' );
 		node.parentNode.removeChild( node );
-		if ( listItem.parentNode ) {
-			listItem.parentNode.removeChild( listItem );
-		}
 		if ( listItem && listItem.textContent ) {
 			const text = listItem.textContent.trim();
 			const description = cleanDescription( text );
 			console.log( 'go', title, text, description );
 			titles.push( { title, description } );
+		} else {
+			// no description
+			titles.push( { title } );
+		}
+		// cleanup
+		if ( listItem.parentNode ) {
+			listItem.parentNode.removeChild( listItem );
 		}
 	} );
 	html = ext.document.body.innerHTML.trim();

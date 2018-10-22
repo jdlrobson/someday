@@ -252,4 +252,12 @@ describe( 'extract-destinations', function () {
 		assert.ok( section.text.indexOf( 'Buses and one Amtrak train per day link' ) === -1 );
 		assert.ok( section.text.indexOf( 'the peninsula has excellent nature preserves' ) === -1 );
 	} );
+	it( 'Tobago', function () {
+		const section = {
+			text: `<ul><li><span class="vcard"><span id="Scarborough" class="fn org listing-name"><b><a href="./Scarborough_(Trinidad_and_Tobago)" title="Scarborough (Trinidad and Tobago)">Scarborough</a></b></span></span></li>
+			<li><span class="vcard"><span id="Charlotteville" class="fn org listing-name"><b><a class="new" href="./Charlotteville" title="Charlotteville">Charlotteville</a></b></span></span></li>
+			<li><span class="vcard"><span id="Crown_Point" class="fn org listing-name"><b><a class="new" href="./Crown%20Point" title="Crown Point">Crown Point</a></b></span></span></li></ul>`
+		};
+		assert.strictEqual( extract( section ).destinations.length, 3 );
+	} );
 } );
