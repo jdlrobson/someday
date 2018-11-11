@@ -6,8 +6,10 @@
 body {
   padding: 0;
   margin: 0;
+  transition: margin-top 0.3s ease-in;
   &.--overlay-enabled {
     height: 100%;
+    margin-top: -@search-offset;
     overflow: hidden;
 
     .page {
@@ -103,6 +105,12 @@ a {
 }
 
 @media ( min-width: @breakpoint ) {
+  body {
+    &.--overlay-enabled {
+      height: 100%;
+      margin-top: 0;
+    }
+  }
   .drawer {
     top: 10%;
     bottom: 30%;

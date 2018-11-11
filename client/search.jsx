@@ -1,5 +1,5 @@
 import React from 'react';
-import { showOverlay, refreshOverlay } from './overlay';
+import { showOverlay, hideOverlay, refreshOverlay } from './overlay';
 import { Input, Overlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
@@ -66,7 +66,9 @@ function getSearchOverlay( children, onChange ) {
 	return (
 		<Overlay className="search-overlay">
 			<Input autoFocus onChange={onChange}
+				placeholder="Where do you want to go today?"
 				key="search" />
+			<a onClick={hideOverlay} className="search-overlay__hide">Back to guide</a>
 			<div className="search-overlay__results">{children}</div>
 		</Overlay>
 	);

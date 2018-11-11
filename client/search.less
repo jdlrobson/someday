@@ -1,12 +1,24 @@
+@import "./../components/globals.less";
 .search-overlay {
-    top: 286px !important;
+    top: 42px !important;
     bottom: 0px !important;
     .overlay-content {
         overflow-y: hidden !important;
     }
 }
+.search-overlay__hide {
+    display: block;
+    padding: 8px;
+    text-align: center;
+}
 .search-overlay__results {
     overflow-y: auto;
     height: 100%;
     padding-bottom: 40px;
+}
+
+@media ( min-width: @breakpoint ) {
+    .search-overlay {
+        top: @search-offset !important;
+    }
 }
