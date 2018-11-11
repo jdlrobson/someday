@@ -129,7 +129,7 @@ export default class DestinationPage extends React.Component {
 					</Note>
 					<Note key="note-3">
 						<p key="note-3-1">More information available on <a
-							href={'https://wikivoyage.org/wiki/' + lead.normalizedtitle}>Wikivoyage</a></p>
+							href={'https://wikivoyage.org/wiki/' + lead.title}>Wikivoyage</a></p>
 					</Note>
 					<OfflineBanner />
 				</Column>

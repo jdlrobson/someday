@@ -3,7 +3,7 @@ import { Page, Menu, PageBanner, Column, Note, ImageSlideshow } from './../compo
 
 export default class Sight extends React.Component {
 	render() {
-		const { extract, meta, titles, displaytitle, coordinates, thumbnail } = this.props;
+		const { extract, meta, title, displaytitle, coordinates, thumbnail } = this.props;
 		const { params } = meta;
 		const dest = params.dest;
 		const lat = coordinates && coordinates.lat;
@@ -23,7 +23,7 @@ export default class Sight extends React.Component {
 					</Note>
 					<Note>
 						<p>More information available on <a
-							href={`https://en.wikipedia.org/wiki/${titles.canonical}`}>Wikipedia</a></p>
+							href={`https://en.wikipedia.org/wiki/${title}`}>Wikipedia</a></p>
 						{
 							lat &&
 								( <p><a href={`geo:${lat},${lon}`}>Load in maps</a></p> )

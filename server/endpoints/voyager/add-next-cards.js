@@ -7,7 +7,7 @@ export default function addNextCards( data, lang, project, pages, isRegion ) {
 	}
 	return addProps( pages, props,
 		lang, project,
-		{ codistancefrompage: data.lead.normalizedtitle || data.lead.displaytitle }
+		{ codistancefrompage: data.lead.title || data.lead.displaytitle }
 	).then( function () {
 		var destinations = [];
 		data.remaining.sections.forEach( function ( section ) {
