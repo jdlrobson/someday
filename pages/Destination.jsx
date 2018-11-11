@@ -51,7 +51,7 @@ function leftBoxes( lead ) {
 		boxes.push( [
 			'Sights',
 			sights.map(
-				sightToCard( lead.normalizedtitle )
+				sightToCard( lead.title )
 			).concat(
 				editButton( section_ids.sights )
 			)
@@ -103,7 +103,7 @@ export default class DestinationPage extends React.Component {
 		const lead = this.props.lead;
 		const { paragraph, coordinates } = lead;
 		return (
-			<Page title={lead.normalizedtitle}>
+			<Page title={lead.title}>
 				<Column key="col-1" col={1}>{leftBoxes( lead )}</Column>
 				<Column key="col-2">
 					<Menu username={this.props.meta.username} key="menu" />
