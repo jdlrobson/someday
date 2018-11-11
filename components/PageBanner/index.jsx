@@ -39,6 +39,10 @@ function className( name, modifier ) {
 	return modifier ? `${name} ${name}--${modifier}` : name;
 }
 
+function headingClassName( len ) {
+	return len > 20 ? 'component-page-banner__title--long' : '';
+}
+
 export default class PageBanner extends React.Component {
 	render() {
 		var props = this.props;
@@ -66,7 +70,7 @@ export default class PageBanner extends React.Component {
 						</h1>
 						<div className={className( 'component-page-banner__subtitle', modifier )}>{props.slogan}</div>
 						<div>
-							<h2 key="article-title" className="component-page-banner__title"
+							<h2 key="article-title" className={"component-page-banner__title " + headingClassName( title.length )}
 								id="section_0">{title}</h2>
 							<p>{description}</p>
 						</div>
