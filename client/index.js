@@ -109,6 +109,9 @@ addEventListener( '#map', 'click', function ( ev ) {
 		);
 	}
 } );
+addEventListener( 'h1', 'click', function ( ev ) {
+	ev.stopPropagation();
+} );
 
 // allow editing of collections
 addEventListener( '.action--collection-edit',

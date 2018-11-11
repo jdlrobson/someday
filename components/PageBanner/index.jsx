@@ -60,7 +60,9 @@ export default class PageBanner extends React.Component {
 				<div style={leadBannerStyles} className="component-page-banner__banner">
 					<Content>
 						<h1 className={ className( 'component-page-banner__site-image', modifier )}>
-							<img src="/images/someday-map.png" alt='Someday' height="146" width="400" />
+							<a href="/">
+								<img src="/images/someday-map.png" alt='Someday' height="146" width="400" />
+							</a>
 						</h1>
 						<div className={className( 'component-page-banner__subtitle', modifier )}>{props.slogan}</div>
 						<div>
