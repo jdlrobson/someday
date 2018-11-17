@@ -4,11 +4,14 @@ import NodeCache from 'node-cache';
 import respond from './respond.js';
 import fs from 'fs';
 
-const TTL = 60 * 60 * 0.5; // 30m
+const TTL = 60 * 60 * 1; // 1hr
 
 const shortLifeCache = new NodeCache( { stdTTL: TTL,
 	checkperiod: TTL } );
 
+const CACHE_WAIT_TIME = 1000;
+// When a page is invalidated, it appears in this list
+// and will not be cached again until 1s has passed
 let blacklist = [];
 
 const OFFLINE_MODE = false;
@@ -54,7 +57,7 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 				}
 			}
 			res.status( 200 );
-			res.send( responseText );
+			res.send( `${responseText}<!-- CACHEKEY: ${cacheKey} -->` );
 		}, function () {
 			respond( res, method ).then( function ( newResponseText ) {
 				putText( cacheKey, newResponseText );
@@ -68,10 +71,17 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 
 function invalidate( url ) {
 	return new Promise( ( resolve, reject ) => {
-		shortLifeCache.get( url, function ( err, responseText ) {
+		const keys = [
+			url,
+			// global key (not user specific)
+			url.split( ':' )[ 0 ]
+		];
+		shortLifeCache.mget( keys, function ( err, responseText ) {
 			if ( responseText ) {
 				blacklist.push( url );
-				shortLifeCache.del( url );
+				keys.forEach( ( url ) => {
+					shortLifeCache.del( url );
+				} );
 				// give 1s for cache to warm up
 				setTimeout( function () {
 					var i = blacklist.indexOf( url );
@@ -79,7 +89,7 @@ function invalidate( url ) {
 						blacklist.splice( i, 1 );
 					}
 					resolve();
-				}, 1000 );
+				}, CACHE_WAIT_TIME );
 			} else {
 				reject( `failed to invalidate ${url}` );
 			}

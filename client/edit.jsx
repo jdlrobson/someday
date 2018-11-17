@@ -5,6 +5,7 @@ import qs from 'query-string';
 import './edit.less';
 
 const HOST = '/api/wikimedia/en.wikivoyage.org/api.php';
+const api = document.body.getAttribute( 'data-api' );
 const location = window.location;
 let currentEdit = '';
 
@@ -59,6 +60,14 @@ export function invalidate( path ) {
 	} );
 }
 
+function titleToCanonical( title ) {
+	return title.replace( / /g, '_' );
+}
+
+function invalidateApiForThisPage() {
+	return invalidate( '/api' + api.split( '/api' )[ 1 ] );
+}
+
 function getSaveHandler( title, section ) {
 	return function ( ev ) {
 		showSpinnerOverlay( ev );
@@ -72,11 +81,15 @@ function getSaveHandler( title, section ) {
 			section,
 			text
 		}, 'csrf' ).then( ( resp ) => {
-			const rev = resp.edit.newrevid;
-			const path = '/destination/' + title + '/rev/' + rev;
-			return invalidate( path ).then( () => {
-				hideOverlay();
-				location.href = location.origin + path;
+			const edit = resp.edit;
+			const rev = edit.newrevid;
+			const title = edit.title;
+			const path = '/destination/' + titleToCanonical( title );
+			return invalidateApiForThisPage().then( () => {
+				return invalidate( path ).then( () => {
+					hideOverlay();
+					location.href = location.origin + path + '/rev/' + rev;
+				} );
 			} );
 		} );
 	};
