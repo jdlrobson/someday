@@ -2,6 +2,7 @@ import React from 'react';
 import { showOverlay, hideOverlay } from './overlay';
 import { Overlay, Input, Button } from 'wikipedia-react-components';
 import qs from 'query-string';
+import './edit.less';
 
 const HOST = '/api/wikimedia/en.wikivoyage.org/api.php';
 const location = window.location;
