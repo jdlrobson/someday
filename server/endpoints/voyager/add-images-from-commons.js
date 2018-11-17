@@ -2,6 +2,8 @@ import mwApi from './../mwApi';
 
 // List of phrases we do not want to see in categories
 const CATEGORY_BLACKLIST = [
+	'cars',
+	'insects on ',
 	'airport',
 	// a favorite activity but not interesting
 	'footprints on sand',
