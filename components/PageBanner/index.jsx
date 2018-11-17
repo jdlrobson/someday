@@ -70,7 +70,7 @@ export default class PageBanner extends React.Component {
 						</h1>
 						<div className={className( 'component-page-banner__subtitle', modifier )}>{props.slogan}</div>
 						<div>
-							<h2 key="article-title" className={"component-page-banner__title " + headingClassName( title.length )}
+							<h2 key="article-title" className={'component-page-banner__title ' + headingClassName( title.length )}
 								id="section_0">{title}</h2>
 							<p>{description}</p>
 						</div>
