@@ -4,7 +4,7 @@ import NodeCache from 'node-cache';
 import respond from './respond.js';
 import fs from 'fs';
 
-const TTL = 60 * 60 * 500; // 500hrs
+const TTL = 60 * 60 * 0.5; // 30m
 
 const shortLifeCache = new NodeCache( { stdTTL: TTL,
 	checkperiod: TTL } );
