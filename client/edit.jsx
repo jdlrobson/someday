@@ -7,6 +7,7 @@ import './edit.less';
 const HOST = '/api/wikimedia/en.wikivoyage.org/api.php';
 const api = document.body.getAttribute( 'data-api' );
 const location = window.location;
+let summary = 'Edit via the someday app';
 let currentEdit = '';
 
 function showSpinnerOverlay( ev ) {
@@ -77,7 +78,7 @@ function getSaveHandler( title, section ) {
 			title: title,
 			basetimestamp: null, // revision timestamp
 			starttimestamp: null,
-			summary: 'Edit via the someday app',
+			summary,
 			section,
 			text
 		}, 'csrf' ).then( ( resp ) => {
@@ -113,16 +114,24 @@ function setCurrentEdit( ev ) {
 	currentEdit = ev.currentTarget.value;
 }
 
+function setSummary( ev ) {
+	summary = ev.currentTarget.value;
+}
+
 export function showEditOverlay( ev, title, section ) {
 	getWikitext( title, section ).then( ( wikitext ) => {
 		currentEdit = wikitext;
 		showOverlay( ev,
 			<Overlay className="editor-drawer">
-				<h1 key="edit-heading">Edit this content</h1>
+				<h1 key="edit-heading" className="editor-drawer__heading">Edit this content</h1>
 				<p key="edit-desc">Edits are public and update the original content on wikivoyage.org</p>
 				<Input textarea="true" key="edit-text"
+					className="editor-drawer__textarea"
 					defaultValue={wikitext} onChange={setCurrentEdit}
-					placeholder="Write a note for yourself here."></Input>
+					placeholder="Tell people about this place!"></Input>
+				<Input key="edit-summary" className="editor-drawer__summary"
+					defaultValue={summary} onChange={setSummary}
+					placeholder="Tell others what your edit did to improve things"></Input>
 				<Button key="edit-save" onClick={getSaveHandler( title, section )} label="Done"></Button>
 				<Button key="edit-cancel" onClick={hideOverlay}>Cancel</Button>
 			</Overlay>
