@@ -17,6 +17,10 @@ function extractImages( section ) {
 		var caption = node.querySelector( 'figcaption' );
 		var link = node.querySelector( 'a.image' );
 		var src = img.getAttribute( 'src' );
+		// Issue #14 - images may not be captioned!
+		if ( !link || !caption ) {
+			return;
+		}
 
 		var imgData = {
 			href: link ? link.getAttribute( 'href' ) : extractTitle( src ),
@@ -26,14 +30,14 @@ function extractImages( section ) {
 			height: img.getAttribute( 'height' ),
 			width: img.getAttribute( 'width' )
 		};
-		var captionLc = imgData.caption.toLowerCase();
+		var captionLc = imgData && imgData.caption.toLowerCase();
 		if ( imgData.href.toLowerCase().indexOf( 'map' ) > -1 ||
-      captionLc.indexOf( 'visa policy' ) > -1 ||
-      captionLc.indexOf( 'metro lines' ) > -1 ||
-      captionLc.indexOf( 'tube lines' ) > -1 ||
-      captionLc.indexOf( 'map' ) > -1 ||
-      captionLc.indexOf( 'worldwide' ) > -1 ||
-      captionLc.indexOf( 'region' ) > -1
+			captionLc.indexOf( 'visa policy' ) > -1 ||
+			captionLc.indexOf( 'metro lines' ) > -1 ||
+			captionLc.indexOf( 'tube lines' ) > -1 ||
+			captionLc.indexOf( 'map' ) > -1 ||
+			captionLc.indexOf( 'worldwide' ) > -1 ||
+			captionLc.indexOf( 'region' ) > -1
 		) {
 			maps.push( imgData );
 		} else {
