@@ -14,23 +14,24 @@ function extractImages( section ) {
 			// Certain thumbs may be empty e.g. Algeria
 			return;
 		}
-		var caption = node.querySelector( 'figcaption' );
+		var figcaption = node.querySelector( 'figcaption' );
 		var link = node.querySelector( 'a.image' );
 		var src = img.getAttribute( 'src' );
-		// Issue #14 - images may not be captioned!
-		if ( !link || !caption ) {
+		var caption = figcaption ? figcaption.textContent || '' : '';
+		// Issue #14 - images may not have a link
+		if ( !link ) {
 			return;
 		}
 
 		var imgData = {
 			href: link ? link.getAttribute( 'href' ) : extractTitle( src ),
-			caption: caption ? caption.textContent : '',
+			caption,
 			src: src,
 			srcset: img.getAttribute( 'srcset' ),
 			height: img.getAttribute( 'height' ),
 			width: img.getAttribute( 'width' )
 		};
-		var captionLc = imgData && imgData.caption.toLowerCase();
+		var captionLc = caption.toLowerCase();
 		if ( imgData.href.toLowerCase().indexOf( 'map' ) > -1 ||
 			captionLc.indexOf( 'visa policy' ) > -1 ||
 			captionLc.indexOf( 'metro lines' ) > -1 ||
