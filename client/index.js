@@ -9,6 +9,7 @@ import './index.less';
 // Import helpers
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { router as overlayRouter } from './overlay';
 import { showEditOverlay } from './edit.jsx';
 import { showNoteOverlay } from './notes.jsx';
 import { showSearchOverlay } from './search.jsx';
@@ -20,6 +21,12 @@ import offline from './offline';
 
 const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
+
+const router = overlayRouter();
+router.on( '/editor/:title/:id', ( options ) => {
+	showEditOverlay( null, options.title, options.id );
+} );
+
 let bodyClasses = user ? ' client-js client-auth' : ' client-js';
 if ( !navigator.onLine ) {
 	bodyClasses += ' client-no-connection';
@@ -32,6 +39,7 @@ function getNodes( selector ) {
 
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
 	icon.addEventListener( 'click', function ( ev ) {
+		ev.stopPropagation();
 		showNoteOverlay( ev, title );
 	} );
 } );
@@ -50,7 +58,9 @@ addEventListener(
 		const target = ev.target;
 		const id = target.getAttribute( 'data-id' );
 		if ( id ) {
-			showEditOverlay( ev, title, id );
+			// Otherwise all clicks to open an overlay will trigger the hideOverlay listener above
+			ev.stopPropagation();
+			router.navigate( `/editor/${title}/${id}/` );
 		} else {
 			target.setAttribute( 'disabled' );
 		}
@@ -87,12 +97,14 @@ addEventListener( '.action--add-trip',
 	'click',
 	function ( ev ) {
 		getTrips( title ).then( function ( data ) {
+			ev.stopPropagation();
 			showCollectionOverlay( ev, title, data );
 		} );
 	}
 );
 
 document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
+	ev.stopPropagation();
 	showSearchOverlay( ev );
 } );
 
@@ -100,6 +112,7 @@ document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
 addEventListener( '#map', 'click', function ( ev ) {
 	const api = this.getAttribute( 'data-api' );
 	const withPath = this.getAttribute( 'data-with-path' );
+	ev.stopPropagation();
 	if ( api ) {
 		showMapOverlayWithPages( ev, api, withPath );
 	} else {
@@ -117,6 +130,7 @@ addEventListener( 'h1', 'click', function ( ev ) {
 addEventListener( '.action--collection-edit',
 	'click',
 	function ( ev ) {
+		ev.stopPropagation();
 		const id = window.location.pathname.split( '/' ).slice( -2 );
 		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
 			let coords = getCoordsFromPages( data.pages );
