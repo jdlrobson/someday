@@ -302,7 +302,6 @@ function voyager( title, lang, project, data ) {
 		if ( !isEmptySectionArray( orientation ) ) {
 			data.orientation = orientation;
 		}
-
 		if ( allDestinations.length || sights.length ) {
 			return addNextCards( data, lang, project, allDestinations, isRegion )
 				.then( ( data ) => {

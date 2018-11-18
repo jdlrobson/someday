@@ -39,10 +39,18 @@ function addSights( data, distance ) {
 	var landmark = data.lead.coordinates;
 	if ( data.lead.sights && landmark ) {
 		const lookup = {};
-		data.lead.sights.forEach( ( sight ) => {
+		const origSights = data.lead.sights;
+		origSights.forEach( ( sight ) => {
 			lookup[ sight.name ] = sight;
 		} );
-		var sights = addAliases( data.lead.sights, data.lead.displaytitle );
+		const isExternal = ( sight ) => {
+			return sight.external;
+		};
+		const externalSights = origSights.filter( isExternal );
+		var sights = addAliases(
+			data.lead.sights.filter( ( s ) => !isExternal( s ) ),
+			data.lead.displaytitle
+		);
 		// dedupe
 		const matches = {};
 		sights = sights.filter( function ( item ) {
@@ -94,7 +102,7 @@ function addSights( data, distance ) {
 						page.description = item.description;
 					}
 					return page;
-				} );
+				} ).concat( externalSights );
 				// filter all the sights which we found something for
 				data.warnings = Object.keys( sightWarnings ).filter( ( key ) => {
 					return sightWarnings[ key ];

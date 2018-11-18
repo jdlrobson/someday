@@ -1,5 +1,4 @@
-import extractBoldItems from './extract-bold-items';
-import { extractElements, extractElementsTextContent } from './domino-utils';
+import { extractElements } from './domino-utils';
 import getParentWithTag from './get-parent-with-tag';
 
 export default function ( doc ) {
@@ -22,34 +21,45 @@ export default function ( doc ) {
 		} );
 	}
 
-	const nameToObj = ( name ) => {
-		return {
-			name
-		};
-	};
 	const nameToObjTrusted = ( name ) => {
 		return {
 			name,
 			trusted: true
 		};
 	};
-	const excludeWikipediaLinks = ( link ) => {
-		const title = link.getAttribute( 'title' );
-		return title && title.indexOf( 'w:' ) === 0;
-	};
-	const links = extractElements( text, 'a, b', true ).extracted;
-	const wikipediaTitles = Array.from( links )
-		.filter( excludeWikipediaLinks )
-		.map( ( link ) => {
-			const title = link.getAttribute( 'title' );
-			return title && title.split( ':' )[ 1 ];
+	const linksAndBolds = extractElements( text, 'a, b', true ).extracted;
+	const parsedSights = Array.from( linksAndBolds )
+		.map( ( node ) => {
+			const title = node.getAttribute( 'title' );
+			const url = node.getAttribute( 'href' );
+			const rel = node.getAttribute( 'rel' );
+			const listingName = node.querySelectorAll( '.listing-name' );
+			if ( title && title.indexOf( 'w:' ) === 0 ) {
+				// a wikipedia link
+				return nameToObjTrusted( title && title.split( ':' )[ 1 ] );
+			} else if ( url && rel === 'mw:ExtLink' && listingName.length ) {
+				const name = listingName[ 0 ].textContent;
+				return {
+					name,
+					title: name,
+					url,
+					external: true
+				};
+			} else {
+				return {
+					name: node.textContent
+				};
+			}
 		} );
 	text = doc.body.innerHTML;
-	return sights.concat(
-		extractBoldItems( text ).map( nameToObj )
-	).concat( wikipediaTitles.map( nameToObjTrusted ) ).concat(
-		extractElementsTextContent(
-			links.filter( ( link )=> !excludeWikipediaLinks( link ) )
-		).map( nameToObj )
-	);
+	parsedSights.forEach( ( sight, i ) => {
+		const j = parsedSights.findIndex( s => s.name === sight.name );
+		if ( i !== j ) {
+			// merge into 1st occurance
+			parsedSights[ j ] = Object.assign( parsedSights[ j ], sight );
+			// mark for removal
+			parsedSights[ i ] = false;
+		}
+	} );
+	return sights.concat( parsedSights.filter( sight => !!sight ) );
 }

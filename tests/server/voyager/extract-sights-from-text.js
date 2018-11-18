@@ -17,4 +17,13 @@ describe( 'extract-sights-from-text', function () {
 		// Night Safari (Singapore) : Night Safari, Singapore : Singapore Night Safari
 		assert.strictEqual( sights.length, 10 );
 	} );
+	it( 'billericay (external links)', () => {
+		const html = '<ul id="mwJQ"><li id="mwJg"><bdi class="vcard" about="#mwt6" typeof="mw:Transclusion" data-mw="{&quot;parts&quot;:[{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;do\n&quot;,&quot;href&quot;:&quot;./Template:Do&quot;},&quot;params&quot;:{&quot;name&quot;:{&quot;wt&quot;:&quot;Barleylands&quot;},&quot;alt&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;url&quot;:{&quot;wt&quot;:&quot;http://www.barleylands.co.uk&quot;},&quot;email&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;address&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;lat&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;long&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;directions&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;phone&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;tollfree&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;fax&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;hours&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;price&quot;:{&quot;wt&quot;:&quot;&quot;},&quot;content&quot;:{&quot;wt&quot;:&quot;Just outside the town, has many things to see and do, including a children\'s farm centre and museum and a craft village. It can easily be accessed by public transport on the 100 bus from the town centre and station.&quot;}},&quot;i&quot;:0}}]}" id="mwJw"><a rel="mw:ExtLink" class="external text" href="http://www.barleylands.co.uk"><span id="Barleylands" class="fn org listing-name"><b>Barleylands</b></span></a>.<span typeof="mw:Entity"> </span><bdi class="note listing-content">Just outside the town, has many things to see and do, including a children\'s farm centre and museum and a craft village. It can easily be accessed by public transport on the 100 bus from the town centre and station.</bdi><span class="listing-metadata"><span class="listing-metadata-items"><span typeof="mw:Entity">&nbsp;</span></span></span></bdi></li></ul>';
+		const window = domino.createWindow( html );
+		const sights = extract( window.document );
+		assert.strictEqual( sights.length, 1 );
+		assert.strictEqual( sights[ 0 ].title, 'Barleylands' );
+		assert.strictEqual( sights[ 0 ].url, 'http://www.barleylands.co.uk' );
+		assert.strictEqual( sights[ 0 ].external, true );
+	} );
 } );
