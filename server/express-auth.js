@@ -1,5 +1,4 @@
 import session from 'express-session';
-import connect from 'connect-memcached';
 import { OAuthStrategy } from 'passport-mediawiki-oauth';
 import passport from 'passport';
 import respond from './respond';
@@ -12,7 +11,6 @@ import {
 
 export default function ( app ) {
 	console.log( `Registering oauth with ${CONSUMER_KEY}, ${CONSUMER_SECRET}, ${CONSUMER_HOST}` );
-	const MemcachedStore = connect( session );
 
 	passport.serializeUser( function ( user, done ) {
 		done( null, user );
@@ -28,10 +26,6 @@ export default function ( app ) {
 		cookie: {
 			maxAge: 1000 * 60 * 60 * 24 * 30
 		},
-		store: new MemcachedStore( {
-			hosts: [ '127.0.0.1:11211' ],
-			secret: CONSUMER_SECRET
-		} ),
 		secret: CONSUMER_SECRET
 	} ) );
 	app.use( passport.initialize() );
