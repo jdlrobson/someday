@@ -108,20 +108,33 @@ document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
 	showSearchOverlay( ev );
 } );
 
-// banner
-addEventListener( '#map', 'click', function ( ev ) {
-	const api = this.getAttribute( 'data-api' );
-	const withPath = this.getAttribute( 'data-with-path' );
-	ev.stopPropagation();
+
+function clickMap( ev, api, withpath, lat, lng ) {
 	if ( api ) {
 		showMapOverlayWithPages( ev, api, withPath );
 	} else {
-		showMapOverlay( ev, this.getAttribute( 'data-lat' ),
-			this.getAttribute( 'data-lon' ),
-			title
-		);
+		showMapOverlay( ev, lat, lng, title );
 	}
-} );
+};
+
+function getMapClickHandler() {
+	const map = document.getElementById( 'map' );
+	const mapWithPath = map.getAttribute( 'data-with-path' );
+	const mapApi = map.getAttribute( 'data-api' );
+	const lat = map.getAttribute( 'data-lat' );
+	const lng = map.getAttribute( 'data-lon' );
+
+	return ( ev ) => {
+		ev.stopPropagation();
+		clickMap( ev, mapApi, mapWithPath, lat, lng );
+	};
+}
+// render map icon
+ReactDOM.render(
+	<button className="map-icon" onClick={getMapClickHandler()}>Launch map</button>,
+	document.getElementById( 'pagebanner__map-toolbar' )
+);
+
 addEventListener( 'h1', 'click', function ( ev ) {
 	ev.stopPropagation();
 } );

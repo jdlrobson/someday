@@ -75,6 +75,7 @@ export default class PageBanner extends React.Component {
 							<p>{description}</p>
 						</div>
 					</Content>
+					<div id="pagebanner__map-toolbar"></div>
 				</div>
 				<div className="component-page-banner__search" id="search">
 					Somewhere else
