@@ -31,6 +31,8 @@ router.on( '/editor/:title/:id', ( options ) => {
 	showMapOverlayWithPages( null, options.api, false );
 } ).on( '/lines/:api', ( options ) => {
 	showMapOverlayWithPages( null, options.api, true );
+} ).on( '/search', () => {
+	showSearchOverlay( null );
 } );
 
 let bodyClasses = user ? ' client-js client-auth' : ' client-js';
@@ -111,7 +113,7 @@ addEventListener( '.action--add-trip',
 
 document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
 	ev.stopPropagation();
-	showSearchOverlay( ev );
+	router.navigate( '/search' );
 } );
 
 function launchMap( api, withPath, lat = '0', lng = '0' ) {
