@@ -1,7 +1,7 @@
 import { extractElements } from './domino-utils';
 
 function extractTitle( src ) {
-	return src.split( 'px-' )[ 1 ];
+	return src.indexOf( 'px-' ) > -1 ? src.split( 'px-' )[ 1 ] : src.split( '/' ).slice( -1 )[ 0 ];
 }
 
 function extractImages( section ) {
@@ -18,10 +18,6 @@ function extractImages( section ) {
 		var link = node.querySelector( 'a.image' );
 		var src = img.getAttribute( 'src' );
 		var caption = figcaption ? figcaption.textContent || '' : '';
-		// Issue #14 - images may not have a link
-		if ( !link ) {
-			return;
-		}
 
 		var imgData = {
 			href: link ? link.getAttribute( 'href' ) : extractTitle( src ),
