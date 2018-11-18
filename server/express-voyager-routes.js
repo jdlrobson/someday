@@ -5,6 +5,8 @@ import cachedResponses from './cached-response.js';
 import manifest from './manifest';
 const cachedResponse = cachedResponses.cachedResponse;
 import cached from './cached-response';
+import fetch from 'isomorphic-fetch';
+import { climateExtractionWikipedia, climateToWikiText } from './endpoints/voyager/extract-climate';
 
 function initRoutes( app ) {
 	app.get( '/manifest.json', ( req, res ) => {
@@ -34,6 +36,27 @@ function initRoutes( app ) {
 		}, ( err ) => {
 			res.status( 200 ).send( err );
 		} );
+	} );
+
+	app.get( '/api/voyager/climate/:title', ( req, res ) => {
+		const p = req.params;
+		fetch( 'https://en.wikipedia.org/api/rest_v1/page/mobile-sections-remaining/' + encodeURIComponent( p.title ) )
+			.then( ( resp ) => resp.json() )
+			.then( ( json ) => {
+				const climate = json.sections.filter( ( section ) => section.line === 'Climate' );
+				if ( climate.length ) {
+					res.setHeader( 'Content-Type', 'text/plain' );
+					res.send(
+						climateToWikiText(
+							climateExtractionWikipedia( climate[ 0 ].text ),
+							p.title
+						)
+					);
+				} else {
+					res.status( 404 );
+					res.send( 'Cannot extract a climate table' );
+				}
+			} );
 	} );
 
 	app.get( '/api/voyager/page/:lang.:project/:title/:revision?', ( req, res ) => {

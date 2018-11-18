@@ -34,6 +34,56 @@ function checkImperial( data ) {
 		return data;
 	}
 }
+
+export function climateToWikiText( climate, title ) {
+	let text = '{{Climate|\n';
+	climate.forEach( ( month ) => {
+		const monthKey = month.heading.toLowerCase();
+		Object.keys( month ).filter( ( key ) => key !== 'heading' ).forEach( ( key ) => {
+			// map to param name
+			const param = monthKey + key.replace( 'itation', '' );
+			text += '\n|' + param + ' = ' + month[ key ];
+		} );
+	} );
+	text += `\n|Source: [[w:${title}#Climate]]\n`;
+	return text + '}}';
+}
+
+export function climateExtractionWikipedia( text ) {
+	const matches = extractElements( text, 'table tr' );
+	let climate = [];
+	matches.extracted.forEach( ( tr ) => {
+		const th = Array.from( tr.querySelectorAll( 'th' ) );
+		const td = Array.from( tr.querySelectorAll( 'td' ) );
+		if ( climate.length === 0 && th.length === 14 ) {
+			climate = th.map( ( th ) => ( { heading: th.textContent } ) ).slice( 1, 13 );
+		} else if ( th.length === 1 ) {
+			const legend = th[ 0 ].textContent.toLowerCase();
+			const vals = td.slice( 0, 12 );
+			let key;
+			if ( legend.indexOf( 'average high' ) > -1 ) {
+				key = 'high';
+			} else if ( legend.indexOf( 'average low' ) > -1 ) {
+				key = 'low';
+			} else if (
+				legend.indexOf( 'rainfall' ) > -1 ||
+				legend.indexOf( 'average precipitation mm ' ) > -1
+			) {
+				key = 'precipitation';
+			}
+			if ( key ) {
+				climate.forEach( ( item, i ) => {
+					let val = vals[ i ].textContent.replace( /\(.*\)/g, '' );
+					const negate = val.match( /[-−]/ );	
+					const finalVal = parseFloat( val.replace( /[-−]/g, '' ) );
+					item[ key ] = negate ? -finalVal : finalVal;
+				} );
+			}
+		}
+	} );
+	return climate;
+}
+
 function climateExtractionNew( text ) {
 	const ext = extractElements( text, '.climate-table table.infobox table.infobox' );
 	if ( ext.extracted.length > 0 ) {
