@@ -33,6 +33,8 @@ router.on( '/editor/:title/:id', ( options ) => {
 	showMapOverlayWithPages( null, options.api, true );
 } ).on( '/search', () => {
 	showSearchOverlay( null );
+} ).on( '/note/:title', ( options ) => {
+	showNoteOverlay( null, options.title );
 } );
 
 let bodyClasses = user ? ' client-js client-auth' : ' client-js';
@@ -48,7 +50,7 @@ function getNodes( selector ) {
 Array.from( document.querySelectorAll( '.action--add-note' ) ).forEach( ( icon ) => {
 	icon.addEventListener( 'click', function ( ev ) {
 		ev.stopPropagation();
-		showNoteOverlay( ev, title );
+		router.navigate( `/note/${title}` );
 	} );
 } );
 
