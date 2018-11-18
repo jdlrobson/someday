@@ -1,13 +1,13 @@
 import addProps from './../prop-enricher';
 import calculateDistance from './calculate-distance';
 
-const aliases = {};
-
-export function addAliases( sights, country ) {
-	sights = sights.map( ( sightObj ) => {
-		return sightObj.name.replace( /_/g, ' ' );
-	} );
-	sights.forEach( ( sight ) => {
+function sightObjToCanoicalTitle( sightObj ) {
+	return sightObj.name.replace( /_/g, ' ' );
+}
+export function getAliases( sights, country ) {
+	const aliases = {};
+	const sightTitles = sights.map( sightObjToCanoicalTitle );
+	sightTitles.forEach( ( sight ) => {
 		const segments = sight.split( / - / );
 		const theLessSight = sight.replace( /[Tt]he /, '' );
 
@@ -26,9 +26,9 @@ export function addAliases( sights, country ) {
 			aliases[ theLessSight ] = sight;
 		}
 	} );
-
-	return sights.concat( Object.keys( aliases ) );
+	return aliases;
 }
+
 /**
  * @param {Object} data
  * @param {Integer} distance in km to filter by
@@ -47,20 +47,23 @@ function addSights( data, distance ) {
 			return sight.external;
 		};
 		const externalSights = origSights.filter( isExternal );
-		var sights = addAliases(
-			data.lead.sights.filter( ( s ) => !isExternal( s ) ),
+
+		let sights = data.lead.sights.filter( ( s ) => !isExternal( s ) );
+		const aliases = getAliases(
+			sights,
 			data.lead.displaytitle
 		);
+		let sightTitles = sights.map( sightObjToCanoicalTitle ).concat( Object.keys( aliases ) );
 		// dedupe
 		const matches = {};
-		sights = sights.filter( function ( item ) {
+		sightTitles = sightTitles.filter( function ( item ) {
 			const key = item.toLowerCase();
 			const matched = matches[ key ];
 			matches[ key ] = true;
 			return !matched;
 		} );
 
-		return addProps( sights, props, 'en', 'wikipedia', {
+		return addProps( sightTitles, props, 'en', 'wikipedia', {
 			ppprop: 'disambiguation'
 		} )
 			.then( ( sightPages ) => {
