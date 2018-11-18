@@ -57,7 +57,10 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 				}
 			}
 			res.status( 200 );
-			res.send( `${responseText}<!-- CACHEKEY: ${cacheKey} -->` );
+			if ( contentType.indexOf( 'text/html' ) === 0 ) {
+				responseText = `${responseText}<!-- CACHEKEY: ${cacheKey} -->`;
+			}
+			res.send( responseText );
 		}, function () {
 			respond( res, method ).then( function ( newResponseText ) {
 				putText( cacheKey, newResponseText );
