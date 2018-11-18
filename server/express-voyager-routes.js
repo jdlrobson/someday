@@ -45,17 +45,19 @@ function initRoutes( app ) {
 			.then( ( json ) => {
 				const climate = json.sections.filter( ( section ) => section.line === 'Climate' );
 				if ( climate.length ) {
-					res.setHeader( 'Content-Type', 'text/plain' );
-					res.send(
-						climateToWikiText(
-							climateExtractionWikipedia( climate[ 0 ].text ),
-							p.title
-						)
-					);
-				} else {
-					res.status( 404 );
-					res.send( 'Cannot extract a climate table' );
+					const climateData = climateExtractionWikipedia( climate[ 0 ].text );
+					if ( climateData.length ) {
+						res.setHeader( 'Content-Type', 'text/plain' );
+						res.send(
+							climateToWikiText(
+								climateData,
+								p.title
+							)
+						);
+					}
 				}
+				res.status( 404 );
+				res.send( 'Cannot extract a climate table' );
 			} );
 	} );
 
