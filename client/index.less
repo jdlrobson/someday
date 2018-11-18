@@ -7,9 +7,11 @@ body {
   padding: 0;
   margin: 0;
   transition: margin-top 0.3s ease-in;
+  &.--overlay-swing-up {
+    margin-top: -@search-offset;
+  }
   &.--overlay-enabled {
     height: 100%;
-    margin-top: -@search-offset;
     overflow: hidden;
 
     .page {

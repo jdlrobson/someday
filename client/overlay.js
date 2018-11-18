@@ -53,7 +53,7 @@ export function refreshOverlay( overlay ) {
 	render( overlay, overlayArea );
 }
 
-export function showOverlay( _ev, overlay ) {
-	body.className = '--overlay-enabled';
+export function showOverlay( _ev, overlay, additionalClasses = '' ) {
+	body.className = `--overlay-enabled ${additionalClasses}`;
 	render( overlay, overlayArea );
 }

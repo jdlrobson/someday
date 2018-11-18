@@ -76,6 +76,7 @@ function getSearchOverlay( children, onChange ) {
 
 export function showSearchOverlay( ev ) {
 	showOverlay( ev,
-		getSearchOverlay( [], doSearch.bind( doSearch ) )
+		getSearchOverlay( [], doSearch.bind( doSearch ) ),
+		'--overlay-swing-up'
 	);
 }
