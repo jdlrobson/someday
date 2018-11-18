@@ -45,7 +45,7 @@ export function climateToWikiText( climate, title ) {
 			text += '\n|' + param + ' = ' + month[ key ];
 		} );
 	} );
-	text += `\n|Source: [[w:${title}#Climate]]\n`;
+	text += `\n|description=Source: [[w:${title}#Climate|Wikipedia]]\n`;
 	return text + '}}';
 }
 
@@ -74,7 +74,7 @@ export function climateExtractionWikipedia( text ) {
 			if ( key ) {
 				climate.forEach( ( item, i ) => {
 					let val = vals[ i ].textContent.replace( /\(.*\)/g, '' );
-					const negate = val.match( /[-−]/ );	
+					const negate = val.match( /[-−]/ );
 					const finalVal = parseFloat( val.replace( /[-−]/g, '' ) );
 					item[ key ] = negate ? -finalVal : finalVal;
 				} );
