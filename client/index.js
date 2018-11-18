@@ -25,6 +25,12 @@ const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 const router = overlayRouter();
 router.on( '/editor/:title/:id', ( options ) => {
 	showEditOverlay( null, options.title, options.id );
+} ).on( '/map/:lat/:lng/:title', ( options ) => {
+	showMapOverlay( null, parseFloat( options.lat ), parseFloat( options.lng ), options.title );
+} ).on( '/markers/:api', ( options ) => {
+	showMapOverlayWithPages( null, options.api, false );
+} ).on( '/lines/:api', ( options ) => {
+	showMapOverlayWithPages( null, options.api, true );
 } );
 
 let bodyClasses = user ? ' client-js client-auth' : ' client-js';
@@ -108,12 +114,12 @@ document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
 	showSearchOverlay( ev );
 } );
 
-
-function clickMap( ev, api, withpath, lat, lng ) {
+function launchMap( api, withPath, lat = '0', lng = '0' ) {
 	if ( api ) {
-		showMapOverlayWithPages( ev, api, withPath );
+		const prefix = withPath ? 'lines' : 'markers';
+		router.navigate( `/${prefix}/${encodeURIComponent( api )}` );
 	} else {
-		showMapOverlay( ev, lat, lng, title );
+		router.navigate( `/map/${lat}/${lng}/${title}` );
 	}
 };
 
@@ -126,7 +132,7 @@ function getMapClickHandler() {
 
 	return ( ev ) => {
 		ev.stopPropagation();
-		clickMap( ev, mapApi, mapWithPath, lat, lng );
+		launchMap( mapApi, mapWithPath, lat, lng );
 	};
 }
 // render map icon

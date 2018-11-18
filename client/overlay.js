@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 const overlayArea = document.createElement( 'div' );
 overlayArea.setAttribute( 'id', 'overlay' );
 const body = document.body;
-const navigoRouter = new Navigo( '/', true, ROUTE_PREFIX );
+const navigoRouter = new Navigo( window.location.origin, true, ROUTE_PREFIX );
 
 body.appendChild( overlayArea );
 
