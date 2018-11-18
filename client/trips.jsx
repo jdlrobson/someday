@@ -126,9 +126,9 @@ export function showCollectionEditor( ev, owner, title, description, id, thumb, 
 		onSaveCollection={getSaveCollectionHandler( owner, id, thumb.title, lat, lon )} /> );
 }
 
-export function showCollectionOverlay( ev, title, data ) {
+export function showCollectionOverlay( ev, title, data, onClickCreateTrip ) {
 	showOverlay( ev,
-		<CollectionOverlay actions={<Button onClick={showCollectionEditor}
+		<CollectionOverlay actions={<Button onClick={onClickCreateTrip}
 			label="Create new trip"></Button>
 		}>
 			<ul>{data.collections.map(

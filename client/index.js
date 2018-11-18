@@ -35,6 +35,22 @@ router.on( '/editor/:title/:id', ( options ) => {
 	showSearchOverlay( null );
 } ).on( '/note/:title', ( options ) => {
 	showNoteOverlay( null, options.title );
+} ).on( '/trip/add/:title', ( { title } ) => {
+	getTrips( title ).then( function ( data ) {
+		showCollectionOverlay( null, title, data, () => {
+			router.navigate( '/trip/create' );
+		} );
+	} );
+} ).on( '/trip/create', () => {
+	showCollectionEditor();
+} ).on( '/trip/edit/:user/:id', ( { owner, id } ) => {
+	getTrip( owner, id ).then( ( data ) => {
+		let coords = getCoordsFromPages( data.pages );
+		const thumbnail = data.thumbnail || getThumbFromPages( data.pages );
+		showCollectionEditor( null, data.owner, data.title, data.description, data.id,
+			thumbnail, coords.lat, coords.lon
+		);
+	} );
 } );
 
 let bodyClasses = user ? ' client-js client-auth' : ' client-js';
@@ -106,10 +122,8 @@ addEventListener(
 addEventListener( '.action--add-trip',
 	'click',
 	function ( ev ) {
-		getTrips( title ).then( function ( data ) {
-			ev.stopPropagation();
-			showCollectionOverlay( ev, title, data );
-		} );
+		ev.stopPropagation();
+		router.navigate( `/trip/add/${title}` );
 	}
 );
 
@@ -155,13 +169,7 @@ addEventListener( '.action--collection-edit',
 	function ( ev ) {
 		ev.stopPropagation();
 		const id = window.location.pathname.split( '/' ).slice( -2 );
-		getTrip( id[ 0 ], id[ 1 ] ).then( function ( data ) {
-			let coords = getCoordsFromPages( data.pages );
-			const thumbnail = data.thumbnail || getThumbFromPages( data.pages );
-			showCollectionEditor( ev, data.owner, data.title, data.description, data.id,
-				thumbnail, coords.lat, coords.lon
-			);
-		} );
+		router.navigate( `/trip/edit/${id[ 0 ]}/${id[ 1 ]}`);
 	}
 );
 
