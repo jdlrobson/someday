@@ -4,11 +4,23 @@ const WORDMARK = process.env.SITE_WORDMARK_PATH;
 const NODE_ENV = process.env.NODE_ENV;
 const OFFLINE_STRATEGY = process.env.OFFLINE_STRATEGY || 'none';
 const API_PATH = process.env.API_PATH || '/api/';
-
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const OptimizeCSSAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
 var webpack = require( 'webpack' );
-var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
+	mode: NODE_ENV || 'development',
+	optimization: {
+		minimizer: [
+			new UglifyJsPlugin( {
+				cache: true,
+				parallel: true,
+				sourceMap: true // set to true if you want JS source maps
+			} ),
+			new OptimizeCSSAssetsPlugin( { } )
+		]
+	},
 	entry: {
 		sw: './client/worker.js',
 		main: './client/index.js'
@@ -19,7 +31,9 @@ module.exports = {
 		publicPath: '/'
 	},
 	plugins: [
-		new ExtractTextPlugin( { filename: 'style.css', allChunks: true } ),
+		new MiniCssExtractPlugin( {
+			filename: 'style.css'
+		} ),
 		new webpack.DefinePlugin( {
 			'process.env': {
 				OFFLINE_STRATEGY: `"${OFFLINE_STRATEGY}"`,
@@ -36,37 +50,50 @@ module.exports = {
 		extensions: [ 'index.js', '.js', '.jsx' ]
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx$/,
-				loader: 'babel-loader',
-				query: {
-					presets: [ 'es2015', 'react' ]
-				},
-				exclude: /node_modules/
+				exclude: /node_modules/,
+				use: [ {
+					loader: 'babel-loader',
+					query: {
+						presets: [ 'es2015', 'react' ]
+					}
+				} ]
 			},
 			{
 				test: /\.js$/,
-				loader: 'babel-loader',
-				query: {
-					presets: [ 'es2015' ]
-				},
-				exclude: /node_modules/
+				exclude: /node_modules/,
+				use: [ {
+					loader: 'babel-loader',
+					query: {
+						presets: [ 'es2015' ]
+					}
+				} ]
 			},
 			{
 				test: /\.(svg)$/,
-				loader: 'svg-url-loader'
+				use: 'svg-url-loader'
 			},
 			{
 				test: /\.(gif|png|jpg)$/,
-				loader: 'url-loader',
-				query: {
-					limit: '25000'
-				}
+				use: [
+					{
+						loader: 'url-loader',
+						query: {
+							limit: '25000'
+						}
+					}
+				]
 			},
-			{ test: /\.css$/, loader: ExtractTextPlugin.extract( { fallback: 'style-loader', use: [ 'css-loader' ] } ) },
-			{ test: /\.less$/, loader: ExtractTextPlugin.extract( { fallback: 'style-loader',
-				use: [ 'css-loader', 'less-loader' ] } ) }
+			{
+				test: /\.(le|c)ss$/,
+				use: [
+					NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+					'css-loader',
+					'less-loader'
+				]
+			}
 		]
 	}
 };
