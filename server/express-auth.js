@@ -1,7 +1,9 @@
 import session from 'express-session';
+import sessionStore from 'memorystore'
 import { OAuthStrategy } from 'passport-mediawiki-oauth';
 import passport from 'passport';
 import respond from './respond';
+const MemoryStore = sessionStore( session );
 
 import {
 	CONSUMER_HOST,
@@ -21,11 +23,14 @@ export default function ( app ) {
 	} );
 
 	app.use( session( {
-		resave: true,
+		resave: false,
 		saveUninitialized: true,
 		cookie: {
 			maxAge: 1000 * 60 * 60 * 24 * 30
 		},
+		store: new MemoryStore( {
+			checkPeriod: 1000 * 60 * 60 * 4
+		} ),
 		secret: CONSUMER_SECRET
 	} ) );
 	app.use( passport.initialize() );
