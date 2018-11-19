@@ -43,7 +43,7 @@ export default function addImagesFromCommons( page ) {
 		page.lead.images = images.concat(
 			imagePages.filter( ( page ) =>
 				!hasForbiddenCategory(
-					page.categories.map( cat => cat.title )
+					( page.categories || [] ).map( cat => cat.title )
 				)
 			).map( ( page ) => {
 				const thumb = page.thumbnail;
