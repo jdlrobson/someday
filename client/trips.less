@@ -1,4 +1,15 @@
-.collection-overlay {
+@import './../components/globals.less';
+
+@media all and (max-width: @breakpoint) {
+    .drawer.collection-overlay {
+        top: 8px !important;
+        bottom: 8px !important;
+        left: 8px !important;
+        right: 8px !important;
+    }
+}
+
+.drawer.collection-overlay {
     ul {
         padding: 0 !important;
         li:first-child {
