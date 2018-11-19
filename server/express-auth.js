@@ -1,5 +1,5 @@
 import session from 'express-session';
-import sessionStore from 'memorystore'
+import sessionStore from 'memorystore';
 import { OAuthStrategy } from 'passport-mediawiki-oauth';
 import passport from 'passport';
 import respond from './respond';
