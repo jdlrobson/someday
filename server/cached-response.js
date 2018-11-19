@@ -17,12 +17,15 @@ let blacklist = [];
 const OFFLINE_MODE = false;
 const OFFLINE_MODE_SAVE_TO_FILE = true;
 
-function fetchText( cacheKey ) {
+function fetchText( cacheKey, addCacheComment ) {
 	return new Promise( ( resolve, reject ) => {
 		shortLifeCache.get( cacheKey, function ( err, responseText ) {
 			if ( err || !responseText ) {
 				reject();
 			} else {
+				if ( addCacheComment ) {
+					responseText = `${responseText}<!-- CACHEKEY: ${cacheKey} -->`;
+				}
 				resolve( responseText );
 			}
 		} );
@@ -43,7 +46,7 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 		respond( res, method );
 	} else {
 		const filepath = `${__dirname}/__cache${cacheKey}.txt`;
-		fetchText( cacheKey ).then( function ( responseText ) {
+		fetchText( cacheKey, contentType === 'text/html' ).then( function ( responseText ) {
 			if ( OFFLINE_MODE ) {
 				try {
 					const filecontents = fs.readFileSync( filepath, 'utf-8' ).toString();
@@ -57,9 +60,6 @@ function cachedResponse( res, cacheKey, method, contentType = 'application/json'
 				}
 			}
 			res.status( 200 );
-			if ( contentType.indexOf( 'text/html' ) === 0 ) {
-				responseText = `${responseText}<!-- CACHEKEY: ${cacheKey} -->`;
-			}
 			res.send( responseText );
 		}, function () {
 			respond( res, method ).then( function ( newResponseText ) {
