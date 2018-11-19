@@ -31,7 +31,8 @@ export default class Sight extends React.Component {
 					</Note>
 				</Column>
 				<Column col={3}>
-					<ImageSlideshow images={[ thumbnail ]} key="img-slideshow" />
+					{thumbnail && <ImageSlideshow images={[ thumbnail ]}
+						key="img-slideshow" />}
 				</Column>
 			</Page>
 		);
