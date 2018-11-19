@@ -43,10 +43,11 @@ router.on( '/editor/:title/:id', ( options ) => {
 	} );
 } ).on( '/trip/create', () => {
 	showCollectionEditor();
-} ).on( '/trip/edit/:user/:id', ( { owner, id } ) => {
+} ).on( '/trip/edit/:owner/:id', ( { owner, id } ) => {
 	getTrip( owner, id ).then( ( data ) => {
-		let coords = getCoordsFromPages( data.pages );
-		const thumbnail = data.thumbnail || getThumbFromPages( data.pages );
+		const pages = data.pages || [];
+		let coords = getCoordsFromPages( pages );
+		const thumbnail = data.thumbnail || ( pages.length && getThumbFromPages( pages ) );
 		showCollectionEditor( null, data.owner, data.title, data.description, data.id,
 			thumbnail, coords.lat, coords.lon
 		);
@@ -139,7 +140,7 @@ function launchMap( api, withPath, lat = '0', lng = '0' ) {
 	} else {
 		router.navigate( `/map/${lat}/${lng}/${title}` );
 	}
-}
+};
 
 function getMapClickHandler() {
 	const map = document.getElementById( 'map' );
@@ -169,7 +170,7 @@ addEventListener( '.action--collection-edit',
 	function ( ev ) {
 		ev.stopPropagation();
 		const id = window.location.pathname.split( '/' ).slice( -2 );
-		router.navigate( `/trip/edit/${id[ 0 ]}/${id[ 1 ]}` );
+		router.navigate( `/trip/edit/${id[ 0 ]}/${id[ 1 ]}`);
 	}
 );
 
