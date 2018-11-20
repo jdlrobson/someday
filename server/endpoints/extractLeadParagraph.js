@@ -5,6 +5,9 @@ export default function extractLeadParagraph( doc ) {
 	var nodes = doc.querySelectorAll( 'p' );
 	var i = 0;
 	var node = nodes[ 0 ];
+	if ( !node ) {
+		return '';
+	}
 	// fast forward to first empty node.
 	while ( isNodeEmpty( node ) ) {
 		i++;
@@ -12,9 +15,13 @@ export default function extractLeadParagraph( doc ) {
 		node.parentNode.removeChild( node );
 		node = nodes[ i ];
 	}
-	p = node.innerHTML;
-	// delete it
-	node.parentNode.removeChild( node );
+	if ( node ) {
+		p = node.innerHTML;
+		// delete it
+		node.parentNode.removeChild( node );
+	} else {
+		p = '';
+	}
 
 	return p;
 }
