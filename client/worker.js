@@ -20,6 +20,10 @@ workbox.routing.registerRoute(
 
 	workbox.routing.registerRoute(
 		re,
-		workbox.strategies.staleWhileRevalidate()
+		workbox.strategies.staleWhileRevalidate( {
+			fetchOptions: {
+				credentials: 'include',
+			}
+		} )
 	);
 } );
