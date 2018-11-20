@@ -46,7 +46,7 @@ const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [
 ];
 
 function leftBoxes( lead ) {
-	const { isCountry, destinations, sights, section_ids } = lead;
+	const { isCountry, destinations, sights, disambiguation, section_ids } = lead;
 	let boxes = [];
 
 	if ( isCountry ) {
@@ -58,7 +58,7 @@ function leftBoxes( lead ) {
 			destinations.map( sectionToBoxData )
 		);
 	}
-	if ( sights ) {
+	if ( !disambiguation && sights ) {
 		boxes.push( [
 			'Sights',
 			sights.map(
@@ -74,7 +74,7 @@ function leftBoxes( lead ) {
 }
 
 function rightBoxes( lead ) {
-	const { transitLinks, airports, climate } = lead;
+	const { transitLinks, airports, climate, disambiguation } = lead;
 	let boxes = [];
 
 	if ( climate && climate.id ) {
@@ -105,9 +105,13 @@ function rightBoxes( lead ) {
 			}</ul></Box>
 		);
 	}
-	return [
-		<ImageSlideshow images={lead.images} key="img-slideshow" />
-	].concat( boxes );
+	if ( disambiguation ) {
+		return [];
+	} else {
+		return [
+			<ImageSlideshow images={lead.images} key="img-slideshow" />
+		].concat( boxes );
+	}
 }
 export default class DestinationPage extends React.Component {
 	render() {

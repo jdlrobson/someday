@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import domino from 'domino';
 function parsoidHTMLToJSON( html ) {
 	var doc = domino.createDocument( html );
+	const disambig = doc.querySelector( 'meta[property="mw:PageProp/disambiguation"]' );
 	const sections = Array.from( doc.querySelectorAll( 'section' ) ).map( ( sec ) => {
 		// Clone so you can make modifications
 		const secEl = sec.cloneNode( true );
@@ -46,6 +47,7 @@ function parsoidHTMLToJSON( html ) {
 	const title = doc.querySelector( 'head title' ).textContent;
 	return {
 		lead: {
+			disambiguation: disambig ? true : false,
 			title,
 			displaytitle: title,
 			sections: sections.slice( 0, 1 )

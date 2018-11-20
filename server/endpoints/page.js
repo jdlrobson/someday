@@ -2,7 +2,6 @@ import domino from 'domino';
 
 import { SPECIAL_PROJECTS, HOST_SUFFIX, SITE_HOME } from './../config';
 import extractLeadParagraph from './extractLeadParagraph';
-import undoLinkRewrite from './undoLinkRewrite';
 import extractHatnote from './extractHatnote';
 import extractInfobox from './extractInfobox';
 import getMedia from './extractMedia';
@@ -34,32 +33,34 @@ export default function ( title, lang, project, revision ) {
 		if ( json.code ) {
 			return json;
 		}
+		const leadSectionText = json.lead.sections.length && json.lead.sections[ 0 ] && json.lead.sections[ 0 ].text;
+		if ( json.lead.disambiguation ) {
+			json.lead.paragraph = leadSectionText + json.remaining.sections.map( ( section ) => {
+				return section.text;
+			} ).join( '' );
+		} else {
+			json.remaining.sections.forEach( function ( section ) {
+				if ( section.text ) {
+					var doc = domino.createDocument( section.text );
+					section.text = doc.body.innerHTML;
+				}
+			} );
+			json.lead.media = getMedia( json.lead.sections.concat( json.remaining.sections ) );
+			// Workaround for https://phabricator.wikimedia.org/T145034
+			const doc = domino.createDocument( leadSectionText );
 
-		json.remaining.sections.forEach( function ( section ) {
-			if ( section.text ) {
-				var doc = domino.createDocument( section.text );
-				undoLinkRewrite( doc );
-				section.text = doc.body.innerHTML;
+			if ( doc ) {
+				var infobox = extractInfobox( doc );
+				if ( !json.lead.mainpage ) {
+					var leadParagraph = extractLeadParagraph( doc );
+					json.lead.paragraph = leadParagraph;
+				}
+				json.lead.infobox = infobox;
+				json.lead.hatnote = extractHatnote( doc );
+				json.lead.sections[ 0 ].text = doc.body.innerHTML;
 			}
-		} );
-
-		// Workaround for https://phabricator.wikimedia.org/T145034
-		var doc = domino.createDocument( json.lead.sections.length && json.lead.sections[ 0 ] && json.lead.sections[ 0 ].text );
-		json.lead.media = getMedia( json.lead.sections.concat( json.remaining.sections ) );
-		if ( doc ) {
-			// See https://github.com/jdlrobson/weekipedia/issues/99 - preserve links in main page
-			if ( SITE_HOME.replace( /_/g, ' ' ) !== title.replace( /_/g, ' ' ) ) {
-				undoLinkRewrite( doc );
-			}
-			var infobox = extractInfobox( doc );
-			if ( !json.lead.mainpage ) {
-				var leadParagraph = extractLeadParagraph( doc );
-				json.lead.paragraph = leadParagraph;
-			}
-			json.lead.infobox = infobox;
-			json.lead.hatnote = extractHatnote( doc );
-			json.lead.sections[ 0 ].text = doc.body.innerHTML;
 		}
+
 		return json;
 	} );
 }
