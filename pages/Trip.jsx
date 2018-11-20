@@ -10,7 +10,7 @@ export default class Trip extends React.Component {
 		const props = this.props;
 		const title = props.title;
 		const owner = props.owner;
-		const coords = props.coordinates;
+		const coords = props.coordinates || {};
 		const links = [
 			<a href={getOwnerUrl( owner )} key="tab-owner">{owner}</a>,
 			<a href={getTripUrl( owner )} key="tab-trip"
