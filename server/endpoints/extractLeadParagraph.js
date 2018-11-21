@@ -1,27 +1,50 @@
 import { isNodeEmpty } from './voyager/domino-utils';
+const TEXT_NODE = 3;
 
-export default function extractLeadParagraph( doc ) {
-	var p = '';
-	var nodes = doc.querySelectorAll( 'p' );
-	var i = 0;
-	var node = nodes[ 0 ];
-	if ( !node ) {
-		return '';
-	}
-	// fast forward to first empty node.
-	while ( isNodeEmpty( node ) ) {
-		i++;
-		// delete the empty node
-		node.parentNode.removeChild( node );
-		node = nodes[ i ];
-	}
-	if ( node ) {
-		p = node.innerHTML;
-		// delete it
-		node.parentNode.removeChild( node );
-	} else {
-		p = '';
-	}
+/**
+ * Extracts the first non-empty paragraph from an article and any
+ * nodes that follow it that are not themselves paragraphs.
+ * @param {!Document} doc representing article
+ * @param {boolean} removeNodes when set the lead introduction will
+ *  be removed from the input DOM tree.
+ * @return {string} representing article introduction
+ */
+function extractLeadIntroduction(doc, removeNodes) {
+    let p = '';
+    const remove = [];
+    const blacklist = [ 'P', 'TABLE', 'CENTER', 'FIGURE', 'DIV' ];
+    const nodes = doc.querySelectorAll('body > p');
 
-	return p;
+    Array.prototype.forEach.call(nodes, (node) => {
+        let nextSibling;
+        if (!p && !isNodeEmpty(node) && (!(node.hasAttribute('about')) || node.querySelector('b'))) {
+            p = node.outerHTML;
+            remove.push(node);
+            nextSibling = node.nextSibling;
+            // check the next element is a text node or not in list of blacklisted elements
+            while (nextSibling && (nextSibling.nodeType === TEXT_NODE ||
+                blacklist.indexOf(nextSibling.tagName) === -1
+            )) {
+                // Deal with text nodes
+                if (nextSibling.nodeType === TEXT_NODE) {
+                    if (!isNodeEmpty(nextSibling)) {
+                        p += nextSibling.textContent;
+                    }
+                } else {
+                    p += nextSibling.outerHTML;
+                }
+                remove.push(nextSibling);
+                nextSibling = nextSibling.nextSibling;
+            }
+        }
+    });
+    // cleanup all the nodes.
+    if (removeNodes) {
+        remove.forEach((node) => {
+            node.parentNode.removeChild(node);
+        });
+    }
+    return p;
 }
+
+module.exports = extractLeadIntroduction;

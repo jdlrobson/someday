@@ -8,7 +8,7 @@ describe( 'extractLeadParagraph', function () {
 		const examples = [
 			[
 				'<p>Hello world</p>',
-				'Hello world',
+				'<p>Hello world</p>',
 				'Simple example'
 			],
 			[
