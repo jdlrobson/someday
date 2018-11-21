@@ -7,6 +7,48 @@ function unique( pages ) {
 		} ) === i;
 	} );
 }
+
+/**
+ * @typedef Redirect
+ * @property {string} from
+ * @property {string} to
+ */
+
+/**
+ * @param {Object} pages
+ * @param {Object} pagesToMerge
+ * @param {Redirect[]} redirects
+ * @return {Object} pages
+ */
+export function mergePages( pages, pagesToMerge, redirects ) {
+	var index = {};
+	var redirectMap = {};
+	if ( redirects ) {
+		redirects.forEach( ( redirect ) => {
+			redirectMap[ redirect.from ] = redirect.to;
+		} );
+	}
+
+	pages.forEach( function ( page ) {
+		const title = page.title;
+		if ( page.thumbnail && page.pageimage ) {
+			page.thumbnail.title = 'File:' + page.pageimage;
+		}
+		index[ title ] = Object.assign( {}, index[ title ], page );
+	} );
+	return unique(
+		pagesToMerge.map( function ( page ) {
+			let title = page.title.replace( /_/gi, ' ' );
+			// rewrite title if necessary
+			if ( redirectMap[ title ] ) {
+				title = redirectMap[ title ];
+			}
+			var obj = index[ title ] || {};
+			return Object.assign( {}, page, obj, { title } );
+		} )
+	);
+}
+
 function propEnricher( arr, props, lang, project, params ) {
 	lang = lang || 'en';
 	project = project || 'wikipedia';
@@ -54,42 +96,7 @@ function propEnricher( arr, props, lang, project, params ) {
 	}
 
 	return mwApi( lang, params, project ).then( function ( data ) {
-		var index = {};
-		var pages = data.pages;
-		var redirects = {};
-		if ( data.redirects ) {
-			data.redirects.forEach( ( redirect ) => {
-				redirects[ redirect.from ] = redirect.to;
-			} );
-		}
-
-		pages.forEach( function ( page ) {
-			index[ page.title ] = {};
-			index[ page.title ].description = page.description;
-			if ( page.thumbnail && page.pageimage ) {
-				page.thumbnail.title = 'File:' + page.pageimage;
-			}
-			index[ page.title ].thumbnail = page.thumbnail;
-			index[ page.title ].coordinates = page.coordinates;
-			index[ page.title ].pageprops = page.pageprops;
-			if ( page.missing ) {
-				index[ page.title ].missing = true;
-			}
-		} );
-		arr.forEach( function ( page ) {
-			var t = page.title.replace( /_/gi, ' ' );
-			var obj = index[ t ] || index[ redirects[ t ] ] || {};
-			page.thumbnail = obj.thumbnail;
-			if ( obj.missing ) {
-				page.missing = true;
-			}
-			page.coordinates = obj.coordinates;
-			if ( obj.description && !page.description ) {
-				page.description = obj.description;
-			}
-			page.pageprops = obj.pageprops;
-		} );
-		return arr;
+		return mergePages( data.pages, arr, data.redirects );
 	} ).catch( function () {
 		// Looks like the endpoint is down or no internet connection - so return original array
 		return arr;

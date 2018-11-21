@@ -8,11 +8,21 @@ export default function addNextCards( data, lang, project, pages, isRegion ) {
 	return addProps( pages, props,
 		lang, project,
 		{ codistancefrompage: data.lead.title || data.lead.displaytitle }
-	).then( function () {
+	).then( function ( pages ) {
+		// create an index of all the pages
+		const index = {};
+		pages.forEach( ( page ) => {
+			index[ page.title ] = page;
+		} );
 		var destinations = [];
 		data.remaining.sections.forEach( function ( section ) {
 			if ( section.destinations && section.destinations.length ) {
-				destinations.push( Object.assign( {}, section ) );
+				const newSection = Object.assign( {}, section );
+				newSection.destinations = newSection.destinations.map(
+					( destination ) =>
+						Object.assign( {}, index[ destination.title ], destination )
+				);
+				destinations.push( newSection );
 			}
 			delete section.destinations;
 		} );
