@@ -1,6 +1,6 @@
 import domino from 'domino';
 
-import { SPECIAL_PROJECTS, HOST_SUFFIX, SITE_HOME } from './../config';
+import { SPECIAL_PROJECTS, HOST_SUFFIX } from './../config';
 import extractLeadParagraph from './extractLeadParagraph';
 import extractHatnote from './extractHatnote';
 import extractInfobox from './extractInfobox';

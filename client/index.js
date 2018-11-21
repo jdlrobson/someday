@@ -140,7 +140,7 @@ function launchMap( api, withPath, lat = '0', lng = '0' ) {
 	} else {
 		router.navigate( `/map/${lat}/${lng}/${title}` );
 	}
-};
+}
 
 function getMapClickHandler() {
 	const map = document.getElementById( 'map' );
@@ -170,7 +170,7 @@ addEventListener( '.action--collection-edit',
 	function ( ev ) {
 		ev.stopPropagation();
 		const id = window.location.pathname.split( '/' ).slice( -2 );
-		router.navigate( `/trip/edit/${id[ 0 ]}/${id[ 1 ]}`);
+		router.navigate( `/trip/edit/${id[ 0 ]}/${id[ 1 ]}` );
 	}
 );
 

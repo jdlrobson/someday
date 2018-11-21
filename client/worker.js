@@ -22,7 +22,7 @@ workbox.routing.registerRoute(
 		re,
 		workbox.strategies.staleWhileRevalidate( {
 			fetchOptions: {
-				credentials: 'include',
+				credentials: 'include'
 			}
 		} )
 	);

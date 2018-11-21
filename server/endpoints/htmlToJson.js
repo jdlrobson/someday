@@ -47,7 +47,7 @@ function parsoidHTMLToJSON( html ) {
 	const title = doc.querySelector( 'head title' ).textContent;
 	return {
 		lead: {
-			disambiguation: disambig ? true : false,
+			disambiguation: !!disambig,
 			title,
 			displaytitle: title,
 			sections: sections.slice( 0, 1 )
