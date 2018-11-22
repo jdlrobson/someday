@@ -27,11 +27,8 @@ export default function ( title, lang, project, revision ) {
     encodeURIComponent( title ) + suffix;
 
 	return htmlToJson( url ).then( function ( json ) {
-		if ( !json ) {
-			throw '404: Bad title given';
-		}
 		if ( json.code ) {
-			return json;
+			throw new Error( JSON.stringify( json ) );
 		}
 		const leadSectionText = json.lead.sections.length && json.lead.sections[ 0 ] && json.lead.sections[ 0 ].text;
 		if ( json.lead.disambiguation ) {

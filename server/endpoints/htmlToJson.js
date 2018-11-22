@@ -67,9 +67,13 @@ export default function ( url ) {
 					code,
 					title: resp.headers.get( 'Location' ).split( '/' ).slice( -1 )
 				};
-			} else {
+			} else if ( [ 200 ].indexOf( code ) > -1 ) {
 				return resp.text()
 					.then( ( html ) => parsoidHTMLToJSON( html ) );
+			} else {
+				return {
+					code
+				};
 			}
 		} );
 }
