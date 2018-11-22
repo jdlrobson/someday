@@ -347,17 +347,23 @@ export default function ( title, lang, project, revision ) {
 			return page;
 		} )
 		.catch( function ( err ) {
-			console.log( `Error thrown on ${title}: ${err}, ${err.stack}` );
+			let error;
+			try {
+				error = JSON.parse( err.message );
+			} catch ( e ) {
+				console.log( `Error thrown on ${title}: ${err}, ${err.stack}` );
+			}
 			var msg = err && err.msg && err.msg;
 			if ( !msg ) {
 				msg = err.toString();
 			}
 
-			if ( msg && msg.indexOf( '404EXCLUDE' ) > -1 ) {
-				throw new Error( '404' );
+			const four0four = new Error( JSON.stringify( { code: 404, msg: 'Unknown' } ) );
+			if ( error ) {
+				throw err;
 			// Any other 404s we'll route via wikipedia.org
 			} else if ( msg && msg.indexOf( '404' ) === -1 ) {
-				throw err;
+				throw four0four;
 			}
 		} );
 }
