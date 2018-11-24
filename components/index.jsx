@@ -1,3 +1,4 @@
+import ArrivalInformation from './ArrivalInformation';
 import Menu from './Menu';
 import PageBanner from './PageBanner';
 import CardGrid from './CardGrid';
@@ -14,6 +15,7 @@ import Tab from './Tab';
 import { Card, Icon } from 'wikipedia-react-components';
 
 export {
+	ArrivalInformation,
 	Box,
 	Climate,
 	Note,

@@ -91,10 +91,12 @@ function voyager( title, lang, project, data ) {
 		var curSectionSubheadingLine;
 		var orientation = [];
 		var itineraries = [];
+		const arrival = [];
 		const transitLinks = [];
 		const seen = {};
 		const climate = {};
 		let airports = [];
+		let tipping;
 
 		var p = { text: data.lead.paragraph };
 		cleanup( p );
@@ -141,7 +143,11 @@ function voyager( title, lang, project, data ) {
 			}
 
 			var lcLine = section.line.toLowerCase();
-			if ( lcCurSectionLine === 'get in' ) {
+			if ( lcLine === 'tipping' ) {
+				section.text = extractText( section.text );
+				tipping = section;
+				return;
+			} else if ( lcCurSectionLine === 'get in' ) {
 				airports = airports.concat( extractAirports( section.text ) );
 			}
 			if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 ) {
@@ -243,10 +249,25 @@ function voyager( title, lang, project, data ) {
 					section.text = removeNodes( section.text, 'ul,ol' );
 				}
 
-				if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
+				section.line = flattenLinksInHtml( section.line );
+				section.isEmpty = isSectionEmpty( section );
+				if ( lcCurSectionLine === 'get in' ) {
+					if ( !section.isEmpty &&
+						!matchesOne( section.line.toLowerCase(), [
+							'airlines serving',
+							'by cruise ship',
+							'by plane',
+							'public airport transportation',
+							'private airport transportation'
+						] )
+					) {
+						arrival.push( section );
+					}
+				} else if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
 					// Don't list things here. You're not Tripadvisor/Foursquare/Yelp
 					if ( [ 'Eat', 'Drink', 'Buy' ].indexOf( curSectionLine ) > -1 ) {
 						section.text = removeNodes( section.text, 'ul,ol' );
+						section.isEmpty = isSectionEmpty( section );
 					}
 					orientation.push( section );
 				} else if ( [
@@ -259,8 +280,6 @@ function voyager( title, lang, project, data ) {
 					sections.push( section );
 				}
 			}
-			section.line = flattenLinksInHtml( section.line );
-			section.isEmpty = isSectionEmpty( section );
 			if ( section.isEmpty ) {
 				section.text = '';
 			}
@@ -280,8 +299,10 @@ function voyager( title, lang, project, data ) {
 			displaytitle: stripParentheticals( data.lead.displaytitle ),
 			images: data.lead.images.concat( allImages ),
 			maps: allMaps,
+			arrival,
 			climate,
 			isRegion,
+			tipping,
 			isIsland,
 			isCountry,
 			airports,

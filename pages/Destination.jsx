@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Menu, PageBanner, Column, Box, Climate,
-	Icon, Nav, OfflineBanner,
+	Icon, Nav, OfflineBanner, ArrivalInformation,
 	Card, Note, ImageSlideshow } from './../components';
 import { placeToCard } from './../components/helpers';
 
@@ -116,7 +116,7 @@ function rightBoxes( lead ) {
 export default class DestinationPage extends React.Component {
 	render() {
 		const lead = this.props.lead;
-		const { paragraph, coordinates } = lead;
+		const { paragraph, coordinates, arrival, tipping } = lead;
 		return (
 			<Page title={lead.title}>
 				<Column key="col-1" col={1}>{leftBoxes( lead )}</Column>
@@ -142,6 +142,15 @@ export default class DestinationPage extends React.Component {
 					<Note key="note-2">
 						<p key="note-2-1" dangerouslySetInnerHTML={{ __html: paragraph }}></p>
 					</Note>
+					{
+						tipping && ( <div>
+							<h2 className="section__heading">Tipping</h2>
+							<Note>
+								<p>{tipping.text}</p>
+							</Note>
+						</div> )
+					}
+					<ArrivalInformation key="arrival" sections={arrival}></ArrivalInformation>
 					<Note key="note-3">
 						<p key="note-3-1">More information available on <a
 							href={'https://wikivoyage.org/wiki/' + lead.title}>Wikivoyage</a></p>

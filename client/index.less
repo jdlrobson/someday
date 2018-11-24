@@ -125,6 +125,33 @@ a {
   }
 }
 
+.section__heading {
+  text-align: center;
+  text-transform: uppercase;
+  color: #999;
+  position: relative;
+  margin: 0;
+  padding: 12px;
+  background: white;
+  border: solid 1px #999;
+  border-left: none;
+  border-right: none;
+  &:after,
+  &:before {
+      content: '';
+      border-bottom: solid 1px #999;
+      width: 30%;
+      height: 2px;
+      display: block;
+      position: absolute;
+      top: 50%;
+  }
+  &:after {
+      right: 0;
+  }
+}
+
+
 @media ( min-width: @breakpoint ) {
   body {
     &.--overlay-enabled {
