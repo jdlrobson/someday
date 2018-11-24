@@ -12,6 +12,7 @@ import thumbnailFromTitle from './../thumbnail-from-title';
  * @param {string} project of page
  * @param {object} data of page
  * @throws {Error} if page is in the TITLE_BLACKLIST or is marked as a topic or phrasebook
+ * @return {Promise}
  */
 export default function addBannerAndCoords( title, lang, project, data ) {
 	var width;
