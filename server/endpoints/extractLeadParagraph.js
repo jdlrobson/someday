@@ -47,4 +47,4 @@ function extractLeadIntroduction( doc, removeNodes ) {
 	return p;
 }
 
-module.exports = extractLeadIntroduction;
+export default extractLeadIntroduction;
