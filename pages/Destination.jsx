@@ -142,6 +142,7 @@ export default class DestinationPage extends React.Component {
 					<Note key="note-2">
 						<p key="note-2-1" dangerouslySetInnerHTML={{ __html: paragraph }}></p>
 					</Note>
+					<ArrivalInformation key="arrival" sections={arrival}></ArrivalInformation>
 					{
 						tipping && ( <div>
 							<h2 className="section__heading">Tipping</h2>
@@ -150,7 +151,6 @@ export default class DestinationPage extends React.Component {
 							</Note>
 						</div> )
 					}
-					<ArrivalInformation key="arrival" sections={arrival}></ArrivalInformation>
 					<Note key="note-3">
 						<p key="note-3-1">More information available on <a
 							href={'https://wikivoyage.org/wiki/' + lead.title}>Wikivoyage</a></p>
