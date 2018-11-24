@@ -49,6 +49,34 @@ export function climateToWikiText( climate, title ) {
 	return text + '}}';
 }
 
+function climateExtractionNew( text ) {
+	const ext = extractElements( text, [
+		'.climate-table table.infobox table.infobox',
+		// e.g. Taganga (Template:climate chart)
+		'table.infobox table.infobox'
+	].join( ',' ) );
+	if ( ext.extracted.length > 0 ) {
+		const firstTable = ext.extracted[ 0 ];
+		const secondRow = firstTable.querySelectorAll( 'tr' )[ 1 ];
+		const data = Array.from( secondRow.querySelectorAll( 'td' ) ).map( ( col, i ) => {
+			const spans = col.querySelectorAll( 'span' );
+			const values = Array.from( spans ).map( ( span ) => span.textContent )
+				.filter( ( val ) => val.trim() !== '' );
+
+			return {
+				heading: MONTHS[ i ],
+				precipitation: parseFloat( values[ 0 ] ),
+				high: parseInt( values[ 1 ], 10 ),
+				low: parseInt( values[ 2 ], 10 )
+			};
+		} );
+		if ( data.length ) {
+			return checkImperial( data );
+		}
+	}
+	return;
+}
+
 export function climateExtractionWikipedia( text ) {
 	const matches = extractElements( text, 'table tr' );
 	let climate = [];
@@ -81,29 +109,11 @@ export function climateExtractionWikipedia( text ) {
 			}
 		}
 	} );
-	return climate;
-}
-
-function climateExtractionNew( text ) {
-	const ext = extractElements( text, '.climate-table table.infobox table.infobox' );
-	if ( ext.extracted.length > 0 ) {
-		const firstTable = ext.extracted[ 0 ];
-		const secondRow = firstTable.querySelectorAll( 'tr' )[ 1 ];
-		const data = Array.from( secondRow.querySelectorAll( 'td' ) ).map( ( col, i ) => {
-			const spans = col.querySelectorAll( 'span' );
-			const values = Array.from( spans ).map( ( span ) => span.textContent )
-				.filter( ( val ) => val.trim() !== '' );
-
-			return {
-				heading: MONTHS[ i ],
-				precipitation: parseFloat( values[ 0 ] ),
-				high: parseInt( values[ 1 ], 10 ),
-				low: parseInt( values[ 2 ], 10 )
-			};
-		} );
-		return checkImperial( data );
+	if ( !climate.length ) {
+		// try the other known format..
+		climate = climateExtractionNew( text );
 	}
-	return;
+	return climate && climate.length ? climate : false;
 }
 
 function climateExtraction( section ) {
