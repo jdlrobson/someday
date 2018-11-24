@@ -1,7 +1,8 @@
 import domino from 'domino';
 
 function isNodeEmpty( node ) {
-	return node && node.textContent && node.textContent.replace( /[↵ \n\t]/gi, '' ).length === 0;
+	const text = node && node.textContent && node.textContent.replace( /[↵ \n\t]/gi, '' );
+	return text.trim().length === 0;
 }
 
 function cleanStrayPunctuation( node ) {
