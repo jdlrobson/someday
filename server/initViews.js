@@ -25,12 +25,18 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 			res.status( 200 ).send( html ).end();
 		}, function () {
 			fetch( dataUrl ).then( ( resp ) => {
+				let json;
 				if ( resp.status === 404 ) {
 					res.status( 404 )
 						.render( '404.html' );
 					return;
 				}
-				return resp.json().then( ( props ) => {
+				if ( resp.headers.get( 'content-type' ).indexOf( 'text/plain' ) > -1 ) {
+					json = resp.text().then( ( text ) => ( { text } ));
+				} else {
+					json = resp.json();
+				}
+				return json.then( ( props ) => {
 					let meta = {
 						dataUrl,
 						params: req.params,
