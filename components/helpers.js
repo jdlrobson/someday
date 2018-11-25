@@ -10,6 +10,6 @@ export const placeToCard = ( { title, thumbnail, description, missing, coordinat
 	return <Card title={title} thumbnail={thumbnail}
 		className={missing ? ' card-place--missing' : 'card-place' }
 		key={`place-${key}`}
-		url={'/destination/' + encodeURIComponent( title )}
+		url={'/destination/' + encodeURIComponent( title.replace(/ /g, '_' ) )}
 		extracts={[ description, coordinatesToLabel( coordinates ) ]} />;
 };

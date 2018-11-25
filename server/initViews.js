@@ -6,6 +6,15 @@ import cached from './cached-response';
 import pages from './../pages';
 
 function addRoute( app, route, View, apiTemplate, extractMeta ) {
+	// redirects %20 to _ (standard for wikipedia titles)
+	app.use( function ( req, res, next ) {
+		if ( req.url.indexOf( '%20' ) > -1 ) {
+			let newUrl = req.url.replace( /%20/g, '_' );
+			res.redirect( 301, newUrl );
+		} else {
+			next();
+		}
+	} );
 	app.get( route, ( req, res ) => {
 		const host = req.protocol + '://' + req.get( 'host' );
 		const api = compile( apiTemplate )( req.params );
