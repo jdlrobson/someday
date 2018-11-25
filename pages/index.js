@@ -1,6 +1,7 @@
 import HomePage from './HomePage';
 import ClimateTool from './ClimateTool';
 import Destination from './Destination';
+import NearbyTool from './NearbyTool';
 import Sight from './Sight';
 import Trips from './Trips';
 import Trip from './Trip';
@@ -14,5 +15,6 @@ export default [
 	[ routes.SIGHT, Sight, '/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/:title' ],
 	[ routes.DESTINATION_REVISION, Destination, '/api/voyager/page/en.wikivoyage/:title/:revision' ],
 	[ routes.DESTINATION, Destination, '/api/voyager/page/en.wikivoyage/:title' ],
+	[ routes.NEARBY_TOOL, NearbyTool, '/api/voyager/near/:title' ],
 	[ routes.CLIMATE_TOOL, ClimateTool, '/api/voyager/climate/:title' ]
 ];
