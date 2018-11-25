@@ -25,8 +25,9 @@ const sightToCard = ( destTitle, i ) => {
 const placeToCardWithoutDestination = ( data, i ) =>
 	placeToCard( Object.assign( {}, data, { coordinates: undefined } ), i );
 
-const editButton = ( id ) =>
-	<button data-id={id} className="edit-link" key={'edit-' + id}>edit</button>;
+const editButton = ( id, hint ) =>
+	<button data-id={id} className="edit-link" data-hint={hint}
+		key={'edit-' + id}>edit</button>;
 
 const sectionToBoxData = ( { line, destinations, id } ) => {
 	let links;
@@ -37,7 +38,7 @@ const sectionToBoxData = ( { line, destinations, id } ) => {
 	}
 	return [
 		line,
-		links.concat( editButton( id ) )
+		links.concat( editButton( id, 'go_next' ) )
 	];
 };
 
@@ -81,7 +82,7 @@ function rightBoxes( lead ) {
 		boxes = boxes.concat(
 			<Box title="Climate" key="climate-box">
 				<Climate key="climate-child" {...climate}/>
-				{editButton( climate.id )}
+				{editButton( climate.id, 'climate' )}
 			</Box>
 		);
 	}

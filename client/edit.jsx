@@ -118,7 +118,17 @@ function setSummary( ev ) {
 	summary = ev.currentTarget.value;
 }
 
-export function showEditOverlay( ev, title, section ) {
+export function showEditOverlay( ev, title, section, hint ) {
+	let hintChild;
+	if ( hint === 'climate' ) {
+		hintChild = (
+			<p>A little hint: <a href={`/tools/climate/${title}`} target="new">climate tool</a> may help</p>
+		);
+	} else if ( hint === 'go_next' ) {
+		hintChild = (
+			<p>A little hint: <a href={`/tools/nearby/${title}`} target="new">the nearby tool</a> may help</p>
+		);
+	}
 	getWikitext( title, section ).then( ( wikitext ) => {
 		currentEdit = wikitext;
 		showOverlay( ev,
@@ -134,6 +144,7 @@ export function showEditOverlay( ev, title, section ) {
 					placeholder="Tell others what your edit did to improve things"></Input>
 				<Button key="edit-save" onClick={getSaveHandler( title, section )} label="Done"></Button>
 				<Button key="edit-cancel" onClick={hideOverlay}>Cancel</Button>
+				{hintChild}
 			</Overlay>
 		);
 	} );

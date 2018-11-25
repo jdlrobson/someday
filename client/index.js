@@ -23,8 +23,8 @@ const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 
 const router = overlayRouter();
-router.on( '/editor/:title/:id', ( options ) => {
-	showEditOverlay( null, options.title, options.id );
+router.on( '/editor/:title/:id/:hint?', ( options ) => {
+	showEditOverlay( null, options.title, options.id, options.hint );
 } ).on( '/map/:lat/:lng/:title', ( options ) => {
 	showMapOverlay( null, parseFloat( options.lat ), parseFloat( options.lng ), options.title );
 } ).on( '/markers/:api', ( options ) => {
@@ -84,10 +84,11 @@ addEventListener(
 	function ( ev ) {
 		const target = ev.target;
 		const id = target.getAttribute( 'data-id' );
+		const hint = target.getAttribute( 'data-hint' );
 		if ( id ) {
 			// Otherwise all clicks to open an overlay will trigger the hideOverlay listener above
 			ev.stopPropagation();
-			router.navigate( `/editor/${title}/${id}/` );
+			router.navigate( `/editor/${title}/${id}/${hint}` );
 		} else {
 			target.setAttribute( 'disabled' );
 		}
