@@ -58,7 +58,7 @@ function stripParentheticals( str ) {
 /**
  * Does str match one of the strings in test?
  * @param {string} str
- * @param {array} tests
+ * @param {Array} tests
  * @return {boolean}
  */
 function matchesOne( str, tests ) {

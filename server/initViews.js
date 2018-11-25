@@ -32,7 +32,7 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 					return;
 				}
 				if ( resp.headers.get( 'content-type' ).indexOf( 'text/plain' ) > -1 ) {
-					json = resp.text().then( ( text ) => ( { text } ));
+					json = resp.text().then( ( text ) => ( { text } ) );
 				} else {
 					json = resp.json();
 				}

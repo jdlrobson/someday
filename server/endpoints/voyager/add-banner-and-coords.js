@@ -10,7 +10,7 @@ import thumbnailFromTitle from './../thumbnail-from-title';
  * @param {string} title of page
  * @param {string} lang of page
  * @param {string} project of page
- * @param {object} data of page
+ * @param {Object} data of page
  * @throws {Error} if page is in the TITLE_BLACKLIST or is marked as a topic or phrasebook
  * @return {Promise}
  */
