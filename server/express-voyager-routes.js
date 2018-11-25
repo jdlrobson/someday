@@ -6,6 +6,7 @@ import manifest from './manifest';
 const cachedResponse = cachedResponses.cachedResponse;
 import cached from './cached-response';
 import fetch from 'isomorphic-fetch';
+import qs from 'query-string';
 import { climateExtractionWikipedia, climateToWikiText } from './endpoints/voyager/extract-climate';
 
 function initRoutes( app ) {
@@ -78,6 +79,35 @@ function initRoutes( app ) {
 				res.send( err && err.toString ? err.toString() : err );
 			} );
 		} );
+	} );
+
+	app.get( '/api/voyager/near/:title', ( req, res ) => {
+		const title = req.params.title;
+		const query = qs.stringify( {
+			action: 'query',
+			prop: 'coordinates',
+			format: 'json',
+			formatversion: 2,
+			titles: title
+		} );
+		const host = req.protocol + '://' + req.get( 'host' );
+		fetch( `${host}/api/wikimedia/en.wikivoyage.org/api.php?${query}` )
+			.then( ( resp ) => resp.json() )
+			.then( ( json ) => {
+				const page = json.pages[ 0 ];
+				if ( page ) {
+					const coords = page.coordinates;
+					return voyager.nearby( coords.lat, coords.lon, title )
+						.then( ( json ) => {
+							res.status( 200 );
+							res.send(
+								JSON.stringify( { pages: json.pages } )
+							);
+						} );
+				} else {
+					res.status( 404 );
+				}
+			} );
 	} );
 
 	app.get( '/api/voyager/nearby/:latitude,:longitude/exclude/:title', ( req, res ) => {
