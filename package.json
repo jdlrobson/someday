@@ -4,7 +4,8 @@
   "description": "for travellers",
   "main": "someday.js",
   "scripts": {
-    "start": "npm run compile && node someday.js",
+    "prestart": "npm run compile",
+    "start": "node someday.js",
     "dev": "node someday.js & npm run compile:watch",
     "compile": "export NODE_ENV=production && webpack --output-path public/",
     "compile:watch": "export NODE_ENV=development && webpack --output-path public/ --watch",
