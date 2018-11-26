@@ -1,7 +1,7 @@
 import React from 'react';
 import { showOverlay, hideOverlay, refreshOverlay } from './overlay';
 import { Input, Overlay } from 'wikipedia-react-components';
-import 'wikipedia-react-components/components/Input/styles.less';
+import 'wikipedia-react-components/components/Input/mediawiki-ui-input.css';
 import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 import { placeToCard } from './../components/helpers';
