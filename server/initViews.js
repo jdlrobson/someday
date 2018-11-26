@@ -43,7 +43,8 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 						username: req.user ? req.user.displayName : '',
 						image: `${host}/home-icon.png`,
 						description: 'the pocket travel guide that follows you wherever you are in the world',
-						page_title: 'Someday'
+						page_title: req.params.title ? req.params.title.replace( /_/g, ' ' ) :
+							'Someday'
 					};
 					const element = React.createElement( View,
 						Object.assign( {}, props, { meta: meta } ),
