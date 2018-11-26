@@ -91,7 +91,7 @@ function rightBoxes( lead ) {
 			<Box title="Airports" scrollable={true} key="airport-box"><ul>{
 				airports.map( ( code, i ) =>
 					<li key={`airport-${i}`}><a target="_blank"
-						href={`https://www.rome2rio.com/map/${code}`}>{code}</a></li>
+						href={`https://www.rome2rio.com/map/${code}%20airport`}>{code}</a></li>
 				)
 			}</ul></Box>
 
