@@ -1,9 +1,11 @@
 /* global document */
-// Import all the styles:
-import 'wikipedia-react-components/dist/styles.css';
 // Needed for stylesheet
 // eslint-disable-next-line no-unused-vars
-import components, { Climate } from './../components';
+import { Climate } from './../components';
+import 'wikipedia-react-components/components/TruncatedText/styles.less';
+import 'wikipedia-react-components/components/Card/styles.less';
+import 'wikipedia-react-components/components/HorizontalList/styles.less';
+import 'wikipedia-react-components/components/Icon/mediawiki-ui-icon.css';
 import './index.less';
 
 // Import helpers

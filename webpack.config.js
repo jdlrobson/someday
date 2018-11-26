@@ -32,7 +32,7 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin( {
-			filename: 'style.css'
+			filename: '[name].css'
 		} ),
 		new webpack.DefinePlugin( {
 			'process.env': {
