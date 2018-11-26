@@ -131,10 +131,13 @@ addEventListener( '.action--add-trip',
 	}
 );
 
-document.getElementById( 'search' ).addEventListener( 'click', function ( ev ) {
-	ev.stopPropagation();
-	router.navigate( '/search' );
-} );
+const search = document.getElementById( 'search' );
+if ( search ) {
+	search.addEventListener( 'click', function ( ev ) {
+		ev.stopPropagation();
+		router.navigate( '/search' );
+	} );
+}
 
 function launchMap( api, withPath, lat = '0', lng = '0' ) {
 	if ( api ) {
@@ -157,12 +160,15 @@ function getMapClickHandler() {
 		launchMap( mapApi, mapWithPath, lat, lng );
 	};
 }
-// render map icon
-ReactDOM.render(
-	<button className="map-icon" onClick={getMapClickHandler()}>Launch map</button>,
-	document.getElementById( 'pagebanner__map-toolbar' )
-);
 
+const map = document.getElementById( 'pagebanner__map-toolbar' );
+if ( map ) {
+	// render map icon
+	ReactDOM.render(
+		<button className="map-icon" onClick={getMapClickHandler()}>Launch map</button>,
+		map
+	);
+}
 addEventListener( 'h1', 'click', function ( ev ) {
 	ev.stopPropagation();
 } );
