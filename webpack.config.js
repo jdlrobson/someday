@@ -52,23 +52,10 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.jsx$/,
-				exclude: /node_modules/,
+				test: /\.jsx?$/,
+				exclude: /node_modules\/react-leaflet/,
 				use: [ {
-					loader: 'babel-loader',
-					query: {
-						presets: [ 'es2015', 'react' ]
-					}
-				} ]
-			},
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: [ {
-					loader: 'babel-loader',
-					query: {
-						presets: [ 'es2015' ]
-					}
+					loader: 'babel-loader'
 				} ]
 			},
 			{
