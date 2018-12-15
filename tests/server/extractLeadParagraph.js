@@ -13,7 +13,7 @@ describe( 'extractLeadParagraph', function () {
 			],
 			[
 				'<p><span>   </span></p>\n\n<p><b>Chaguanas</b> is in <a href="/wiki/Trinidad" title="Trinidad">Trinidad</a>.</p>',
-				'<b>Chaguanas</b> is in <a href="/wiki/Trinidad" title="Trinidad">Trinidad</a>.',
+				'<p><b>Chaguanas</b> is in <a href="/wiki/Trinidad" title="Trinidad">Trinidad</a>.</p>',
 				'Empty paragraphs removed'
 			]
 		];
