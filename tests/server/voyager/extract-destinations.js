@@ -3,6 +3,26 @@ var assert = require( 'assert' );
 import extract from './../../../server/endpoints/voyager/extract-destinations';
 
 describe( 'extract-destinations', function () {
+	it( 'Northern_Arizona', () => {
+		var section = {
+			text: `<ul><li id="mwVw">
+						<span class="vcard" about="#mwt29">
+							<span id="Walnut_Canyon_National_Monument" class="fn org listing-name">
+							<b>
+								<a rel="mw:ExtLink" class="external text"
+									href="http://www.nps.gov/waca">Walnut Canyon National Monument</a>
+							</b>
+							</span>
+						</span> - An important archaeological site in a scenic setting.
+					</li></ul>`
+		};
+		section = extract( section );
+		const dest = section.destinations[ 0 ];
+		assert.strictEqual( section.destinations.length, 1, 'An external link can be a destination' );
+		assert.strictEqual( dest.title, 'Walnut Canyon National Monument' );
+		assert.strictEqual( dest.external, true );
+	} );
+
 	it( 'Borobudur', function () {
 		var section = {
 			text: '<div>\n\n<ul><li id="mwAUE"> The Hindu temples of <a href="/wiki/Prambanan" title="Prambanan">Prambanan</a>, about an hour away by car, make the perfect complement to Borobudur.</li></ul>\n\n<ul><li id="mwAUQ"> The cultural splendour of <a href="/wiki/Yogyakarta" title="Yogyakarta">Yogyakarta</a> is about 90 minutes by bus.</li></ul>\n\n<ul><li id="mwAUc"> The <a href="/wiki/Dieng_Plateau" title="Dieng Plateau">Dieng Plateau</a> is a volcanic area in the highlands of Central Java with the oldest standing temples in Indonesia, pre-dating Borobudur by some 100 years. About a 90 minute drive to the northwest.</li></ul>\n\n<ul><li id="mwAUo"> If you want to see a <i>serious</i>  active volcano, <a href="/wiki/Mount_Merapi" title="Mount Merapi">Mount Merapi</a> is about a 2 hour drive to the east.</li></ul>\n\n<p>However if you are based in Yogyakarta or other locations and not driving yourself , there are \'tours\' or \'climbing\' ventures, that in most cases leave from Yogyakarta, and drive to Selo (located in the valley between Merbabu and Merapi) which is a traditional location to walk to the top of Merapi in the middle of the night for the dawn views.</p>\n\n\n\n<span>\n</span>\n\n\n\n\n\n</div>'

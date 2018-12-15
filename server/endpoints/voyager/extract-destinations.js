@@ -35,14 +35,23 @@ function extractFromList( html ) {
 	// vcard method
 	ext = extractElements( html, '.vcard .listing-name > b > a', true );
 	Array.prototype.forEach.call( ext.extracted, function ( node ) {
-		const title = node.getAttribute( 'title' );
+		let title = node.getAttribute( 'title' );
+		let url;
+		const external = node.getAttribute( 'class' ) ?
+			node.getAttribute( 'class' ).indexOf( 'external' ) > -1 : undefined;
 		const listItem = getParentWithTag( node, 'LI' );
+		if ( !title && external ) {
+			url = node.getAttribute( 'href' );
+			title = node.textContent;
+		}
 		node.parentNode.removeChild( node );
 		if ( listItem && listItem.textContent ) {
 			const text = listItem.textContent.trim();
 			const description = cleanDescription( text );
-			console.log( 'go', title, text, description );
-			titles.push( { title, description } );
+			// A title is not a given. If not found. Not a destination (#31).
+			if ( title ) {
+				titles.push( { title, description, url, external } );
+			}
 		} else {
 			// no description
 			titles.push( { title } );

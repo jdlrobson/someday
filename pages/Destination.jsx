@@ -2,20 +2,13 @@ import React from 'react';
 import { Page, Menu, PageBanner, Column, Box, Climate,
 	Icon, Nav, OfflineBanner, ArrivalInformation,
 	Card, Note, ImageSlideshow } from './../components';
-import { placeToCard } from './../components/helpers';
+import { placeToCard, selectThumbnail } from './../components/helpers';
 
-const EXTERNAL_LINK_THUMBNAIL = {
-	width: 240,
-	height: 240,
-	source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/External_Link_%2889628%29_-_The_Noun_Project.svg/240px-External_Link_%2889628%29_-_The_Noun_Project.svg.png'
-};
 const sightToCard = ( destTitle, i ) => {
 	return ( { title, thumbnail, description, external, url } ) => {
 		url = url || `/destination/${encodeURIComponent( destTitle )}/sight/${encodeURIComponent( title )}`;
-		if ( !thumbnail && external ) {
-			thumbnail = EXTERNAL_LINK_THUMBNAIL;
-		}
-		return <Card title={title} thumbnail={thumbnail}
+		return <Card title={title} thumbnail={
+				selectThumbnail( { thumbnail, external } )}
 			key={`sight-${i}`}
 			url={url}
 			extracts={[ description ]} />;
