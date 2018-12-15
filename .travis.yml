@@ -1,0 +1,5 @@
+language: node_js
+# should match .nvmrc
+node_js:
+  - "7.6.0"
+
