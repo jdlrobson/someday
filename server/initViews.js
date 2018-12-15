@@ -37,13 +37,18 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 					json = resp.json();
 				}
 				return json.then( ( props ) => {
+					const lead = props.lead || {};
+					const images = lead.images || [];
+					const image = images.filter( ( image ) => {
+						return !image.isBanner;
+					} )[ 0 ];
 					let meta = {
 						dataUrl,
 						params: req.params,
 						username: req.user ? req.user.displayName : '',
-						image: `${host}/home-icon.png`,
+						image: image ? image.src : `${host}/home-icon.png`,
 						url: `${host}${req.url}`,
-						description: 'the pocket travel guide that follows you wherever you are in the world',
+						description: ( props.lead && props.lead.paragraph_text ) || 'the pocket travel guide that follows you wherever you are in the world',
 						page_title: req.params.title ? req.params.title.replace( /_/g, ' ' ) :
 							'Someday'
 					};
