@@ -43,5 +43,5 @@ initApiProxy( app );
 initVoyagerRoutes( app );
 initCollectionRoutes( app, '/api/', 'wikivoyage' );
 
-app.listen();
+app.listen( app.get( 'port' ) );
 console.info( '==> Go to http://localhost:%s', app.get( 'port' ) );
