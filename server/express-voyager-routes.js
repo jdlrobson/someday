@@ -44,7 +44,7 @@ function initRoutes( app ) {
 		fetch( 'https://en.wikipedia.org/api/rest_v1/page/mobile-sections-remaining/' + encodeURIComponent( p.title ) )
 			.then( ( resp ) => resp.json() )
 			.then( ( json ) => {
-				const climate = json.sections.filter( ( section ) => section.line === 'Climate' );
+				const climate = json.sections.filter( ( section ) => section.line.toLowerCase().indexOf( 'climate' ) > -1 );
 				if ( climate.length ) {
 					const climateData = climateExtractionWikipedia( climate[ 0 ].text );
 					if ( climateData.length ) {
