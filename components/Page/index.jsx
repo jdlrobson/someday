@@ -14,7 +14,7 @@ export default class Page extends React.Component {
 					</Column>
 					<Column col={3}>
 						<a href="https://github.com/jdlrobson/someday">
-							<img width="24" height="24" src="/github.png" />
+							<img width="24" height="24" src="/images/github.png" />
 						</a>
 					</Column>
 				</footer>
