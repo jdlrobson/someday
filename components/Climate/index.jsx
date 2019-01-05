@@ -40,7 +40,7 @@ class Climate extends React.Component {
 				<div>
 					<h3>
 						<select defaultValue={curMonthNum}
-							disabled={!this.state.month}
+							disabled={this.state.month === undefined}
 							onChange={this.onChange.bind( this )}>{options}</select>
 					</h3>
 					<h4>Average temperatures</h4>
