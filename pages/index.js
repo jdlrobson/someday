@@ -12,7 +12,7 @@ export default [
 	[ routes.TRIPS, Trips, '/api/collection' ],
 	[ routes.TRIPS_BY_OWNER, Trips, '/api/collection/by/:owner' ],
 	[ routes.TRIP, Trip, '/api/collection/by/:owner/:id' ],
-	[ routes.SIGHT, Sight, '/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/:title' ],
+	[ routes.SIGHT, Sight, '/api/voyager/sight/:title' ],
 	[ routes.DESTINATION_REVISION, Destination, '/api/voyager/page/en.wikivoyage/:title/:revision' ],
 	[ routes.DESTINATION, Destination, '/api/voyager/page/en.wikivoyage/:title' ],
 	[ routes.NEARBY_TOOL, NearbyTool, '/api/voyager/near/:title' ],

@@ -3,7 +3,9 @@ import { Page, Menu, PageBanner, Column, Note, ImageSlideshow } from './../compo
 
 export default class Sight extends React.Component {
 	render() {
-		const { extract, meta, title, displaytitle, coordinates, thumbnail } = this.props;
+		const { lead, meta } = this.props;
+		const { title, images, extract,
+			displaytitle, coordinates, thumbnail } = lead;
 		const { params } = meta;
 		const dest = params.dest;
 		const lat = coordinates && coordinates.lat;
@@ -31,7 +33,7 @@ export default class Sight extends React.Component {
 					</Note>
 				</Column>
 				<Column col={3}>
-					{thumbnail && <ImageSlideshow images={[ thumbnail ]}
+					{thumbnail && <ImageSlideshow images={[ thumbnail ].concat( images )}
 						key="img-slideshow" />}
 				</Column>
 			</Page>

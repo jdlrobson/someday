@@ -8,6 +8,7 @@ import cached from './cached-response';
 import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 import { climateExtractionWikipedia, climateToWikiText } from './endpoints/voyager/extract-climate';
+import addImagesFromCommons from './endpoints/voyager/add-images-from-commons';
 
 function initRoutes( app ) {
 	app.get( '/manifest.json', ( req, res ) => {
@@ -81,6 +82,25 @@ function initRoutes( app ) {
 		} );
 	} );
 
+	const getHost = ( req ) => {
+		return req.protocol + '://' + req.get( 'host' );
+	}
+
+	app.get( '/api/voyager/sight/:title', ( req, res ) => {
+		const title = req.params.title;
+		fetch( `${getHost( req )}/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/${title}` ).then( ( resp ) => {
+			return resp.json();
+		} ).then( ( page ) => {
+			return addImagesFromCommons( { lead: page }, '50' );
+		} ).then( ( page ) => {
+			res.status( 200 );
+			res.setHeader( 'Content-Type', 'application/json' );
+			res.send(
+				JSON.stringify( page )
+			);
+		} );
+	} );
+
 	app.get( '/api/voyager/near/:title', ( req, res ) => {
 		const title = req.params.title;
 		const query = qs.stringify( {
@@ -90,8 +110,7 @@ function initRoutes( app ) {
 			formatversion: 2,
 			titles: title
 		} );
-		const host = req.protocol + '://' + req.get( 'host' );
-		fetch( `${host}/api/wikimedia/en.wikivoyage.org/api.php?${query}` )
+		fetch( `${getHost( req )}/api/wikimedia/en.wikivoyage.org/api.php?${query}` )
 			.then( ( resp ) => resp.json() )
 			.then( ( json ) => {
 				const page = json.pages[ 0 ];
