@@ -19,19 +19,37 @@ export function hasForbiddenCategory( categories ) {
 		return CATEGORY_BLACKLIST.filter( bad => lc.indexOf( bad ) > -1 ).length;
 	} ).length > 0;
 }
+
+/**
+ * @typedef {Object} Coordinate
+ * @property {number} lat
+ * @property {number} lon
+ */
+
+/**
+ * @typedef {object} Page
+ * @property {Object} lead
+ * @property {Coordinate} lead.coordinates
+ * @property {Array} lead.images
+ * @property {Array} lead.images
+ */
 /**
  * Adds to the exiting lead.images property of a page with images
  * from commons
- * @param {Object} page
+ * @param {Page} page
+ * @param {string} [radius] defaults to '10000'
  * @return {Promise}
  */
-export default function addImagesFromCommons( page ) {
-	const coords = page.lead.coordinates || {};
+export default function addImagesFromCommons( page, radius ) {
+	const coords = page.lead.coordinates;
+	if ( !coords ) {
+		return Promise.resolve( page );
+	}
 	const images = page.lead.images || [];
 	var params = {
 		prop: 'pageimages|categories',
 		generator: 'geosearch',
-		ggsradius: '10000',
+		ggsradius: radius || '10000',
 		cllimit: 'max',
 		ggsnamespace: 6,
 		pithumbsize: 400,
