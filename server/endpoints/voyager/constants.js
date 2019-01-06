@@ -19,6 +19,8 @@ export const REGION_SECTION_HEADINGS = ISLAND_SECTION_HEADINGS.concat( [
 export const ITEMS_TO_DELETE = [
 	// should be handled upstream (https://gerrit.wikimedia.org/r/370371)
 	'.dablink',
+	// https://github.com/jdlrobson/someday/issues/42
+	'.pp_cautionbox',
 	'.mw-kartographer-maplink',
 	'.pp_infobox',
 	'.listing-metadata',
