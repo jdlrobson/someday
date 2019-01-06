@@ -19,6 +19,8 @@ function filterNonPages( { title, categories } ) {
 	// keep only if it doesn't match one of the banned categories
 	const categoryNames = categories.map( ( cat ) => cat.title );
 	const matches = [
+		'Category:Phrasebooks',
+		'Category:Outline phrasebooks',
 		'Category:Title articles',
 		'Category:Concerns',
 		'Category:Outline topics',
@@ -50,12 +52,14 @@ function doSearch( ev ) {
 	timeout = setTimeout( () => {
 		fetch( `/api/wikimedia/en.wikivoyage.org/api.php?${query}` )
 			.then( ( resp ) => resp.json() ).then( ( data ) => {
+				const pages = data.pages ? data.pages.filter( filterNonPages ) : [];
 				refreshOverlay(
 					// eslint-disable-next-line no-use-before-define
 					getSearchOverlay(
-						data.pages
-							.filter( filterNonPages )
-							.map( ( page, i ) => placeToCard( page, `search-${i}` ) ),
+						pages.length ?
+							pages.map( ( page, i ) => placeToCard( page, `search-${i}` ) ) :
+							<p>😞 I don't know that place...</p>
+						,
 						self
 					)
 				);
