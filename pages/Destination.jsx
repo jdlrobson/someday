@@ -4,6 +4,12 @@ import { Page, Menu, PageBanner, Column, Box, Climate,
 	Card, Note, ImageSlideshow } from './../components';
 import { placeToCard, selectThumbnail } from './../components/helpers';
 
+const desertIsland = ( id ) =>
+	<div className="list--empty" key={'desert-' + id}>🏝️ as many sights as a desert island</div>;
+
+const tumbleweed = ( id ) =>
+	<div className="list--empty" key={'tumbleweed-' + id}>🌵 Nothing but tumbleweed</div>;
+
 const sightToCard = ( destTitle, i ) => {
 	return ( { title, thumbnail, description, external, url } ) => {
 		url = url || `/destination/${encodeURIComponent( destTitle )}/sight/${encodeURIComponent( title )}`;
@@ -27,7 +33,7 @@ const sectionToBoxData = ( { line, destinations, id } ) => {
 	if ( destinations.length ) {
 		links = destinations.map( placeToCard );
 	} else {
-		links = [ <div key={'tumbleweed-' + id}>Tumbleweed</div> ];
+		links = [ tumbleweed( id ) ];
 	}
 	return [
 		line,
@@ -35,10 +41,15 @@ const sectionToBoxData = ( { line, destinations, id } ) => {
 	];
 };
 
-const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => [
-	line, destinations.map( placeToCardWithoutDestination, i )
-];
+const sectionToBoxDataNoDistance = ( { line, destinations }, i ) => {
+	const content = destinations.length ?
+		destinations.map( placeToCardWithoutDestination, i ) :
+		[ tumbleweed( 'box-' + i ) ];
 
+	return [
+		line, content
+	];
+}
 function leftBoxes( lead ) {
 	const { isCountry, destinations, sights, disambiguation, section_ids } = lead;
 	let boxes = [];
@@ -53,12 +64,15 @@ function leftBoxes( lead ) {
 		);
 	}
 	if ( !disambiguation && sights ) {
+		const id = section_ids.sights;
 		boxes.push( [
 			'Sights',
-			sights.map(
-				sightToCard( lead.title )
+			(
+				sights.length ? sights.map(
+					sightToCard( lead.title )
+				) : [ desertIsland( id ) ]
 			).concat(
-				editButton( section_ids.sights )
+				editButton( id )
 			)
 		] );
 	}
