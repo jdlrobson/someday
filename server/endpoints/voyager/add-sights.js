@@ -44,7 +44,9 @@ function addSights( data, distance ) {
 			lookup[ sight.name ] = sight;
 		} );
 		const isExternal = ( sight ) => {
-			return sight.external;
+			return sight.external &&
+				// https://github.com/jdlrobson/someday/issues/38
+				( sight.name || sight.title );
 		};
 		const externalSights = origSights.filter( isExternal );
 
