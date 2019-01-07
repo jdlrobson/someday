@@ -5,7 +5,7 @@ import pathToRegexp from 'path-to-regexp';
 importScripts( 'https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js' );
 
 workbox.routing.registerRoute(
-	/\.(?:js|css|jpg|png)$/,
+	/\.(?:js|css|jpg|png|svg)$/,
 	workbox.strategies.staleWhileRevalidate()
 );
 
