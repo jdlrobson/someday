@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 import { compile } from 'path-to-regexp';
 import cached from './cached-response';
 import pages from './../pages';
+import FourOhFour from './../pages/404';
+import FiveOhhhhhhhOhhh from './../pages/500';
 
 function addRoute( app, route, View, apiTemplate, extractMeta ) {
 	// redirects %20 to _ (standard for wikipedia titles)
@@ -28,7 +30,13 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 				let json;
 				if ( resp.status === 404 ) {
 					res.status( 404 )
-						.render( '404.html' );
+						.render( 'index.html', {
+							page_title: '404',
+							dataUrl,
+							view: ReactDOMServer.renderToString(
+								React.createElement( FourOhFour )
+							)
+						} );
 					return;
 				}
 				if ( resp.headers.get( 'content-type' ).indexOf( 'text/plain' ) > -1 ) {
@@ -72,7 +80,14 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 				} )
 					.catch( ( err ) => {
 						console.log( err, err.stack );
-						res.status( 500 ).render( '500.html', { view: err } );
+						res.status( 500 )
+							.render( 'index.html', {
+								page_title: '500',
+								dataUrl,
+								view: ReactDOMServer.renderToString(
+									React.createElement( FiveOhhhhhhhOhhh )
+								)
+							} );
 					} );
 			} );
 		} );
