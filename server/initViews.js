@@ -7,6 +7,16 @@ import pages from './../pages';
 import FourOhFour from './../pages/404';
 import FiveOhhhhhhhOhhh from './../pages/500';
 
+function handle404( res, dataUrl ) {
+	res.status( 404 )
+		.render( 'index.html', {
+			page_title: '404',
+			dataUrl,
+			view: ReactDOMServer.renderToString(
+				React.createElement( FourOhFour )
+			)
+		} );
+}
 function addRoute( app, route, View, apiTemplate, extractMeta ) {
 	// redirects %20 to _ (standard for wikipedia titles)
 	app.use( function ( req, res, next ) {
@@ -29,15 +39,20 @@ function addRoute( app, route, View, apiTemplate, extractMeta ) {
 			fetch( dataUrl ).then( ( resp ) => {
 				let json;
 				if ( resp.status === 404 ) {
-					res.status( 404 )
-						.render( 'index.html', {
-							page_title: '404',
-							dataUrl,
-							view: ReactDOMServer.renderToString(
-								React.createElement( FourOhFour )
-							)
-						} );
-					return;
+					return resp.text().then( ( b ) => {
+						var { code, title } = JSON.parse(
+							b.replace( 'Error: ', '' )
+						);
+						// Handle redirects
+						// https://github.com/jdlrobson/someday/issues/1
+						if ( code === 302 ) {
+							res.redirect( 302, `/destination/${title[ 0 ]}` );
+						} else {
+							handle404( res, dataUrl );
+						}
+					} ).catch( ( e ) => {
+						handle404( res, dataUrl );
+					} );
 				}
 				if ( resp.headers.get( 'content-type' ).indexOf( 'text/plain' ) > -1 ) {
 					json = resp.text().then( ( text ) => ( { text } ) );
