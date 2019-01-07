@@ -39,11 +39,18 @@ export function mergePages( pages, pagesToMerge, redirects ) {
 	return unique(
 		pagesToMerge.map( function ( page ) {
 			let title = page.title.replace( /_/gi, ' ' );
+			let redirects;
 			// rewrite title if necessary
 			if ( redirectMap[ title ] ) {
+				redirects = [ title ];
 				title = redirectMap[ title ];
 			}
 			var obj = index[ title ] || {};
+			if ( redirects ) {
+				// Leave clue for destinations
+				// See https://github.com/jdlrobson/someday/issues/33
+				obj.redirects = redirects;
+			}
 			return Object.assign( {}, page, obj, { title } );
 		} )
 	);

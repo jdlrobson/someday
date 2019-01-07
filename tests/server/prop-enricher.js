@@ -13,6 +13,38 @@ describe( 'prop-enricher', () => {
 		const examples = [
 			[
 				[
+					{ pageid: 38376,
+						ns: 0,
+						title: 'Walt Disney World',
+						thumbnail: {
+							source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Magic_Kingdom_-_The_%27Big_Bang%27_at_Wishes_-_by_hyku.jpg/80px-Magic_Kingdom_-_The_%27Big_Bang%27_at_Wishes_-_by_hyku.jpg',
+							width: 80,
+							height: 120
+						}
+					}
+				],
+				[
+					{ title: 'Disney World' }
+				],
+				// redirects
+				[
+					{ from: 'Disney World', to: 'Walt Disney World' }
+				],
+				[
+					{ pageid: 38376,
+						ns: 0,
+						title: 'Walt Disney World',
+						thumbnail: {
+							source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Magic_Kingdom_-_The_%27Big_Bang%27_at_Wishes_-_by_hyku.jpg/80px-Magic_Kingdom_-_The_%27Big_Bang%27_at_Wishes_-_by_hyku.jpg',
+							width: 80,
+							height: 120
+						},
+						redirects: [ 'Disney World' ]
+					}
+				]
+			],
+			[
+				[
 					{ title: 'Night Safari, Singapore' },
 					{ title: 'Night Safari (Singapore)' }
 				],

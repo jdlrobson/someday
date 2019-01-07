@@ -13,6 +13,12 @@ export default function addNextCards( data, lang, project, pages, isRegion ) {
 		const index = {};
 		pages.forEach( ( page ) => {
 			index[ page.title ] = page;
+			// https://github.com/jdlrobson/someday/issues/33
+			if ( page.redirects ) {
+				page.redirects.forEach( ( title ) => {
+					index[ title ] = page;
+				} );
+			}
 		} );
 		var destinations = [];
 		data.remaining.sections.forEach( function ( section ) {
@@ -26,6 +32,7 @@ export default function addNextCards( data, lang, project, pages, isRegion ) {
 			}
 			delete section.destinations;
 		} );
+
 		data.lead.destinations = destinations;
 		return data;
 	} );
