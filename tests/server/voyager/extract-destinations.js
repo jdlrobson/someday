@@ -37,6 +37,70 @@ describe( 'extract-destinations', function () {
 		assert.ok( section.text.indexOf( 'is about 90 minutes by bus.' ) > -1 );
 	} );
 
+	it( 'London route box', () => {
+		let section = {
+			text: `<div><table class="routeBox" style="border: 1px solid #555555;">
+
+
+			<tbody><tr>
+			<td style="font-size:smaller; text-align:right;"><b><a href="/wiki/Leeds" title="Leeds">Leeds</a></b> ← <a href="/wiki/LTN" class="mw-redirect" title="LTN">Luton Airport</a> ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>N</b>&nbsp;<img alt="UK-Motorway-M1.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/7/72/UK-Motorway-M1.svg/50px-UK-Motorway-M1.svg.png" width="50" height="22" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/7/72/UK-Motorway-M1.svg/75px-UK-Motorway-M1.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/7/72/UK-Motorway-M1.svg/100px-UK-Motorway-M1.svg.png 2x" data-file-width="316" data-file-height="141">&nbsp;<b>S</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→  <b>END</b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b>END</b>  ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>NE</b>&nbsp;<img alt="UK-Motorway-M3.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/3/3b/UK-Motorway-M3.svg/50px-UK-Motorway-M3.svg.png" width="50" height="22" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/3/3b/UK-Motorway-M3.svg/75px-UK-Motorway-M3.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/3/3b/UK-Motorway-M3.svg/100px-UK-Motorway-M3.svg.png 2x" data-file-width="316" data-file-height="141">&nbsp;<b>SW</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→ <a href="/wiki/Winchester_(England)" title="Winchester (England)">Winchester</a> → <b><a href="/wiki/Southampton" title="Southampton">Southampton</a></b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b><a href="/wiki/Bristol" title="Bristol">Bristol</a></b> ← <a href="/wiki/Heathrow_Airport" title="Heathrow Airport">Heathrow Airport</a> ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>W</b>&nbsp;<img alt="UK-Motorway-M4.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/06/UK-Motorway-M4.svg/50px-UK-Motorway-M4.svg.png" width="50" height="22" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/06/UK-Motorway-M4.svg/75px-UK-Motorway-M4.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/06/UK-Motorway-M4.svg/100px-UK-Motorway-M4.svg.png 2x" data-file-width="316" data-file-height="141">&nbsp;<b>E</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→  <b>END</b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b><a href="/wiki/Cambridge_(England)" title="Cambridge (England)">Cambridge</a></b> ← <a href="/wiki/Stansted_Airport" class="mw-redirect" title="Stansted Airport">Stansted Airport</a> ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>N</b>&nbsp;<img alt="UK-Motorway-M11.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/9/95/UK-Motorway-M11.svg/50px-UK-Motorway-M11.svg.png" width="50" height="18" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/95/UK-Motorway-M11.svg/75px-UK-Motorway-M11.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/95/UK-Motorway-M11.svg/100px-UK-Motorway-M11.svg.png 2x" data-file-width="384" data-file-height="141">&nbsp;<b>S</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→  <b>END</b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b>END</b>  ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>NW</b>&nbsp;<img alt="UK-Motorway-M20.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/9/9b/UK-Motorway-M20.svg/50px-UK-Motorway-M20.svg.png" width="50" height="18" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/9b/UK-Motorway-M20.svg/75px-UK-Motorway-M20.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/9b/UK-Motorway-M20.svg/100px-UK-Motorway-M20.svg.png 2x" data-file-width="384" data-file-height="141">&nbsp;<b>SE</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→ <a href="/wiki/Maidstone" title="Maidstone">Maidstone</a> → <b><a href="/wiki/Folkestone#Q5413870" title="Folkestone">Channel Tunnel</a></b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b>END</b>  ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>N</b>&nbsp;<img alt="UK-Motorway-M23.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c1/UK-Motorway-M23.svg/50px-UK-Motorway-M23.svg.png" width="50" height="18" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c1/UK-Motorway-M23.svg/75px-UK-Motorway-M23.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c1/UK-Motorway-M23.svg/100px-UK-Motorway-M23.svg.png 2x" data-file-width="384" data-file-height="141">&nbsp;<b>S</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→ <a href="/wiki/Gatwick_Airport" title="Gatwick Airport">Gatwick Airport</a> → <b><a href="/wiki/Brighton" class="mw-disambig" title="Brighton">Brighton</a></b>
+			</td></tr>
+			<tr>
+			<td style="font-size:smaller; text-align:right;"><b><a href="/wiki/Birmingham_(England)" title="Birmingham (England)">Birmingham</a></b> ← <a href="/wiki/High_Wycombe" title="High Wycombe">High Wycombe</a> ←
+			</td>
+			<td style="background-color:#555555; font-size:smaller; color:white; text-align:center;">&nbsp;<b>NW</b>&nbsp;<img alt="UK-Motorway-M40.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/9/90/UK-Motorway-M40.svg/50px-UK-Motorway-M40.svg.png" width="50" height="18" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/90/UK-Motorway-M40.svg/75px-UK-Motorway-M40.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/90/UK-Motorway-M40.svg/100px-UK-Motorway-M40.svg.png 2x" data-file-width="384" data-file-height="141">&nbsp;<b>SE</b>&nbsp;
+			</td>
+			<td style="font-size:smaller; text-align:left;">→  <b>END</b>
+			</td></tr></tbody></table>
+			</div>`
+		};
+		section = extract( section );
+		assert.strictEqual( section.destinations.length, 10, '10 places. No airports' );
+		assert.strictEqual( section.destinations.findIndex( ( dest ) => dest.title === 'LTN' ) > -1, false,
+			'Airports are ignored!' );
+		assert.strictEqual( section.destinations.findIndex( ( dest ) => dest.title === 'Heathrow Airport' ) > -1, false,
+			'Airports are ignored!' );
+	} );
+
 	it( 'Athens', () => {
 		let section = {
 			text: `<ul id="mwA5k"><li id="mwA5o"><a rel="mw:WikiLink" href="./Piraeus" title="Piraeus" id="mwA5s">Piraeus</a> - the harbour of Athens, and Rafina (on the east coast of Attica) are the departure points for a large number of ferry services to the Greek Islands and other destinations in the eastern Mediterranean, including ports in <a rel="mw:WikiLink" href="./Italy" title="Italy" id="mwA5w">Italy</a>, <a rel="mw:WikiLink" href="./Egypt" title="Egypt" id="mwA50">Egypt</a>, <a rel="mw:WikiLink" href="./Turkey" title="Turkey" id="mwA54">Turkey</a>, <a rel="mw:WikiLink" href="./Israel" title="Israel" id="mwA58">Israel</a> and <a rel="mw:WikiLink" href="./Cyprus" title="Cyprus" id="mwA6A">Cyprus</a>. Fast hydrofoil, catamaran or helicopter services also take you to the Greek Islands. Italy is easily approached by boat from Patras (take a train or a bus to Patras).</li></ul>

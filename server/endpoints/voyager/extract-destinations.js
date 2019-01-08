@@ -190,21 +190,25 @@ function extractFromList( html ) {
 	};
 }
 
+function isAirport( link ) {
+	return link.textContent.toLowerCase().indexOf( ' airport' ) > -1;
+}
+
 function extractDestinations( section, originalTitle ) {
 	var destinations = [];
 	var seeAlso = [];
-	// scrape oute routeBoxes. I haven't worked out what to do with them yet.
+	// scrape route routeBoxes. I haven't worked out what to do with them yet.
 	var ext = extractElements( section.text, '.routeBox' );
 
 	var res = extractFromList( ext.html );
 	destinations = res.destinations;
 
-	if ( ext.extracted.length ) {
+	if ( ext.extracted.length && destinations.length < 3 ) {
 		Array.prototype.forEach.call( ext.extracted, function ( routeBox ) {
 			// there should only be one route box
 			Array.prototype.forEach.call( routeBox.querySelectorAll( 'a' ), function ( link ) {
 				var title = link.hasAttribute( 'title' ) ? link.getAttribute( 'title' ) : link.textContent;
-				if ( title && !has( destinations, title ) ) {
+				if ( title && !has( destinations, title ) && !isAirport( link ) ) {
 					destinations.push( { title: title } );
 				}
 			} );
