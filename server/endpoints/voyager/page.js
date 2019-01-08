@@ -284,9 +284,9 @@ function voyager( title, lang, project, data ) {
 				section.text = '';
 			}
 		} );
-		// if we think it's a country it's not a region.
-		// Pages like Panama may have false positives.
-		if ( isCountry ) {
+		// if we think it's a country or an island it's not a region.
+		// Pages like Panama and Athens may have false positives.
+		if ( isCountry || isIsland ) {
 			isRegion = false;
 		}
 		data.remaining.sections = sections;
