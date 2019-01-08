@@ -14,6 +14,10 @@ function has( array, title ) {
 	return needle;
 }
 
+function looksLikeCommaList( html ) {
+	return html.match( /,.*( and|or )/ ) && html.indexOf( ':' ) > 0;
+}
+
 function extractFromList( html ) {
 	var titles = [];
 	var dict = {};
@@ -65,7 +69,7 @@ function extractFromList( html ) {
 
 	ext = extractElements( html, 'li > a:first-child, li > b:first-child, li > i:first-child', true );
 	Array.prototype.forEach.call( ext.extracted, function ( node ) {
-		var attr, text, listItem,
+		var attr, text, listItem, siblingLinks, listItemTextContent,
 			isExternalLink = false,
 			link = node,
 			doNotScrub = false;
@@ -76,6 +80,8 @@ function extractFromList( html ) {
 		}
 
 		listItem = getParentWithTag( link, 'LI' );
+		listItemTextContent = listItem.textContent;
+		siblingLinks = listItem ? listItem.querySelectorAll( 'a' ) : 0;
 
 		if ( link.tagName !== 'A' ) {
 			link = node.querySelector( 'a' );
@@ -103,7 +109,15 @@ function extractFromList( html ) {
 			}
 		}
 
-		if ( listItem && link && ( !isLastChild( link ) || link.parentNode.childNodes.length < 3 ) ) {
+		if ( siblingLinks.length > 3 && looksLikeCommaList( listItemTextContent ) ) {
+			titles = titles.concat(
+				Array.from( siblingLinks ).map( ( link ) => {
+					return {
+						title: link.getAttribute( 'title' ) || link.textContent
+					};
+				} )
+			);
+		} else if ( listItem && link && ( !isLastChild( link ) || link.parentNode.childNodes.length < 3 ) ) {
 			var textContent = link ? link.textContent : node.textContent;
 			attr = link ? link.getAttribute( 'title' ) : textContent;
 			isExternalLink = link.getAttribute( 'href' ).indexOf( '://' ) > -1;

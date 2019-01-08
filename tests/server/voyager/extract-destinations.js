@@ -37,6 +37,20 @@ describe( 'extract-destinations', function () {
 		assert.ok( section.text.indexOf( 'is about 90 minutes by bus.' ) > -1 );
 	} );
 
+	it( 'Athens', () => {
+		let section = {
+			text: `<ul id="mwA5k"><li id="mwA5o"><a rel="mw:WikiLink" href="./Piraeus" title="Piraeus" id="mwA5s">Piraeus</a> - the harbour of Athens, and Rafina (on the east coast of Attica) are the departure points for a large number of ferry services to the Greek Islands and other destinations in the eastern Mediterranean, including ports in <a rel="mw:WikiLink" href="./Italy" title="Italy" id="mwA5w">Italy</a>, <a rel="mw:WikiLink" href="./Egypt" title="Egypt" id="mwA50">Egypt</a>, <a rel="mw:WikiLink" href="./Turkey" title="Turkey" id="mwA54">Turkey</a>, <a rel="mw:WikiLink" href="./Israel" title="Israel" id="mwA58">Israel</a> and <a rel="mw:WikiLink" href="./Cyprus" title="Cyprus" id="mwA6A">Cyprus</a>. Fast hydrofoil, catamaran or helicopter services also take you to the Greek Islands. Italy is easily approached by boat from Patras (take a train or a bus to Patras).</li></ul>
+			<ul id="mwA6E"><li id="mwA6I">The port of <b id="mwA6M">Lavrion</b> in southern Attica is being increasingly developed as a ferry port, especially for (some) Cyclades routes. Rafina and, especially, Piraeus remain the main hubs for the Cyclades and the Dodecanese.</li></ul>
+			<ul id="mwA6Q"><li id="mwA6U">The closest islands, suitable for a day trip from <b id="mwA6Y">Piraeus</b>, are  in the Argosaronic (or Saronic) gulf: <a rel="mw:WikiLink" href="./Hydra" title="Hydra" id="mwA6c">Hydra</a>, <a rel="mw:WikiLink" href="./Aegina" title="Aegina" id="mwA6g">Aegina</a>, <a rel="mw:WikiLink" href="./Poros" title="Poros" id="mwA6k">Poros</a>, <a rel="mw:WikiLink" href="./Spetses" title="Spetses" id="mwA6o">Spetses</a> and <a rel="mw:WikiLink" href="./Salamina" title="Salamina" id="mwA6s" class="new">Salamina</a>. <a rel="mw:WikiLink" href="./Kea" title="Kea" id="mwA6w">Kea</a> (also pronounced <i id="mwA60">Tzia</i>) is a very nearby destination, too, less than two hours from the port of Lavrio. If what you are thinking is an island further away from Piraeus, like <a rel="mw:WikiLink" href="./Paros" title="Paros" id="mwA64">Paros</a>, <a rel="mw:WikiLink" href="./Naxos" title="Naxos" id="mwA68">Naxos</a>, <a rel="mw:WikiLink" href="./Ios" title="Ios" id="mwA7A">Ios</a>, <a rel="mw:WikiLink" href="./Santorini" title="Santorini" id="mwA7E">Santorini</a> or any of the Dodecanese or Northern Aegean isles, you should probably consider with extra days off Athens because of their distance from the mainland. Flying is also an option to the more distant islands.</li></ul>`
+		};
+
+		section = extract( section );
+		// Piraeus
+		//  Hydra, Aegina, Poros, Spetses and Salamina. Kea
+		// Paros, Naxos, Ios, Santorini
+		assert.strictEqual( section.destinations.length, 11, 'We recognise any text with both a colon, commas and use of word "and" or "or"' );
+	} );
+
 	it( 'Asia', function () {
 		var section = {
 			text: '<p>See also <a href="/wiki/UNESCO_World_Heritage_List#Asia" title="UNESCO World Heritage List">UNESCO World Heritage List#Asia</a>.</p>'
