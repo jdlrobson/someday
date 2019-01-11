@@ -3,6 +3,8 @@ import { showOverlay, hideOverlay } from './overlay';
 import { CollectionOverlay, Icon,
 	Button, CollectionEditorOverlay } from 'wikipedia-react-components';
 import fetch from 'isomorphic-fetch';
+import 'wikipedia-react-components/components/CollectionOverlay/styles.less';
+import 'wikipedia-react-components/components/Button/mediawiki-ui-button.css';
 import calc from './WorldMap/calculate-bounds-from-pages';
 import { invalidate } from './edit.jsx';
 import './trips.less';
