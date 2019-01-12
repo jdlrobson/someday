@@ -11,7 +11,9 @@
     "compile:watch": "export NODE_ENV=development && webpack --output-path public/ --watch",
     "lint:fix": "eslint . --ext .jsx --ext .js  --fix",
     "lint": "eslint . --ext .jsx --ext .js",
-    "test": "mocha --require babel-core/register tests/**/*"
+    "bundlesize": "bundlesize",
+    "test": "npm run test:unit && npm run compile && npm run bundlesize",
+    "test:unit": "mocha --require babel-core/register tests/**/*"
   },
   "babel": {
     "presets": [
@@ -63,5 +65,11 @@
     "eslint-plugin-react": "^7.11.1",
     "prettier": "1.12.1",
     "webpack-cli": "^3.1.2"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "public/page.css",
+      "maxSize": "5.6KB"
+    }
+  ]
 }
