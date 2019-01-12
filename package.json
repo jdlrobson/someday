@@ -18,8 +18,7 @@
   "babel": {
     "presets": [
       "es2015",
-      "react",
-      "env"
+      "react"
     ]
   },
   "author": "Jdlrobson",
@@ -61,10 +60,10 @@
     "wikipedia-react-components": "1.8.3"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
     "css-loader": "^2.1.0",
     "eslint": "^5.6.1",
     "eslint-plugin-react": "^7.11.1",
+    "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "prettier": "1.12.1",
     "webpack-cli": "^3.1.2"
