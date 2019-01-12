@@ -24,6 +24,7 @@
     "@babel/register": "7.0.0",
     "babel-core": "6.26.3",
     "babel-loader": "8.0.5",
+    "bundlesize": "^0.17.0",
     "connect-memcached": "0.2.0",
     "css-loader": "2.1.0",
     "domino": "2.0.2",
