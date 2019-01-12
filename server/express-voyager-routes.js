@@ -84,7 +84,7 @@ function initRoutes( app ) {
 
 	const getHost = ( req ) => {
 		return req.protocol + '://' + req.get( 'host' );
-	}
+	};
 
 	app.get( '/api/voyager/sight/:title', ( req, res ) => {
 		const title = req.params.title;
