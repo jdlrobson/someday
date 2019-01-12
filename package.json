@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .jsx --ext .js",
     "bundlesize": "bundlesize",
     "test": "npm run test:unit && npm run compile && npm run bundlesize",
-    "test:unit": "mocha --require babel-core/register tests/**/*"
+    "test:unit": "mocha --require @babel/register tests/**/*"
   },
   "author": "Jdlrobson",
   "license": "ISC",
