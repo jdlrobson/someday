@@ -1,10 +1,7 @@
 /* global document */
 // Needed for stylesheet
-// eslint-disable-next-line no-unused-vars
 import { Climate } from './../components';
 import 'wikipedia-react-components/components/TruncatedText/styles.less';
-import 'wikipedia-react-components/components/Card/styles.less';
-import 'wikipedia-react-components/components/HorizontalList/styles.less';
 import 'wikipedia-react-components/components/Icon/mediawiki-ui-icon.css';
 import './index.less';
 
@@ -20,11 +17,15 @@ import { showCollectionOverlay, showCollectionEditor,
 	getTrips, getTrip, getCoordsFromPages } from './trips.jsx';
 import { showMapOverlay, showMapOverlayWithPages } from './maps.jsx';
 import offline from './offline';
+import { loadCSS } from 'fg-loadcss';
 
 const user = document.body.getAttribute( 'data-user' );
 const title = document.querySelector( '.page' ).getAttribute( 'data-title' );
 
 const router = overlayRouter();
+// Load the associated stylesheet
+loadCSS( '/main.css' );
+
 router.on( '/editor/:title/:id/:hint?', ( options ) => {
 	showEditOverlay( null, options.title, options.id, options.hint );
 } ).on( '/map/:lat/:lng/:title', ( options ) => {

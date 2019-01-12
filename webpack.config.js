@@ -22,6 +22,7 @@ module.exports = {
 		]
 	},
 	entry: {
+		page: './client/page.js',
 		sw: './client/worker.js',
 		main: './client/index.js'
 	},

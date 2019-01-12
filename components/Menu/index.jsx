@@ -1,6 +1,6 @@
 import React from 'react';
 import { HorizontalList } from 'wikipedia-react-components';
-
+import 'wikipedia-react-components/components/HorizontalList/styles.less';
 import './styles.less';
 
 export default function Menu( { username } ) {

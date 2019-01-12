@@ -7,6 +7,8 @@ import Trips from './Trips';
 import Trip from './Trip';
 import routes from './routes';
 
+import './page.less';
+
 export default [
 	[ routes.HOME, HomePage, '/api/random/en' ],
 	[ routes.TRIPS, Trips, '/api/collection' ],

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Card } from './../components';
+import 'wikipedia-react-components/components/Card/styles.less';
+import 'wikipedia-react-components/components/TruncatedText/styles.less';
 
 const toFixedKm = ( km ) => km > 9 ? Math.round( km ) : km.toFixed( 2 );
 

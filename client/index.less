@@ -1,9 +1,9 @@
 @import "./../components/globals.less";
-* {
-  box-sizing: border-box;
-}
 
-
+/**
+ * All this CSS will be loaded via JavaScript.
+ * Use page.less for CSS on critical path
+ */
 textarea {
   width: 100%;
 }
@@ -24,21 +24,7 @@ body {
     }
   }
 }
-html,
-body {
-  height: 100%;
-}
-ul {
-  margin: 8px 0;
-  padding: 0 0 0 16px;
-}
-a {
-  text-decoration: none;
-  color: #002bb8;
-  &:hover {
-    text-decoration: underline;
-  }
-}
+
 
 //overlays
 .drawer {
@@ -66,28 +52,25 @@ a {
   }
 }
 
-// edit
-.edit-link {
-  visibility: hidden;
-}
-
 .client-auth {
+  .action--add-trip,
   .edit-link {
     visibility: visible;
   }
 }
 
+.client-js {
+  .action--add-note,
+  .map-icon {
+    visibility: visible;
+  }
+}
 .client-no-connection {
   #search,
   .action--add-trip,
   .edit-link {
     visibility: hidden;
   }
-}
-
-.page {
-  line-height: 22px;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Nimbus Sans L', 'Arial', 'Liberation Sans', sans-serif;
 }
 
 .card-place--missing {
@@ -127,32 +110,6 @@ a {
   &:hover,
   &:active {
     opacity: 0.8;
-  }
-}
-
-.section__heading {
-  text-align: center;
-  text-transform: uppercase;
-  color: #999;
-  position: relative;
-  margin: 0;
-  padding: 12px;
-  background: white;
-  border: solid 1px #999;
-  border-left: none;
-  border-right: none;
-  &:after,
-  &:before {
-      content: '';
-      border-bottom: solid 1px #999;
-      width: 30%;
-      height: 2px;
-      display: block;
-      position: absolute;
-      top: 50%;
-  }
-  &:after {
-      right: 0;
   }
 }
 

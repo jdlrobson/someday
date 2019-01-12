@@ -1,5 +1,7 @@
 import React from 'react';
 import { Card } from 'wikipedia-react-components';
+import 'wikipedia-react-components/components/Card/styles.less';
+import 'wikipedia-react-components/components/TruncatedText/styles.less';
 import './styles.less';
 
 export default function CardGrid( { pages } ) {
