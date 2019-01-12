@@ -1,5 +1,6 @@
 import addProps from './../prop-enricher';
 import calculateDistance from './calculate-distance';
+import { removeDuplicates } from './extract-sights-from-text';
 
 function sightObjToCanoicalTitle( sightObj ) {
 	return sightObj.name.replace( /_/g, ' ' );
@@ -43,6 +44,7 @@ function addSights( data, distance ) {
 		origSights.forEach( ( sight ) => {
 			lookup[ sight.name ] = sight;
 		} );
+
 		const isExternal = ( sight ) => {
 			return sight.external &&
 				// https://github.com/jdlrobson/someday/issues/38
@@ -50,7 +52,7 @@ function addSights( data, distance ) {
 		};
 		const externalSights = origSights.filter( isExternal );
 
-		let sights = data.lead.sights.filter( ( s ) => !isExternal( s ) );
+		let sights = data.lead.sights;
 		const aliases = getAliases(
 			sights,
 			data.lead.displaytitle
@@ -71,7 +73,7 @@ function addSights( data, distance ) {
 			.then( ( sightPages ) => {
 				const sightWarnings = {};
 
-				data.lead.sights = sightPages.filter(
+				const allSights = sightPages.filter(
 					( page ) => {
 						const distFromLandmark = page.coordinates && calculateDistance( page.coordinates, landmark );
 						const originalSight = aliases[ page.title ] || page.title;
@@ -103,11 +105,14 @@ function addSights( data, distance ) {
 					}
 				).map( ( page ) => {
 					const item = lookup[ page.title ];
-					if ( item && item.description ) {
-						page.description = item.description;
+					if ( item ) {
+						Object.keys( item ).filter((key) => key !== 'title').forEach( ( key ) => {
+							page[key] = item[key];
+						} );
 					}
 					return page;
 				} ).concat( externalSights );
+				data.lead.sights = removeDuplicates( allSights );
 				// filter all the sights which we found something for
 				data.warnings = Object.keys( sightWarnings ).filter( ( key ) => {
 					return sightWarnings[ key ];

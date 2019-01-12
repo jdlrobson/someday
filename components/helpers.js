@@ -14,18 +14,18 @@ const EXTERNAL_LINK_THUMBNAIL = {
 	source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/External_Link_%2889628%29_-_The_Noun_Project.svg/240px-External_Link_%2889628%29_-_The_Noun_Project.svg.png'
 };
 
-export const selectThumbnail = ( { external, thumbnail } ) => {
-	if ( !thumbnail && external ) {
+export const selectThumbnail = ( { external, pageid, thumbnail } ) => {
+	if ( !thumbnail && external && !pageid ) {
 		return EXTERNAL_LINK_THUMBNAIL;
 	} else {
 		return thumbnail;
 	}
 };
 
-export const placeToCard = ( { title, url,
+export const placeToCard = ( { title, url, pageid,
 	thumbnail, external, description, missing, coordinates }, key ) => {
 	return <Card title={title}
-		thumbnail={selectThumbnail({thumbnail, external})}
+		thumbnail={selectThumbnail({thumbnail, external, pageid})}
 		className={missing ? ' card-place--missing' : 'card-place' }
 		key={`place-${key}`}
 		url={url || '/destination/' + encodeURIComponent( title.replace(/ /g, '_' ) )}

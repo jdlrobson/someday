@@ -1,6 +1,36 @@
 import { extractElements } from './domino-utils';
 import getParentWithTag from './get-parent-with-tag';
 
+// https://github.com/jdlrobson/someday/issues/38
+// https://github.com/jdlrobson/someday/issues/36
+export function removeDuplicates( sights ) {
+	const mergedSights = [];
+	sights.forEach(( sight, i ) => {
+		const found = mergedSights.findIndex((s) => s.name === sight.name);
+		const existingSight = mergedSights[found];
+		if ( found === -1 ) {
+			mergedSights.push( sight );
+		} else {
+			mergedSights[found] = Object.assign( {}, existingSight, sight );
+		}
+	} );
+	return mergedSights;
+}
+
+function cleanSights( sights ) {
+	return sights.filter( ( sight ) => {
+		const name = sight.name.trim();
+		const firstCharLowercase = name.length > 1 && name.charAt(0).toLowerCase() === name[0];
+		const isTelephoneNumber = name.match(/\+[0-9]+ [0-9-]+/ );
+		const isWebsite = name.match( /.*@*.\.(com|org)/ );
+		const isUrl = name.match( /^\.\// );
+		return !isWebsite && !isTelephoneNumber && !isUrl &&
+			!firstCharLowercase &&
+			// remove short string matches.. unlikely to find on wikipedia.
+			name.length > 2;
+	} );
+}
+
 export default function ( doc ) {
 	let text = doc.body.innerHTML;
 	let sights = [];
@@ -61,5 +91,5 @@ export default function ( doc ) {
 			parsedSights[ i ] = false;
 		}
 	} );
-	return sights.concat( parsedSights.filter( sight => !!sight ) );
+	return cleanSights( removeDuplicates( sights.concat( parsedSights.filter( sight => !!sight ) ) ) );
 }

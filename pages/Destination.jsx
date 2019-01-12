@@ -11,12 +11,13 @@ const tumbleweed = ( id ) =>
 	<div className="list--empty" key={'tumbleweed-' + id}>🌵 Nothing but tumbleweed</div>;
 
 const sightToCard = ( destTitle, i ) => {
-	return ( { title, thumbnail, description, external, url } ) => {
-		url = url || `/destination/${encodeURIComponent( destTitle )}/sight/${encodeURIComponent( title )}`;
+	return ( { title, thumbnail, description, external, url, pageid } ) => {
 		return <Card title={title} thumbnail={
-				selectThumbnail( { thumbnail, external } )}
+				selectThumbnail( { thumbnail, external, pageid } )}
 			key={`sight-${i}`}
-			url={url}
+			url={url && !pageid ?
+					url : `/destination/${encodeURIComponent( destTitle )}/sight/${encodeURIComponent( title )}`
+				}
 			extracts={[ description ]} />;
 	};
 };
