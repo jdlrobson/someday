@@ -56,7 +56,11 @@ module.exports = {
 				test: /\.jsx?$/,
 				exclude: /node_modules\/react-leaflet/,
 				use: [ {
-					loader: 'babel-loader'
+					loader: 'babel-loader',
+					query: {
+						presets: [ '@babel/preset-env' ],
+						plugins: [ '@babel/plugin-transform-react-jsx' ]
+					}
 				} ]
 			},
 			{

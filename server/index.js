@@ -1,5 +1,5 @@
 /* global __dirname */
-require( 'babel-core/register' );
+require( '@babel/register' );
 
 import express from 'express';
 import hogan from 'hogan-express';
