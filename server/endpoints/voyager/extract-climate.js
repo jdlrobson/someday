@@ -20,8 +20,10 @@ function fromInchesToMm( val ) {
 }
 
 function checkImperial( data ) {
-	// assuming that over 60C is pretty hot, so it will be F.
-	const imperial = data.filter( ( row ) => row.high > 60 ).length > 0;
+	// assuming that over 58C is pretty hot, so it will be F.
+	const negTemps = data.filter( ( row ) => row.high < 0 || row.low < 0 ).length > 0;
+	const imperial = !negTemps && data.filter( ( row ) => row.high > 55 ).length > 0;
+
 	if ( imperial ) {
 		return data.map( ( row ) => {
 			return Object.assign( {}, row, {
