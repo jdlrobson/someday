@@ -88,7 +88,8 @@ function initRoutes( app ) {
 
 	app.get( '/api/voyager/sight/:title', ( req, res ) => {
 		const title = req.params.title;
-		fetch( `${getHost( req )}/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/${title}` ).then( ( resp ) => {
+		const uri = `${getHost( req )}/api/wikimedia/en.wikipedia.org/rest_v1/page/summary/${encodeURIComponent(title)}`;
+		fetch( uri ).then( ( resp ) => {
 			return resp.json();
 		} ).then( ( page ) => {
 			return addImagesFromCommons( { lead: page }, '50' );
