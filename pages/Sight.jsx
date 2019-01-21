@@ -33,7 +33,7 @@ export default class Sight extends React.Component {
 					</Note>
 				</Column>
 				<Column col={3}>
-					{thumbnail && <ImageSlideshow images={[ thumbnail ].concat( images )}
+					{thumbnail && <ImageSlideshow images={[ thumbnail ].concat( ( images || [] ) )}
 						key="img-slideshow" />}
 				</Column>
 			</Page>
